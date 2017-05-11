@@ -8,10 +8,19 @@
 #include "GameClear.h"
 #include "GameMain.h"
 #include <d3d11.h>
+#include "Direct3D.h"
 #include "DirectXTK.h"
 #include <SimpleMath.h>
+#include "Game.h"
+#include "pch.h"
 
+#include <WICTextureLoader.h>
+
+
+using namespace DirectX;
 using namespace DirectX::SimpleMath;
+using Microsoft::WRL::ComPtr;
+
 
 GameClear::GameClear()
 {
@@ -40,5 +49,11 @@ wchar_t * GameClear::RenderGame()
 {
 	wchar_t* output = L"CLEAR";
 	return output;
+
+	ComPtr<ID3D11Resource> resource;
+	DX::ThrowIfFailed(
+		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/clock.png", resource.GetAddressOf(),
+			m_texture.ReleaseAndGetAddressOf()));
+
 }
 

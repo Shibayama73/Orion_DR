@@ -7,6 +7,10 @@
 
 #pragma once
 #include "GameBase.h"
+#include "DeviceResources.h"
+#include <SimpleMath.h>
+#include <SpriteBatch.h>
+
 
 class GameClear :public GameBase
 {
@@ -15,4 +19,10 @@ public:
 	~GameClear();	//	デストラクタ
 	int UpdateGame();	//	データの更新
 	wchar_t* RenderGame();//	描画する
+
+private:
+
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;	//テクスチャ
+	std::unique_ptr<DX::DeviceResources> m_deviceResources;
+
 };
