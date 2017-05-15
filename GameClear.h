@@ -7,8 +7,9 @@
 
 #pragma once
 #include "GameBase.h"
-#include "DeviceResources.h"
+#include <d3d11_1.h>
 #include <SimpleMath.h>
+#include "DeviceResources.h"
 #include <SpriteBatch.h>
 
 
@@ -24,5 +25,4 @@ private:
 
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;	//テクスチャ
 	std::unique_ptr<DX::DeviceResources> m_deviceResources;
-
 };
