@@ -16,13 +16,18 @@
 class GameClear :public GameBase
 {
 public:
-	GameClear();	//	コンストラクタ
-	~GameClear();	//	デストラクタ
+	GameClear();		//	コンストラクタ
+	~GameClear();		//	デストラクタ
 	int UpdateGame();	//	データの更新
-	void RenderGame();//	描画する
+	void RenderGame();	//	描画する
 
 private:
+	DX::DeviceResources* m_deviceResources;
+	DirectX::SpriteBatch* m_spriteBatch;
 
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;	//テクスチャ
-	std::unique_ptr<DX::DeviceResources> m_deviceResources;
+
+	DirectX::SimpleMath::Vector2 m_screenPos;
+	DirectX::SimpleMath::Vector2 m_origin;
+
 };
