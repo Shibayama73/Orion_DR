@@ -14,5 +14,5 @@ public:
 	GameTitle();	//	コンストラクタ
 	~GameTitle();	//	デストラクタ
 	int UpdateGame();	//	データの更新
-	wchar_t* RenderGame();//	描画する
+	void RenderGame();//	描画する
 };

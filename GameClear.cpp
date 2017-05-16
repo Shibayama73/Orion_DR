@@ -45,15 +45,8 @@ int GameClear::UpdateGame()
 	return m_NextScene;
 }
 
-wchar_t * GameClear::RenderGame()
+void GameClear::RenderGame()
 {
-	wchar_t* output = L"CLEAR";
-	return output;
-
-	ComPtr<ID3D11Resource> resource;
-	DX::ThrowIfFailed(
-		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/clock.png", resource.GetAddressOf(),
-			m_texture.ReleaseAndGetAddressOf()));
-
+	
 }
 

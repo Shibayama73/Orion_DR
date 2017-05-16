@@ -37,8 +37,7 @@ int GameOver::UpdateGame()
 	return m_NextScene;
 }
 
-wchar_t * GameOver::RenderGame()
+void GameOver::RenderGame()
 {
-	wchar_t* output = L"Over";
-	return output;
+	
 }

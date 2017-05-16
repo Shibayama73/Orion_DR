@@ -17,10 +17,14 @@ using namespace DirectX;
 
 using Microsoft::WRL::ComPtr;
 
+std::unique_ptr<DX::DeviceResources> Game::m_deviceResources;
+std::unique_ptr<DirectX::SpriteBatch> Game::m_spriteBatch;
+
 Game::Game()
 {
     m_deviceResources = std::make_unique<DX::DeviceResources>();
     m_deviceResources->RegisterDeviceNotify(this);
+
 }
 
 // Initialize the Direct3D resources required to run.
@@ -41,35 +45,42 @@ void Game::Initialize(HWND window, int width, int height)
     m_timer.SetTargetElapsedSeconds(1.0 / 60);
     */
 
-	//	追加部分=================================================================================
-	//	リソース生成
-	m_spriteBatch = std::make_unique<SpriteBatch>(m_deviceResources->GetD3DDeviceContext());
-	
-	//	リソース読み込み
-	ComPtr<ID3D11Resource> resource;
-	DX::ThrowIfFailed(
-		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/clock.png", resource.GetAddressOf(),
-			m_texture.ReleaseAndGetAddressOf()));
+	////	追加部分=================================================================================
+	////	リソース生成
+	//m_spriteBatch = std::make_unique<SpriteBatch>(m_deviceResources->GetD3DDeviceContext());
+	//
+	////	リソース読み込み
+	//ComPtr<ID3D11Resource> resource;
+	//DX::ThrowIfFailed(
+	//	CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/clock.png", resource.GetAddressOf(),
+	//		m_texture.ReleaseAndGetAddressOf()));
 
-	//	リソースから猫のテクスチャと判断
-	ComPtr<ID3D11Texture2D> clock;
-	DX::ThrowIfFailed(resource.As(&clock));
+	////	リソースから猫のテクスチャと判断
+	//ComPtr<ID3D11Texture2D> clock;
+	//DX::ThrowIfFailed(resource.As(&clock));
 
-	//	テクスチャ情報
-	CD3D11_TEXTURE2D_DESC clockDesc;
-	clock->GetDesc(&clockDesc);
+	////	テクスチャ情報
+	//CD3D11_TEXTURE2D_DESC clockDesc;
+	//clock->GetDesc(&clockDesc);
 
-	//	テクスチャ原点を画像の中心にする
-	m_origin.x = float(clockDesc.Width / 2.0f);
-	m_origin.y = float(clockDesc.Height / 2.0f);
+	////	テクスチャ原点を画像の中心にする
+	//m_origin.x = float(clockDesc.Width / 2.0f);
+	//m_origin.y = float(clockDesc.Height / 2.0f);
 
-	//	表示座標を画面中央に指定
-	m_screenPos.x = m_deviceResources->GetOutputSize().right / 2.0f;
-	m_screenPos.y = m_deviceResources->GetOutputSize().bottom / 2.0f;
+	////	表示座標を画面中央に指定
+	//m_screenPos.x = m_deviceResources->GetOutputSize().right / 2.0f;
+	//m_screenPos.y = m_deviceResources->GetOutputSize().bottom / 2.0f;
 
 
-	//==========================================================================================
+	////==========================================================================================
 
+	//	追加してエラー
+	m_spriteBatch = std::make_unique<DirectX::SpriteBatch>(m_deviceResources->GetD3DDeviceContext());
+
+
+	//	デバッグ用
+	m_gameMain = new GameMain();
+	//m_gamePlay = new GamePlay();
 
 }
 
@@ -91,6 +102,11 @@ void Game::Update(DX::StepTimer const& timer)
     float elapsedTime = float(timer.GetElapsedSeconds());
 
     // TODO: Add your game logic here.
+
+	//	デバッグ用=========
+	m_gameMain->Scene();
+	//m_gamePlay->UpdateGame();
+
     elapsedTime;
 }
 #pragma endregion
@@ -113,24 +129,27 @@ void Game::Render()
     // TODO: Add your rendering code here.
 
 
-	//	追加部分=================================================================================
-	//	スプライトの描画
-	//m_spriteBatch->Begin();
-	CommonStates m_states(m_deviceResources->GetD3DDevice());
-	m_spriteBatch->Begin(SpriteSortMode_Deferred, m_states.NonPremultiplied());	//NonPremultipliedで不透明の設定
-	m_spriteBatch->Draw(m_texture.Get(), m_screenPos, nullptr, Colors::White, 0.f, m_origin);
-
-	//const wchar_t* output = L"Hello World";
-//	const wchar_t* output = m_gamemain->Output();
-
-	//Vector2 origin = m_font->MeasureString(output) / 2.f;
-/*
-	m_font->DrawString(m_spriteBatch.get(), output,
-		Vector2(100, 100));
-*/
-	m_spriteBatch->End();
-	//==========================================================================================
-
+//	//	追加部分=================================================================================
+//	//	スプライトの描画
+//	//m_spriteBatch->Begin();
+//	CommonStates m_states(m_deviceResources->GetD3DDevice());
+//	m_spriteBatch->Begin(SpriteSortMode_Deferred, m_states.NonPremultiplied());	//NonPremultipliedで不透明の設定
+//	m_spriteBatch->Draw(m_texture.Get(), m_screenPos, nullptr, Colors::White, 0.f, m_origin);
+//
+//	//const wchar_t* output = L"Hello World";
+////	const wchar_t* output = m_gamemain->Output();
+//
+//	//Vector2 origin = m_font->MeasureString(output) / 2.f;
+///*
+//	m_font->DrawString(m_spriteBatch.get(), output,
+//		Vector2(100, 100));
+//*/
+//	m_spriteBatch->End();
+//	//==========================================================================================
+//
+	
+	m_gameMain->m_base->RenderGame();
+	//m_gamePlay->RenderGame();
 
 
     context;

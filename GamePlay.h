@@ -7,7 +7,11 @@
 
 #pragma once
 #include "GameBase.h"
-#include "GameMain.h"
+#include <d3d11_1.h>
+#include <SimpleMath.h>
+#include <SpriteBatch.h>
+#include "DeviceResources.h"
+
 
 class GamePlay :public GameBase
 {
@@ -15,6 +19,19 @@ public:
 	GamePlay();	//	コンストラクタ
 	~GamePlay();	//	デストラクタ
 	int UpdateGame();	//	データの更新
-	wchar_t* RenderGame();//	描画する
+	void RenderGame();//	描画する
+
+private:
+	DX::DeviceResources* m_deviceResources;
+
+	DirectX::SpriteBatch* m_spriteBatch;
+	//std::unique_ptr<DirectX::SpriteBatch> m_spriteBatch;
+
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;	//テクスチャ
+
+	DirectX::SimpleMath::Vector2 m_screenPos;
+	DirectX::SimpleMath::Vector2 m_origin;
+
+
 
 };

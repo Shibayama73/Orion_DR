@@ -29,7 +29,7 @@ public:
 	GameMain();
 	~GameMain();
 	void Scene();
-	wchar_t* Output();
+	void Output();
 	GameBase* m_base;
 
 };

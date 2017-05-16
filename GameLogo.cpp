@@ -38,10 +38,8 @@ int GameLogo::UpdateGame()
 
 }
 
-wchar_t* GameLogo::RenderGame()
+void GameLogo::RenderGame()
 {
-	wchar_t* output = L"LOGO";
-
-	return output;
+	
 
 }

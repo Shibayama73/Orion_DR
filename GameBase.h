@@ -17,7 +17,7 @@ public:
 
 	virtual ~GameBase() {}
 	virtual int UpdateGame() = 0;
-	virtual wchar_t* RenderGame() = 0;
+	virtual void RenderGame() = 0;
 	int m_scene = 0;
 
 };

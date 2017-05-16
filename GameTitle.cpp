@@ -38,9 +38,8 @@ int GameTitle::UpdateGame()
 	return m_NextScene;
 }
 
-wchar_t * GameTitle::RenderGame()
+void GameTitle::RenderGame()
 {
-	wchar_t* output = L"Title";
-	return output;
+	
 }
 

@@ -8,6 +8,8 @@
 #include "StepTimer.h"
 #include <SimpleMath.h>
 #include <SpriteBatch.h>
+#include "GameMain.h"
+#include "GamePlay.h"
 
 
 // A basic game implementation that creates a D3D11 device and
@@ -38,6 +40,11 @@ public:
     // Properties
     void GetDefaultSize( int& width, int& height ) const;
 
+	// Device resources.
+	static std::unique_ptr<DX::DeviceResources> m_deviceResources;
+	static std::unique_ptr<DirectX::SpriteBatch> m_spriteBatch;
+
+
 private:
 
     void Update(DX::StepTimer const& timer);
@@ -48,8 +55,7 @@ private:
     void CreateDeviceDependentResources();
     void CreateWindowSizeDependentResources();
 
-    // Device resources.
-    std::unique_ptr<DX::DeviceResources>    m_deviceResources;
+    
 
     // Rendering loop timer.
     DX::StepTimer                           m_timer;
@@ -58,11 +64,15 @@ private:
 //	std::unique_ptr<DirectX::SpriteFont> m_font;
 
 	DirectX::SimpleMath::Vector2 m_fontPos;
-	std::unique_ptr<DirectX::SpriteBatch> m_spriteBatch;
 
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;	//テクスチャ
 
 	DirectX::SimpleMath::Vector2 m_screenPos;
 	DirectX::SimpleMath::Vector2 m_origin;
+
+	//	デバッグ用============
+	GameMain* m_gameMain;
+	GamePlay* m_gamePlay;
+
 
 };

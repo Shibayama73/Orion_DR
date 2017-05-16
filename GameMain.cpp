@@ -47,9 +47,8 @@ void GameMain::Scene()
 	}
 }
 
-wchar_t * GameMain::Output()
+void GameMain::Output()
 {
-	wchar_t* output;
-	output = m_base->RenderGame();
-	return output;
+	m_base->RenderGame();
+	
 }
