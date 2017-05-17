@@ -72,7 +72,7 @@ private:
 
 	//	デバッグ用============
 	GameMain* m_gameMain;
-	GamePlay* m_gamePlay;
+	//GamePlay* m_gamePlay;
 
 
 };

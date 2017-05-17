@@ -6,9 +6,11 @@
 //**********************************//
 
 #pragma once
-#include "Game.h"
-#include "SimpleMath.h"
 #include "ObjectBase.h"
+#include <d3d11_1.h>
+#include <SimpleMath.h>
+#include <SpriteBatch.h>
+#include "DeviceResources.h"
 
 class Clock :public ObjectBase
 {
@@ -26,6 +28,16 @@ public:
 	DirectX::SimpleMath::Vector2 getLongTipPos();	//針の先端座標取得
 	DirectX::SimpleMath::Vector2 getShotTipPos();	//針の先端座標取得
 	void clockwise();								//針を右回りに動かす
+
+private:
+	DX::DeviceResources* m_deviceResources;
+	DirectX::SpriteBatch* m_spriteBatch;
+
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;	//テクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture2;	//テクスチャ2
+
+	DirectX::SimpleMath::Vector2 m_screenPos;
+	DirectX::SimpleMath::Vector2 m_origin;
 
 
 };

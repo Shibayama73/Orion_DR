@@ -12,6 +12,9 @@
 #include <SpriteBatch.h>
 #include "DeviceResources.h"
 
+#include "Clock.h"
+
+
 class GamePlay :public GameBase
 {
 public:
@@ -28,5 +31,8 @@ private:
 
 	DirectX::SimpleMath::Vector2 m_screenPos;
 	DirectX::SimpleMath::Vector2 m_origin;
+
+	Clock* m_clock;		//ŽžŒv
+
 
 };
