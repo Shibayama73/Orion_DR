@@ -76,9 +76,11 @@ int GamePlay::UpdateGame()
 	m_NextScene = PLAY;
 	m_scene = PLAY;
 
+	//	各クラスの更新
+	m_clock->Update();
 	m_player->run();
-
 	m_player->Update();
+
 	/*m_TimeCnt++;
 	if (m_TimeCnt > 120)
 	{

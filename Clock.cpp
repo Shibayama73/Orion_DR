@@ -39,40 +39,57 @@ Clock::Clock()
 	m_spdY = 0.0f;
 	m_state = 0;
 
+	m_rotPos = 0.0f;	//回転
 
 	//	描画読み込み============================================================================
 	m_deviceResources = Game::m_deviceResources.get();
 	m_spriteBatch = Game::m_spriteBatch.get();
 
 	//	時計画像
-	ComPtr<ID3D11Resource> resource;
+	ComPtr<ID3D11Resource> clockRes;
 	DX::ThrowIfFailed(
 		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/clock.png",
-			resource.GetAddressOf(),
-			m_texture.ReleaseAndGetAddressOf()));
+			clockRes.GetAddressOf(),
+			m_clockTex.ReleaseAndGetAddressOf()));
 
-	//	オリオン画像
-	ComPtr<ID3D11Resource> resource2;
+	//	長針画像
+	ComPtr<ID3D11Resource> LongTipRes;
 	DX::ThrowIfFailed(
 		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/longTip.png",
-			resource2.GetAddressOf(),
-			m_texture2.ReleaseAndGetAddressOf()));
+			LongTipRes.GetAddressOf(),
+			m_LongTipTex.ReleaseAndGetAddressOf()));
 
 	//	リソースから時計のテクスチャと判断
 	ComPtr<ID3D11Texture2D> clock;
-	DX::ThrowIfFailed(resource.As(&clock));
+	DX::ThrowIfFailed(clockRes.As(&clock));
+
+	//	リソースから長針のテクスチャと判断
+	ComPtr<ID3D11Texture2D> longTip;
+	DX::ThrowIfFailed(clockRes.As(&longTip));
 
 	//	テクスチャ情報
 	CD3D11_TEXTURE2D_DESC clockDesc;
 	clock->GetDesc(&clockDesc);
 
+	//	テクスチャ情報
+	CD3D11_TEXTURE2D_DESC longTipDesc;
+	clock->GetDesc(&longTipDesc);
+
 	//	テクスチャ原点を画像の中心にする
 	m_origin.x = float(clockDesc.Width / 2.0f);
 	m_origin.y = float(clockDesc.Height / 2.0f);
 
+	//	テクスチャ原点を画像の中心にする
+	m_longTOri.x = float(longTipDesc.Width / 2.0f);
+	m_longTOri.y = float(longTipDesc.Height / 1.2f);
+
 	//	表示座標を画面中央に指定
 	m_screenPos.x = m_deviceResources->GetOutputSize().right / 2.0f;
 	m_screenPos.y = m_deviceResources->GetOutputSize().bottom / 2.0f;
+
+	//	表示座標を画面中央に指定
+	m_longTPos.x = m_deviceResources->GetOutputSize().right / 1.16f;
+	m_longTPos.y = m_deviceResources->GetOutputSize().bottom / 3.8f;
 
 	//==========================================================================================
 
@@ -94,6 +111,8 @@ Clock::~Clock()
 //==================================//
 void Clock::Update()
 {
+	clockwise();
+
 }
 
 //==================================//
@@ -107,8 +126,11 @@ void Clock::Render()
 	CommonStates m_states(m_deviceResources->GetD3DDevice());
 	m_spriteBatch->Begin(SpriteSortMode_Deferred, m_states.NonPremultiplied());	//NonPremultipliedで不透明の設定
 	
-	m_spriteBatch->Draw(m_texture.Get(), m_screenPos, nullptr, Colors::White, 0.f, m_origin);
-	m_spriteBatch->Draw(m_texture2.Get(), m_screenPos+Vector2(120,0), nullptr, Colors::White, 0.f, m_origin);
+	//	時計
+	m_spriteBatch->Draw(m_clockTex.Get(), m_screenPos, nullptr, Colors::White, 0.f, m_origin);
+	//	長針
+	//m_spriteBatch->Draw(m_LongTipTex.Get(), m_longTPos, nullptr, Colors::White, m_headPos, m_longTOri);
+	m_spriteBatch->Draw(m_LongTipTex.Get(), m_screenPos, nullptr, Colors::White, m_rotPos);
 
 	m_spriteBatch->End();
 	//==========================================================================================
@@ -152,6 +174,8 @@ DirectX::SimpleMath::Vector2 Clock::getShotTipPos()
 //==================================//
 void Clock::clockwise()
 {
-	
+	//	回転させる
+	m_rotPos += 0.01f;
+
 }
 

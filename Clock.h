@@ -33,11 +33,16 @@ private:
 	DX::DeviceResources* m_deviceResources;
 	DirectX::SpriteBatch* m_spriteBatch;
 
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;	//テクスチャ
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture2;	//テクスチャ2
+	//	テクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_clockTex;	//時計
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_LongTipTex;	//長針
 
 	DirectX::SimpleMath::Vector2 m_screenPos;
+	DirectX::SimpleMath::Vector2 m_longTPos;
 	DirectX::SimpleMath::Vector2 m_origin;
+	DirectX::SimpleMath::Vector2 m_longTOri;	//長針原点
 
+	//	回転
+	float m_rotPos;
 
 };
