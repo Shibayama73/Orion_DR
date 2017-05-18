@@ -34,6 +34,9 @@ public:
 	//*針情報を取得する関数
 	void Needle(DirectX::SimpleMath::Vector2 needle);
 
+	//*今乗っている針の長さを取得する関数
+	bool Length(bool length);
+
 	//*針の有無を取得する関数
 	bool Existence(bool length);
 
@@ -45,6 +48,10 @@ public:
 
 private:
 	float a;	//y=ax+bのa（傾き）
+	bool jump_flug;		//ジャンプフラグ
+
+	int m_y_prev;			//ジャンプ用。キャラのｙ座標を保存
+	int m_y_temp;			//ジャンプ用。キャラのｙ座標を保存
 
 	//描画
 	DX::DeviceResources* m_deviceResources;

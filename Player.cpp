@@ -39,6 +39,7 @@ Player::Player()
 	m_grpH = GRP_HEIGHT;
 	m_spdX = 0.0f;
 	m_spdY = 0.0f;
+	jump_flug = false;
 
 	//描画用
 	m_deviceResources = Game::m_deviceResources.get();
@@ -82,6 +83,7 @@ Player::~Player()
 //∞*func：針の情報を取得する
 //∞*arg：針の先端の座標（Vec2）
 //∞*return：なし
+//∞*heed：Update関数にて常に呼び出すこと
 //∞------------------------------------------------------------------∞
 void Player::Needle(DirectX::SimpleMath::Vector2 needle)
 {
@@ -90,12 +92,26 @@ void Player::Needle(DirectX::SimpleMath::Vector2 needle)
 	a = (needle.y - 0) / needle.x;
 }
 
+//∞------------------------------------------------------------------∞
+//∞*func：今乗っている針の長さを取得する
+//∞*arg：clock関数から長針か短針か（長針：true、短針：false）
+//∞*return：長針か短針か（長針：true、短針：false）
+//∞*heed：Update関数にて常に呼び出すこと
+//∞------------------------------------------------------------------∞
+
+bool Player::Length(bool length)
+{
+
+	return false;
+}
+
 
 
 //∞------------------------------------------------------------------∞
 //∞*func：針の有無を確認する
 //∞*arg：長針か短針か（長針：true、短針：false）
 //∞*return：針があるか、ないか（ある：true、ない：false）
+//∞*heed：引数は、Length()を使う。Updateで常に呼び出し
 //∞------------------------------------------------------------------∞
 
 bool Player::Existence(bool length)
@@ -144,8 +160,6 @@ bool Player::Existence(bool length)
 
 void Player::run()
 {
-
-	//m_spdX++;
 	//キーボードの情報取得
 	if (g_keyTracker->pressed.Left)
 	{
@@ -155,6 +169,40 @@ void Player::run()
 	{
 		m_spdX++;
 	}
+
+	//スペースキーでジャンプ処理
+	if (g_keyTracker->pressed.Space)
+	{
+		if (!jump_flug)
+		{
+			jump_flug = true;
+			m_y_prev = m_posY;		//現在のyの座標を保存
+			m_posY = m_posY - 20;
+
+		}
+
+	}
+	//ジャンプ処理
+	if (jump_flug)
+	{
+		m_y_temp = m_posY;			//現在のy座標を保存
+		m_posY += (m_posY - m_y_prev) + 1;	
+		m_y_prev = m_y_temp;
+
+		//地面に着いたらジャンプをやめる
+		//※300は仮値。本来はExistence関数で針の座標上か判定をする
+		//デバック用
+		if (m_posY >= 300)
+		{
+			jump_flug = false;
+		}
+		//本来使用したい方
+		//if (Player::Existence())
+		//{
+		//	jump_flug = false;
+		//}
+	}
+
 	if (g_keyTracker->released.Left || g_keyTracker->released.Right)
 	{
 		m_spdX = 0.0f;

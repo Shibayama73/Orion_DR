@@ -76,8 +76,9 @@ int GamePlay::UpdateGame()
 	m_NextScene = PLAY;
 	m_scene = PLAY;
 
+	//プレイヤーの移動処理
 	m_player->run();
-
+	//プレイヤーの更新
 	m_player->Update();
 	/*m_TimeCnt++;
 	if (m_TimeCnt > 120)
