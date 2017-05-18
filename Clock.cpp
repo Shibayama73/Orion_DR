@@ -54,12 +54,11 @@ Clock::Clock()
 	//	オリオン画像
 	ComPtr<ID3D11Resource> resource2;
 	DX::ThrowIfFailed(
-		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/img_orion.jpg",
+		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/longTip.png",
 			resource2.GetAddressOf(),
 			m_texture2.ReleaseAndGetAddressOf()));
 
-
-	//	リソースから背景のテクスチャと判断
+	//	リソースから時計のテクスチャと判断
 	ComPtr<ID3D11Texture2D> clock;
 	DX::ThrowIfFailed(resource.As(&clock));
 
