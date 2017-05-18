@@ -74,5 +74,7 @@ private:
 	GameMain* m_gameMain;
 	//GamePlay* m_gamePlay;
 
+	//キーボード
+	//std::unique_ptr<DirectX::Keyboard> keyboard;
 
 };

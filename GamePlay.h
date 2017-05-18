@@ -13,6 +13,7 @@
 #include "DeviceResources.h"
 
 #include "Clock.h"
+#include "Player.h"
 
 
 class GamePlay :public GameBase
@@ -33,6 +34,7 @@ private:
 	DirectX::SimpleMath::Vector2 m_origin;
 
 	Clock* m_clock;		//時計
+	Player* m_player;	//プレイヤー
 
 
 };

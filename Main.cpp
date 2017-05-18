@@ -4,6 +4,7 @@
 
 #include "pch.h"
 #include "Game.h"
+#include "DirectXTK.h"
 
 using namespace DirectX;
 
@@ -85,6 +86,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
 
         g_game->Initialize(hwnd, rc.right - rc.left, rc.bottom - rc.top);
     }
+
 
     // Main message loop
     MSG msg = { 0 };
@@ -177,7 +179,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
 
     case WM_ACTIVATEAPP:
-        if (game)
+		Keyboard::ProcessMessage(message, wParam, lParam);
+		if (game)
         {
             if (wParam)
             {
@@ -189,6 +192,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             }
         }
         break;
+
+	case WM_KEYDOWN:		// キー入力関係のメッセージ
+	case WM_KEYUP:
+	case WM_SYSKEYUP:
+		Keyboard::ProcessMessage(message, wParam, lParam);
+		break;
 
     case WM_POWERBROADCAST:
         switch (wParam)
@@ -215,7 +224,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
 
     case WM_SYSKEYDOWN:
-        if (wParam == VK_RETURN && (lParam & 0x60000000) == 0x20000000)
+		Keyboard::ProcessMessage(message, wParam, lParam);
+		if (wParam == VK_RETURN && (lParam & 0x60000000) == 0x20000000)
         {
             // Implements the classic ALT+ENTER fullscreen toggle
             if (s_fullscreen)
@@ -251,6 +261,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         // to any mnemonic or accelerator key. Ignore so we don't produce an error beep.
         return MAKELRESULT(0, MNC_CLOSE);
     }
+
 
     return DefWindowProc(hWnd, message, wParam, lParam);
 }
