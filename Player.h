@@ -12,6 +12,8 @@
 #include <SpriteBatch.h>
 #include "DeviceResources.h"
 
+#include "Wire.h"
+
 
 //キャラの幅、高さ
 const int GRP_WIDTH = 96;
@@ -43,6 +45,9 @@ public:
 	//*走る関数
 	void run();
 
+	//*posYを取得する関数
+	float Pos_y();
+
 	//*Render関数
 	void Render();
 
@@ -50,8 +55,10 @@ private:
 	float a;	//y=ax+bのa（傾き）
 	bool jump_flug;		//ジャンプフラグ
 
-	int m_y_prev;			//ジャンプ用。キャラのｙ座標を保存
-	int m_y_temp;			//ジャンプ用。キャラのｙ座標を保存
+	int m_y_prev;		//ジャンプ用。キャラのｙ座標を保存
+	int m_y_temp;		//ジャンプ用。キャラのｙ座標を保存
+
+	Wire* wire;			//ワイヤー
 
 	//描画
 	DX::DeviceResources* m_deviceResources;

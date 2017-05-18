@@ -41,6 +41,8 @@ Player::Player()
 	m_spdY = 0.0f;
 	jump_flug = false;
 
+	wire = new Wire();
+
 	//描画用
 	m_deviceResources = Game::m_deviceResources.get();
 	m_spriteBatch = Game::m_spriteBatch.get();
@@ -210,6 +212,17 @@ void Player::run()
 
 }
 
+//∞------------------------------------------------------------------∞
+//∞*func：PosYを取得する
+//∞*arg：なし
+//∞*return：PosY（float）
+//∞*heed：主にワイヤーの描画更新にて
+//∞------------------------------------------------------------------∞
+float Player::Pos_y()
+{
+	return m_posY;
+}
+
 
 //∞------------------------------------------------------------------∞
 //∞*func：描画関数
@@ -229,6 +242,8 @@ void Player::Render()
 
 	m_spriteBatch->End();
 
+	//ワイヤーの描画
+	wire->Render(m_posY);
 }
 
 

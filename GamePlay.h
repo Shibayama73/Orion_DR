@@ -14,6 +14,8 @@
 
 #include "Clock.h"
 #include "Player.h"
+#include "Wire.h"
+
 
 
 class GamePlay :public GameBase
@@ -35,6 +37,7 @@ private:
 
 	Clock* m_clock;		//時計
 	Player* m_player;	//プレイヤー
+	Wire* m_wire;		//ワイヤー
 
 
 };
