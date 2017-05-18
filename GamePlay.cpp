@@ -32,6 +32,7 @@ GamePlay::GamePlay()
 	m_player = new Player();
 
 
+
 	////	描画読み込み============================================================================
 	//m_deviceResources = Game::m_deviceResources.get();
 	//m_spriteBatch = Game::m_spriteBatch.get();
@@ -77,8 +78,11 @@ int GamePlay::UpdateGame()
 	m_scene = PLAY;
 
 	//	各クラスの更新
+	//	時計の更新
 	m_clock->Update();
+	//	プレイヤーの移動処理
 	m_player->run();
+	//	プレイヤーの更新
 	m_player->Update();
 
 	/*m_TimeCnt++;
@@ -98,6 +102,7 @@ void GamePlay::RenderGame()
 
 	//プレイヤーの描画
 	m_player->Render();
+
 
 	////	スプライトの描画========================================================================
 	//CommonStates m_states(m_deviceResources->GetD3DDevice());
