@@ -8,24 +8,70 @@
 #include "pch.h"
 #include "Player.h"
 
+#include "GameMain.h"
+#include <d3d11.h>
+
+#include "Direct3D.h"
+#include "DirectXTK.h"
+#include <SimpleMath.h>
+
+#include "Game.h"
+#include "pch.h"
+#include <WICTextureLoader.h>
+
+
 using namespace DirectX;
+using namespace DirectX::SimpleMath;
+using Microsoft::WRL::ComPtr;
+
+
+//∞------------------------------------------------------------------∞
+//∞*func：コンストラクタ
+//∞*arg：なし
+//∞------------------------------------------------------------------∞
 
 Player::Player()
 {
 	//変数の初期化（値はそれぞれ仮値）
-	pos_x = 0.0f;
-	pos_y = 0.0f;
-	grp_w = GRP_WIDTH;
-	grp_h = GRP_HEIGHT;
-	spd_x = 0.0f;
-	spd_y = 0.0f;
+	m_posX = 10.0f;
+	m_posY = 300.0f;
+	m_grpW = GRP_WIDTH;
+	m_grpH = GRP_HEIGHT;
+	m_spdX = 0.0f;
+	m_spdY = 0.0f;
 
-	//キーボードの初期化
-	keyboard = std::make_unique<Keyboard>();
+	//描画用
+	m_deviceResources = Game::m_deviceResources.get();
+	m_spriteBatch = Game::m_spriteBatch.get();
+
+	//通常時画像
+	ComPtr<ID3D11Resource> normal_resource;
+	DX::ThrowIfFailed(
+		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/orion_normal.png",
+			normal_resource.GetAddressOf(),
+			m_orion_normal_tex.ReleaseAndGetAddressOf()));
+
+
+	//	リソースから背景のテクスチャと判断
+	ComPtr<ID3D11Texture2D> orion;
+	DX::ThrowIfFailed(normal_resource.As(&orion));
+
+	//	テクスチャ情報
+	CD3D11_TEXTURE2D_DESC orionDesc;
+	orion->GetDesc(&orionDesc);
+
+	//	テクスチャ原点を画像の中心にする
+	m_origin.x = float(orionDesc.Width / 2.0f);
+	m_origin.y = float(orionDesc.Height / 2.0f);
 
 
 }
 
+//∞------------------------------------------------------------------∞
+//∞*func：デストラクタ
+//∞*arg：なし
+//∞*return：なし
+//∞------------------------------------------------------------------∞
 
 Player::~Player()
 {
@@ -71,11 +117,11 @@ bool Player::Existence(bool length)
 	}
 
 	//プレイヤーの座標と、針の座標の当たり判定
-	if ((pos_y > (a * pos_x + 0)) || (pos_y > (a * (pos_x + grp_w) + 0))
-		|| (pos_y + grp_h > (a * pos_x + 0)) || (pos_y + grp_h > (a * (pos_x + grp_w) + 0)))
+	if ((m_posY > (a * m_posX + 0)) || (m_posY > (a * (m_posX + m_grpW) + 0))
+		|| (m_posY + m_grpH > (a * m_posX + 0)) || (m_posY + m_grpH > (a * (m_posX + m_grpW) + 0)))
 	{
 		//プレイヤーの位置が、針の長さより小さいならtrue
-		if (sqrtf((pos_x + pos_y)) < needle_length)
+		if (sqrtf((m_posX + m_posY)) < needle_length)
 		{
 			return true;
 		}
@@ -98,18 +144,48 @@ bool Player::Existence(bool length)
 
 void Player::run()
 {
-	//キーボードの情報取得
-	Keyboard::State key = keyboard->GetState();
 
-	if (key.Left)
+	//m_spdX++;
+	//キーボードの情報取得
+	if (g_keyTracker->pressed.Left)
 	{
-		pos_x++;
+		m_spdX--;
 	}
-	if (key.Right)
+	if (g_keyTracker->pressed.Right)
 	{
-		pos_x--;
+		m_spdX++;
+	}
+	if (g_keyTracker->released.Left || g_keyTracker->released.Right)
+	{
+		m_spdX = 0.0f;
 	}
 
 }
+
+
+//∞------------------------------------------------------------------∞
+//∞*func：描画関数
+//∞*arg：なし
+//∞*return：なし
+//∞*heed：なし
+//∞------------------------------------------------------------------∞
+
+void Player::Render()
+{
+	//描画
+	CommonStates m_states(m_deviceResources->GetD3DDevice());
+	m_spriteBatch->Begin(SpriteSortMode_Deferred, m_states.NonPremultiplied());	//NonPremultipliedで不透明の設定
+
+	//ノーマル時
+	m_spriteBatch->Draw(m_orion_normal_tex.Get(), Vector2(m_posX, m_posY), nullptr, Colors::White, 0.f, m_origin);
+
+	m_spriteBatch->End();
+
+}
+
+
+
+
+
 
 

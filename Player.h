@@ -6,15 +6,26 @@
 //∞----------------------------------------------------∞
 
 #pragma once
-#include "SimpleMath.h"
-#include <Keyboard.h>
+#include "ObjectBase.h"
+#include <d3d11_1.h>
+#include <SimpleMath.h>
+#include <SpriteBatch.h>
+#include "DeviceResources.h"
 
 
 //キャラの幅、高さ
-const int GRP_WIDTH = 32;
-const int GRP_HEIGHT = 32;
+const int GRP_WIDTH = 96;
+const int GRP_HEIGHT = 96;
 
-class Player
+enum
+{
+	NORMAL,		//通常
+	UP,			//上昇
+	DOWN,		//下降
+	DIE,		//死亡
+};
+
+class Player :public ObjectBase
 {
 public:
 	Player();
@@ -29,17 +40,19 @@ public:
 	//*走る関数
 	void run();
 
-private:
-	float pos_x;		//座標x
-	float pos_y;		//座標y
-	int grp_w;			//キャラの幅
-	int grp_h;			//キャラの高さ
-	float spd_x;		//x軸のスピード
-	float spd_y;		//y軸のスピード
-	float a;
+	//*Render関数
+	void Render();
 
-	//キーボード
-	std::unique_ptr<DirectX::Keyboard>keyboard;
+private:
+	float a;	//y=ax+bのa（傾き）
+
+	//描画
+	DX::DeviceResources* m_deviceResources;
+	DirectX::SpriteBatch* m_spriteBatch;
+	DirectX::SimpleMath::Vector2 m_origin;
+
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_orion_normal_tex;	//通常時テクスチャ
+
 
 };
 

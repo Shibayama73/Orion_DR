@@ -28,6 +28,9 @@ GamePlay::GamePlay()
 	//	時計生成
 	m_clock = new Clock();
 
+	//プレイヤーの生成
+	m_player = new Player();
+
 
 	////	描画読み込み============================================================================
 	//m_deviceResources = Game::m_deviceResources.get();
@@ -63,13 +66,19 @@ GamePlay::~GamePlay()
 {
 	//	時計破棄
 	delete m_clock;
+
+	//プレイヤーの破棄
+	delete m_player;
 }
 
 int GamePlay::UpdateGame()
 {
 	m_NextScene = PLAY;
 	m_scene = PLAY;
-	
+
+	m_player->run();
+
+	m_player->Update();
 	/*m_TimeCnt++;
 	if (m_TimeCnt > 120)
 	{
@@ -84,6 +93,9 @@ void GamePlay::RenderGame()
 {
 	//	時計描画
 	m_clock->Render();
+
+	//プレイヤーの描画
+	m_player->Render();
 
 	////	スプライトの描画========================================================================
 	//CommonStates m_states(m_deviceResources->GetD3DDevice());

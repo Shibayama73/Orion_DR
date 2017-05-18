@@ -74,6 +74,7 @@ void Game::Initialize(HWND window, int width, int height)
 
 	////==========================================================================================
 
+
 	//	追加してエラー
 	m_spriteBatch = std::make_unique<DirectX::SpriteBatch>(m_deviceResources->GetD3DDeviceContext());
 
@@ -81,6 +82,9 @@ void Game::Initialize(HWND window, int width, int height)
 	//	デバッグ用
 	m_gameMain = new GameMain();
 	//m_gamePlay = new GamePlay();
+
+	//キーボードの初期化
+	//keyboard = std::make_unique<Keyboard>();
 
 }
 
@@ -102,6 +106,7 @@ void Game::Update(DX::StepTimer const& timer)
     float elapsedTime = float(timer.GetElapsedSeconds());
 
     // TODO: Add your game logic here.
+	DirectXTK_UpdateInputState();
 
 	//	デバッグ用=========
 	m_gameMain->Scene();
@@ -148,6 +153,10 @@ void Game::Render()
 //	//==========================================================================================
 //
 	
+//// キー入力やマウス情報の更新
+//	DirectXTK_UpdateInputState();
+
+
 	m_gameMain->m_base->RenderGame();
 	//m_gamePlay->RenderGame();
 
