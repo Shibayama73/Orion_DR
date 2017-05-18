@@ -43,6 +43,8 @@ Player::Player()
 
 	wire = new Wire();
 
+	m_y_render = m_posY;
+
 	//•`‰æ—p
 	m_deviceResources = Game::m_deviceResources.get();
 	m_spriteBatch = Game::m_spriteBatch.get();
@@ -178,6 +180,8 @@ void Player::run()
 		if (!jump_flug)
 		{
 			jump_flug = true;
+			m_y_render = m_posY;
+
 			m_y_prev = m_posY;		//Œ»İ‚Ìy‚ÌÀ•W‚ğ•Û‘¶
 			m_posY = m_posY - 20;
 
@@ -230,7 +234,6 @@ float Player::Pos_y()
 //‡*returnF‚È‚µ
 //‡*heedF‚È‚µ
 //‡------------------------------------------------------------------‡
-
 void Player::Render()
 {
 	//•`‰æ
@@ -243,7 +246,7 @@ void Player::Render()
 	m_spriteBatch->End();
 
 	//ƒƒCƒ„[‚Ì•`‰æ
-	wire->Render(m_posY);
+	wire->Render(m_y_render);
 }
 
 

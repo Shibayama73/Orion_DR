@@ -55,8 +55,9 @@ private:
 	float a;	//y=ax+bのa（傾き）
 	bool jump_flug;		//ジャンプフラグ
 
-	int m_y_prev;		//ジャンプ用。キャラのｙ座標を保存
-	int m_y_temp;		//ジャンプ用。キャラのｙ座標を保存
+	float m_y_prev;		//ジャンプ用。キャラのｙ座標を保存
+	float m_y_temp;		//ジャンプ用。キャラのｙ座標を保存
+	float m_y_render;		//ワイヤーのRender用
 
 	Wire* wire;			//ワイヤー
 
