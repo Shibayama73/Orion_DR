@@ -43,7 +43,9 @@ Clock::Clock()
 	m_spdY = 0.0f;
 	m_state = 0;
 
-	m_rotPos = 45.0f;	//回転
+	m_rotPos = 270.0f;	//回転
+	m_longTipPos = Vector2(0.0f, 0.0f);
+	m_LTPos = 270.0f;
 
 	//	描画読み込み============================================================================
 	m_deviceResources = Game::m_deviceResources.get();
@@ -63,6 +65,13 @@ Clock::Clock()
 			LongTipRes.GetAddressOf(),
 			m_LongTipTex.ReleaseAndGetAddressOf()));
 
+	//	原点画像
+	ComPtr<ID3D11Resource> OriginRes;
+	DX::ThrowIfFailed(
+		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/origin.png",
+			OriginRes.GetAddressOf(),
+			m_OriginTex.ReleaseAndGetAddressOf()));
+
 	//	リソースから時計のテクスチャと判断
 	ComPtr<ID3D11Texture2D> clock;
 	DX::ThrowIfFailed(clockRes.As(&clock));
@@ -71,13 +80,21 @@ Clock::Clock()
 	ComPtr<ID3D11Texture2D> longTip;
 	DX::ThrowIfFailed(clockRes.As(&longTip));
 
+	//	リソースから原点のテクスチャと判断
+	ComPtr<ID3D11Texture2D> originTip;
+	DX::ThrowIfFailed(clockRes.As(&originTip));
+
 	//	テクスチャ情報
 	CD3D11_TEXTURE2D_DESC clockDesc;
 	clock->GetDesc(&clockDesc);
 
 	//	テクスチャ情報
 	CD3D11_TEXTURE2D_DESC longTipDesc;
-	clock->GetDesc(&longTipDesc);
+	longTip->GetDesc(&longTipDesc);
+
+	//	テクスチャ情報
+	CD3D11_TEXTURE2D_DESC originDesc;
+	originTip->GetDesc(&originDesc);
 
 	//	テクスチャ原点を画像の中心にする
 	m_origin.x = float(clockDesc.Width / 2.0f);
@@ -137,6 +154,9 @@ void Clock::Render()
 	//m_spriteBatch->Draw(m_LongTipTex.Get(), m_longTPos, nullptr, Colors::White, m_headPos, m_longTOri);
 	m_spriteBatch->Draw(m_LongTipTex.Get(), m_screenPos, nullptr, Colors::White, m_rotPos);
 
+	//	原点
+	m_spriteBatch->Draw(m_OriginTex.Get(), m_screenPos+Vector2(-35.0f,-35.0f), nullptr, Colors::White, 0.f);
+
 	m_spriteBatch->End();
 	//==========================================================================================
 
@@ -159,10 +179,12 @@ bool Clock::getHand()
 //==================================//
 DirectX::SimpleMath::Vector2 Clock::getLongTipPos()
 {
-	//	回転角度の取得
-	m_longTipAng = XMConvertToRadians(m_rotPos);
+	float m_longTipAng;	//	長針角度
 
-	m_longTipPos = Vector2(ORIGINE_X + RADIUS * cosf(m_longTipAng), ORIGINE_Y + RADIUS * sinf(m_longTipAng));
+	//	回転角度の取得
+	m_longTipAng = XMConvertToRadians(m_LTPos);
+
+	m_longTipPos = Vector2(ORIGINE_X + (RADIUS * cosf(m_longTipAng)), ORIGINE_Y + (RADIUS * sinf(m_longTipAng)));
 
 	return m_longTipPos;
 }
@@ -186,6 +208,15 @@ void Clock::clockwise()
 {
 	//	回転させる
 	m_rotPos += 0.01f;
+
+	//	先端座標角度が360度以内のとき
+	if (m_LTPos <= 360.0f) {
+		//	先端座標の角度を減らす
+		m_LTPos += 0.01f;
+	}
+	else {
+		m_LTPos = 0.0f;
+	}
 
 }
 
