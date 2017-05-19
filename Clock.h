@@ -42,7 +42,7 @@ private:
 	DirectX::SimpleMath::Vector2 m_origin;
 	DirectX::SimpleMath::Vector2 m_longTOri;	//í∑êjå¥ì_
 
-	//	âÒì]
-	float m_rotPos;
+	float m_rotPos;		//	âÒì]
+	float m_longTipAng;	//	í∑êjäpìx
 
 };

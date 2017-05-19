@@ -21,6 +21,10 @@ using namespace DirectX;
 using namespace DirectX::SimpleMath;
 using Microsoft::WRL::ComPtr;
 
+const float ORIGINE_X = 400.0f;
+const float ORIGINE_Y = 300.0f;
+const float RADIUS = 310.0f;
+
 //==================================//
 //内容		コンストラクタ
 //引数		なし
@@ -39,7 +43,7 @@ Clock::Clock()
 	m_spdY = 0.0f;
 	m_state = 0;
 
-	m_rotPos = 0.0f;	//回転
+	m_rotPos = 45.0f;	//回転
 
 	//	描画読み込み============================================================================
 	m_deviceResources = Game::m_deviceResources.get();
@@ -111,6 +115,7 @@ Clock::~Clock()
 //==================================//
 void Clock::Update()
 {
+	//	時計を回転
 	clockwise();
 
 }
@@ -154,6 +159,11 @@ bool Clock::getHand()
 //==================================//
 DirectX::SimpleMath::Vector2 Clock::getLongTipPos()
 {
+	//	回転角度の取得
+	m_longTipAng = XMConvertToRadians(m_rotPos);
+
+	m_longTipPos = Vector2(ORIGINE_X + RADIUS * cosf(m_longTipAng), ORIGINE_Y + RADIUS * sinf(m_longTipAng));
+
 	return m_longTipPos;
 }
 
