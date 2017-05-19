@@ -29,6 +29,10 @@ public:
 	DirectX::SimpleMath::Vector2 getShotTipPos();	//針の先端座標取得
 	void clockwise();								//針を右回りに動かす
 
+	//
+	DirectX::SimpleMath::Vector2 getLongTipOrigin();	//長針の原点座標取得
+
+
 private:
 	DX::DeviceResources* m_deviceResources;
 	DirectX::SpriteBatch* m_spriteBatch;

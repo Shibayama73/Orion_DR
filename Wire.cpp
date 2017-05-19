@@ -77,7 +77,7 @@ void Wire::Render(float pos_y)
 	CommonStates m_states(m_deviceResources->GetD3DDevice());
 	m_spriteBatch->Begin(SpriteSortMode_Deferred, m_states.NonPremultiplied());	//NonPremultiplied‚Å•s“§–¾‚Ìİ’è
 
-	m_spriteBatch->Draw(m_wire_tex.Get(), Vector2(300, pos_y), nullptr, Colors::White, 0.f, m_origin);
+	m_spriteBatch->Draw(m_wire_tex.Get(), Vector2(700, pos_y), nullptr, Colors::White, 0.f, m_origin);
 
 	m_spriteBatch->End();
 

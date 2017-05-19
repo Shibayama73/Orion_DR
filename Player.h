@@ -34,16 +34,16 @@ public:
 	~Player();
 
 	//*針情報を取得する関数
-	void Needle(DirectX::SimpleMath::Vector2 needle);
+	void Needle(DirectX::SimpleMath::Vector2 needle, DirectX::SimpleMath::Vector2 tip_origin);
 
 	//*今乗っている針の長さを取得する関数
 	bool Length(bool length);
 
 	//*針の有無を取得する関数
-	bool Existence(bool length);
+	bool Existence(DirectX::SimpleMath::Vector2 needle, DirectX::SimpleMath::Vector2 tip_origin);
 
 	//*走る関数
-	void run();
+	void run(DirectX::SimpleMath::Vector2 needle, DirectX::SimpleMath::Vector2 tip_origin);
 
 	//*posYを取得する関数
 	float Pos_y();
@@ -52,8 +52,13 @@ public:
 	void Render();
 
 private:
+	//時計の一次関数を求めるための変数
 	float a;	//y=ax+bのa（傾き）
+	float b;	
+
+
 	bool jump_flug;		//ジャンプフラグ
+	bool jump_judge_flug;
 
 	float m_y_prev;		//ジャンプ用。キャラのｙ座標を保存
 	float m_y_temp;		//ジャンプ用。キャラのｙ座標を保存

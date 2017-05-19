@@ -33,8 +33,8 @@ using Microsoft::WRL::ComPtr;
 Player::Player()
 {
 	//変数の初期化（値はそれぞれ仮値）
-	m_posX = 10.0f;
-	m_posY = 300.0f;
+	m_posX = 300.0f;
+	m_posY = 510.0f;
 	m_grpW = GRP_WIDTH;
 	m_grpH = GRP_HEIGHT;
 	m_spdX = 0.0f;
@@ -85,15 +85,16 @@ Player::~Player()
 
 //∞------------------------------------------------------------------∞
 //∞*func：針の情報を取得する
-//∞*arg：針の先端の座標（Vec2）
+//∞*arg：針の先端の座標（Vec2）、針の原点（Vec2)
 //∞*return：なし
 //∞*heed：Update関数にて常に呼び出すこと
 //∞------------------------------------------------------------------∞
-void Player::Needle(DirectX::SimpleMath::Vector2 needle)
+void Player::Needle(DirectX::SimpleMath::Vector2 needle, DirectX::SimpleMath::Vector2 tip_origin)
 {
-	//一次関数の傾きの指定
-	//y=ax+b(原点は固定なので、bは変動しない(仮値は０））
-	a = (needle.y - 0) / needle.x;
+	//変化の割合aの計算（needle.y-origin.y)/(needle.x-origin.x)
+	a = (needle.y - tip_origin.y) / (needle.x -tip_origin.x);
+	//bの計算（origin.y=(a*origin.x)+b）
+	b = ((a * tip_origin.x) - tip_origin.y) * (-1);
 }
 
 //∞------------------------------------------------------------------∞
@@ -118,39 +119,34 @@ bool Player::Length(bool length)
 //∞*heed：引数は、Length()を使う。Updateで常に呼び出し
 //∞------------------------------------------------------------------∞
 
-bool Player::Existence(bool length)
+bool Player::Existence(DirectX::SimpleMath::Vector2 needle, DirectX::SimpleMath::Vector2 tip_origin)
 {
 	float needle_length = 0;	//針の長さ(三角関数のc2=a2+b2でいうc2の部分）
 
-	switch (length)
+	//針の長さを指定する
+	needle_length = sqrtf(((tip_origin.x - needle.x) * (tip_origin.x - needle.x)) + ((tip_origin.y - needle.y) * (tip_origin.y - needle.y)));
+	//needle_length = 20;
+	if (!jump_judge_flug)
 	{
-		//長針の場合
-	case true:
-		//針の長さを指定する
-		needle_length = 20;
-		break;
-		//短針の場合
-	case false:
-		//針の長さを指定する
-		needle_length = 10;
-		break;
+		//ジャンプ中は判定しない
+		return true;
 	}
-
-	//プレイヤーの座標と、針の座標の当たり判定
-	if ((m_posY > (a * m_posX + 0)) || (m_posY > (a * (m_posX + m_grpW) + 0))
-		|| (m_posY + m_grpH > (a * m_posX + 0)) || (m_posY + m_grpH > (a * (m_posX + m_grpW) + 0)))
+	else
 	{
-		//プレイヤーの位置が、針の長さより小さいならtrue
-		if (sqrtf((m_posX + m_posY)) < needle_length)
+		//プレイヤーの座標と、針の座標の当たり判定
+		if ((m_posY + m_grpH) > (a * m_posX + b)) 
 		{
-			return true;
+			//プレイヤーの位置が、針の長さより小さいならtrue
+			if (sqrtf((m_posX + m_posY)) < needle_length)
+			{
+				return true;
+			}
+			//プレイヤーの位置が、針の長さより大きい（針から落ちている）ならfalse
+			return false;
+	
 		}
-		//プレイヤーの位置が、針の長さより大きい（針から落ちている）ならfalse
-		return false;
-
+	
 	}
-	//針の座標上に居なかったらfalse
-	return false;
 }
 
 
@@ -162,7 +158,7 @@ bool Player::Existence(bool length)
 //∞*heed：組み立て時に、if文で針の情報取得＆針の有無を確認すること
 //∞------------------------------------------------------------------∞
 
-void Player::run()
+void Player::run(DirectX::SimpleMath::Vector2 needle, DirectX::SimpleMath::Vector2 tip_origin)
 {
 	//キーボードの情報取得
 	if (g_keyTracker->pressed.Left)
@@ -180,6 +176,7 @@ void Player::run()
 		if (!jump_flug)
 		{
 			jump_flug = true;
+			jump_judge_flug = false;
 			m_y_render = m_posY;
 
 			m_y_prev = m_posY;		//現在のyの座標を保存
@@ -195,15 +192,26 @@ void Player::run()
 		m_posY += (m_posY - m_y_prev) + 1;	
 		m_y_prev = m_y_temp;
 
-		//地面に着いたらジャンプをやめる
-		//※300は仮値。本来はExistence関数で針の座標上か判定をする
-		//デバック用
-		if (m_posY >= 300)
+		//放物線のトップまで行ったらジャッジのフラグ
+		if (((m_posY - m_y_prev) + 1) > 0)
 		{
-			jump_flug = false;
+			jump_judge_flug = true;	
+
 		}
 		//本来使用したい方
-		//if (Player::Existence())
+		if (jump_judge_flug)
+		{
+			if (Player::Existence(needle, tip_origin))
+			{
+				jump_flug = false;
+			}
+
+		}
+
+		//地面に着いたらジャンプをやめる
+		//※300は仮値。本来はExistence関数で針の座標上か判定をする
+		////デバック用
+		//if (m_posY >= m_y_render)
 		//{
 		//	jump_flug = false;
 		//}

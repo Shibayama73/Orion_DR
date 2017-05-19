@@ -80,8 +80,12 @@ int GamePlay::UpdateGame()
 	//	各クラスの更新
 	//	時計の更新
 	m_clock->Update();
+	m_player->Needle(m_clock->getLongTipPos(), m_clock->getLongTipOrigin());
 	//	プレイヤーの移動処理
-	m_player->run();
+	if (m_player->Existence(m_clock->getLongTipPos(), m_clock->getLongTipOrigin()))
+	{
+		m_player->run(m_clock->getLongTipPos(), m_clock->getLongTipOrigin());
+	}
 	//	プレイヤーの更新
 	m_player->Update();
 

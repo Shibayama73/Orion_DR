@@ -189,3 +189,8 @@ void Clock::clockwise()
 
 }
 
+DirectX::SimpleMath::Vector2 Clock::getLongTipOrigin()
+{
+	return m_longTOri;
+}
+
