@@ -220,8 +220,13 @@ void Clock::clockwise()
 
 }
 
+//==================================//
+//内容		針の原点を取得
+//引数		なし
+//戻り値	針の原点
+//==================================//
 DirectX::SimpleMath::Vector2 Clock::getLongTipOrigin()
 {
-	return m_longTOri;
+	return m_screenPos;
 }
 
