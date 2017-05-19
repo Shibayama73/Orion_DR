@@ -143,10 +143,10 @@ bool Player::Existence(DirectX::SimpleMath::Vector2 needle, DirectX::SimpleMath:
 			}
 			//プレイヤーの位置が、針の長さより大きい（針から落ちている）ならfalse
 			return false;
-	
 		}
 	
 	}
+	return false;
 }
 
 
@@ -163,11 +163,19 @@ void Player::run(DirectX::SimpleMath::Vector2 needle, DirectX::SimpleMath::Vecto
 	//キーボードの情報取得
 	if (g_keyTracker->pressed.Left)
 	{
-		m_spdX--;
+		if (Existence(needle, tip_origin))
+		{
+
+			m_spdX--;
+		}
 	}
 	if (g_keyTracker->pressed.Right)
 	{
-		m_spdX++;
+		if (Existence(needle, tip_origin))
+		{
+
+			m_spdX++;
+		}
 	}
 
 	//スペースキーでジャンプ処理
@@ -201,7 +209,7 @@ void Player::run(DirectX::SimpleMath::Vector2 needle, DirectX::SimpleMath::Vecto
 		//本来使用したい方
 		if (jump_judge_flug)
 		{
-			if (Player::Existence(needle, tip_origin))
+			if (Existence(needle, tip_origin))
 			{
 				jump_flug = false;
 			}
