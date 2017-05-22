@@ -56,6 +56,7 @@
     <ClInclude Include="Wire.h">
       <Filter>Game</Filter>
     </ClInclude>
+    <ClInclude Include="Fragment.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -96,6 +97,7 @@
     <ClCompile Include="Wire.cpp">
       <Filter>Game</Filter>
     </ClCompile>
+    <ClCompile Include="Fragment.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

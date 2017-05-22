@@ -160,6 +160,7 @@
     <ClInclude Include="DeviceResources.h" />
     <ClInclude Include="Direct3D.h" />
     <ClInclude Include="DirectXTK.h" />
+    <ClInclude Include="Fragment.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameBase.h" />
     <ClInclude Include="GameClear.h" />
@@ -179,6 +180,7 @@
     <ClCompile Include="DeviceResources.cpp" />
     <ClCompile Include="Direct3D.cpp" />
     <ClCompile Include="DirectXTK.cpp" />
+    <ClCompile Include="Fragment.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameClear.cpp" />
     <ClCompile Include="GameLogo.cpp" />
