@@ -47,6 +47,9 @@ private:
 	DirectX::SimpleMath::Vector2 m_origin;
 	DirectX::SimpleMath::Vector2 m_longTOri;	//í∑êjå¥ì_
 
+	DirectX::SimpleMath::Vector2 m_ori;
+
+
 	float m_rotPos;		//	âÒì]
 	float m_LTPos;	//	í∑êjç¿ïWäpìx
 

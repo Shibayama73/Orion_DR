@@ -43,9 +43,11 @@ Clock::Clock()
 	m_spdY = 0.0f;
 	m_state = 0;
 
-	m_rotPos = 270.0f;	//回転
+	//m_rotPos = 270.0f;	//回転
+	m_rotPos = 0.0f;	//回転
 	m_longTipPos = Vector2(0.0f, 0.0f);
 	m_LTPos = 270.0f;
+	//m_LTPos = 0.0f;
 
 	//	描画読み込み============================================================================
 	m_deviceResources = Game::m_deviceResources.get();
@@ -76,41 +78,49 @@ Clock::Clock()
 	ComPtr<ID3D11Texture2D> clock;
 	DX::ThrowIfFailed(clockRes.As(&clock));
 
-	//	リソースから長針のテクスチャと判断
-	ComPtr<ID3D11Texture2D> longTip;
-	DX::ThrowIfFailed(clockRes.As(&longTip));
+	////	リソースから長針のテクスチャと判断
+	//ComPtr<ID3D11Texture2D> longTip;
+	//DX::ThrowIfFailed(clockRes.As(&longTip));
 
-	//	リソースから原点のテクスチャと判断
-	ComPtr<ID3D11Texture2D> originTip;
-	DX::ThrowIfFailed(clockRes.As(&originTip));
+	////	リソースから原点のテクスチャと判断
+	//ComPtr<ID3D11Texture2D> originTip;
+	//DX::ThrowIfFailed(clockRes.As(&originTip));
 
 	//	テクスチャ情報
 	CD3D11_TEXTURE2D_DESC clockDesc;
 	clock->GetDesc(&clockDesc);
 
-	//	テクスチャ情報
-	CD3D11_TEXTURE2D_DESC longTipDesc;
-	longTip->GetDesc(&longTipDesc);
+	////	テクスチャ情報
+	//CD3D11_TEXTURE2D_DESC longTipDesc;
+	//longTip->GetDesc(&longTipDesc);
 
-	//	テクスチャ情報
-	CD3D11_TEXTURE2D_DESC originDesc;
-	originTip->GetDesc(&originDesc);
+	////	テクスチャ情報
+	//CD3D11_TEXTURE2D_DESC originDesc;
+	//originTip->GetDesc(&originDesc);
 
 	//	テクスチャ原点を画像の中心にする
 	m_origin.x = float(clockDesc.Width / 2.0f);
 	m_origin.y = float(clockDesc.Height / 2.0f);
 
 	//	テクスチャ原点を画像の中心にする
-	m_longTOri.x = float(longTipDesc.Width / 2.0f);
-	m_longTOri.y = float(longTipDesc.Height / 1.2f);
+	//m_longTOri.x = float(longTipDesc.Width / 2.0f);
+	//m_longTOri.y = float(longTipDesc.Height / 1.2f);
+	//m_longTOri.x = float(longTipDesc.Width / 2.0f);
+	//m_longTOri.y = float(longTipDesc.Height / 1.0f);
+
+	////	テクスチャ原点を画像の中心にする
+	//m_ori.x = float(originDesc.Width / 2.0f);
+	//m_ori.y = float(originDesc.Height / 2.0f);
 
 	//	表示座標を画面中央に指定
 	m_screenPos.x = m_deviceResources->GetOutputSize().right / 2.0f;
 	m_screenPos.y = m_deviceResources->GetOutputSize().bottom / 2.0f;
 
 	//	表示座標を画面中央に指定
-	m_longTPos.x = m_deviceResources->GetOutputSize().right / 1.16f;
-	m_longTPos.y = m_deviceResources->GetOutputSize().bottom / 3.8f;
+	//m_longTPos.x = m_deviceResources->GetOutputSize().right / 1.16f;
+	//m_longTPos.y = m_deviceResources->GetOutputSize().bottom / 3.8f;
+//	m_longTPos.x = m_deviceResources->GetOutputSize().right / 2.0f;	//2.03
+//	m_longTPos.y = m_deviceResources->GetOutputSize().bottom / 2.0f;	//2.05
 
 	//==========================================================================================
 
@@ -155,7 +165,7 @@ void Clock::Render()
 	m_spriteBatch->Draw(m_LongTipTex.Get(), m_screenPos, nullptr, Colors::White, m_rotPos);
 
 	//	原点
-	m_spriteBatch->Draw(m_OriginTex.Get(), m_screenPos+Vector2(-35.0f,-35.0f), nullptr, Colors::White, 0.f);
+	m_spriteBatch->Draw(m_OriginTex.Get(), m_screenPos+Vector2(-30.0f,-35.0f), nullptr, Colors::White, 0.f);
 
 	m_spriteBatch->End();
 	//==========================================================================================
