@@ -31,6 +31,12 @@ GamePlay::GamePlay()
 	//プレイヤーの生成
 	m_player = new Player();
 
+	//欠片の生成
+	for (int i = 0; i < FRAGMENT_MAX; i++)
+	{
+		m_fragment[i] = new Fragment();
+	}
+
 
 
 	////	描画読み込み============================================================================
@@ -70,6 +76,13 @@ GamePlay::~GamePlay()
 
 	//プレイヤーの破棄
 	delete m_player;
+
+	//欠片の破棄
+	for (int i = 0; i < FRAGMENT_MAX; i++)
+	{
+		delete m_fragment[i];
+	}
+
 }
 
 int GamePlay::UpdateGame()
@@ -82,12 +95,22 @@ int GamePlay::UpdateGame()
 	m_clock->Update();
 	m_player->Needle(m_clock->getLongTipPos(), m_clock->getLongTipOrigin());
 	//	プレイヤーの移動処理
-	//if (m_player->Existence(m_clock->getLongTipPos(), m_clock->getLongTipOrigin()))
-	//{
-		m_player->run(m_clock->getLongTipPos(), m_clock->getLongTipOrigin());
-	//}
+	m_player->run(m_clock->getLongTipPos(), m_clock->getLongTipOrigin());
+
 	//	プレイヤーの更新
 	m_player->Update();
+
+	//欠片の更新
+	for (int i = 0; i < FRAGMENT_MAX; i++)
+	{
+		m_fragment[i] ->Update();
+		if (m_fragment[i]->Outdoor() == false)
+		{
+			delete m_fragment[i];
+			m_fragment[i] = new Fragment();
+		}
+	}
+
 
 	/*m_TimeCnt++;
 	if (m_TimeCnt > 120)
@@ -106,6 +129,13 @@ void GamePlay::RenderGame()
 
 	//プレイヤーの描画
 	m_player->Render();
+
+	//欠片の描画
+	for (int i = 0; i < FRAGMENT_MAX; i++)
+	{
+		m_fragment[i]->Render();
+	}
+
 
 
 	////	スプライトの描画========================================================================

@@ -1,12 +1,13 @@
 //∞----------------------------------------------------∞
-//∞*ファイル名：Wire.cpp								∞
-//∞*内容　　　：ワイヤー								∞
+//∞*ファイル名：Fragment.cpp							∞
+//∞*内容　　　：欠片クラス								∞
 //∞*制作者　　：Ayaka Yamanaka							∞
-//∞*制作日時　：2017.05.18								∞
+//∞*制作日時　：2017.05.22 							∞
 //∞----------------------------------------------------∞
 
+
 #include "pch.h"
-#include "Wire.h"
+#include "Fragment.h"
 
 #include "GameMain.h"
 #include <d3d11.h>
@@ -19,6 +20,7 @@
 #include "pch.h"
 #include <WICTextureLoader.h>
 
+
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
 using Microsoft::WRL::ComPtr;
@@ -27,95 +29,89 @@ using Microsoft::WRL::ComPtr;
 //∞*func：コンストラクタ
 //∞*arg：なし
 //∞------------------------------------------------------------------∞
-Wire::Wire()
+Fragment::Fragment()
 {
-
-	m_state = false;		//非表示状態
+	m_posX = rand() % 700;
+	m_posY = (rand() % -100) - 100;
+	m_spdX = 0.0f;
+	m_spdY = 0.0f;
+	m_grpW = 32;
+	m_grpH = 32;
 
 	//描画用
 	m_deviceResources = Game::m_deviceResources.get();
 	m_spriteBatch = Game::m_spriteBatch.get();
 
 	//通常時画像
-	ComPtr<ID3D11Resource> wire_resource;
+	ComPtr<ID3D11Resource> fragment_resource;
 	DX::ThrowIfFailed(
-		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/wire.png",
-			wire_resource.GetAddressOf(),
-			m_wire_tex.ReleaseAndGetAddressOf()));
-	DX::ThrowIfFailed(
-		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/wire_L.png",
-			wire_resource.GetAddressOf(),
-			m_wire_L_tex.ReleaseAndGetAddressOf()));
-
-
+		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/fragment.png",
+			fragment_resource.GetAddressOf(),
+			m_fragment_tex.ReleaseAndGetAddressOf()));
 
 	//	リソースから背景のテクスチャと判断
-	ComPtr<ID3D11Texture2D> wire;
-	DX::ThrowIfFailed(wire_resource.As(&wire));
+	ComPtr<ID3D11Texture2D> fragment;
+	DX::ThrowIfFailed(fragment_resource.As(&fragment));
 
 	//	テクスチャ情報
-	CD3D11_TEXTURE2D_DESC wireDesc;
-	wire->GetDesc(&wireDesc);
+	CD3D11_TEXTURE2D_DESC fragmentDesc;
+	fragment->GetDesc(&fragmentDesc);
 
 	//	テクスチャ原点を画像の中心にする
-	m_origin.x = float(wireDesc.Width / 2.0f);
-	m_origin.y = float(wireDesc.Height / 2.0f);
-
+	m_origin.x = float(fragmentDesc.Width / 2.0f);
+	m_origin.y = float(fragmentDesc.Height / 2.0f);
 
 
 }
+
 
 //∞------------------------------------------------------------------∞
 //∞*func：デストラクタ
 //∞*arg：なし
 //∞*return：なし
 //∞------------------------------------------------------------------∞
-Wire::~Wire()
+Fragment::~Fragment()
 {
 }
 
 //∞------------------------------------------------------------------∞
-//∞*func：描画関数
-//∞*arg：プレイヤーの座標y
+//∞*func：更新処理
+//∞*arg：なし
 //∞*return：なし
 //∞------------------------------------------------------------------∞
-void Wire::Render(float pos_y, bool player_vec)
+void Fragment::Update()
+{
+	m_spdY += 0.1;
+	m_posY += m_spdY;
+}
+
+//∞------------------------------------------------------------------∞
+//∞*func：描画処理
+//∞*arg：なし
+//∞*return：なし
+//∞------------------------------------------------------------------∞
+void Fragment::Render()
 {
 	//描画
 	CommonStates m_states(m_deviceResources->GetD3DDevice());
 	m_spriteBatch->Begin(SpriteSortMode_Deferred, m_states.NonPremultiplied());	//NonPremultipliedで不透明の設定
 
-	if (m_state)
-	{
-		switch (player_vec)
-		{
-		case LEFT:
-			m_spriteBatch->Draw(m_wire_L_tex.Get(), Vector2(700, pos_y), nullptr, Colors::White, 0.f, m_origin);
-			break;
-		case RIGHT:
-			m_spriteBatch->Draw(m_wire_tex.Get(), Vector2(700, pos_y), nullptr, Colors::White, 0.f, m_origin);
-			break;
-		}
+	m_spriteBatch->Draw(m_fragment_tex.Get(), Vector2(m_posX, m_posY), nullptr, Colors::White, 0.f, m_origin);
 
-	}
 	m_spriteBatch->End();
 
-
 }
 
 //∞------------------------------------------------------------------∞
-//∞*func：表示させる関数（m_state）
+//∞*func：画面内に欠片があるかどうか
 //∞*arg：なし
-//∞*return：m_state
-//∞*heed：ワイヤーを出す動作をしたらtrueにする。
+//∞*return：true（ある）、false（ない）
 //∞------------------------------------------------------------------∞
-bool Wire::Appears()
+bool Fragment::Outdoor()
 {
-	if (!m_state)
+	if (m_posY > 640)
 	{
-		m_state = true;
+		return false;
 	}
-	return m_state;
+	return true;
 }
-
-
