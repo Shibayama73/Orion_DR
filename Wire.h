@@ -19,6 +19,8 @@ public:
 
 	void Render(float pos_y, bool player_vec);
 
+	bool Appears();		//表示させる
+
 private:
 	//描画
 	DX::DeviceResources* m_deviceResources;
@@ -27,5 +29,7 @@ private:
 
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_wire_tex;	//通常時テクスチャ
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_wire_L_tex;	//通常時左テクスチャ
+
+	bool m_state;		//表示されているか、非表示になっているか（true：表示、false：非表示）
 };
 

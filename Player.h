@@ -70,7 +70,7 @@ private:
 	float m_y_temp;		//ジャンプ用。キャラのｙ座標を保存
 	float m_y_render;		//ワSイヤーのRender用
 
-	Wire* wire;			//ワイヤー
+	Wire* m_wire;			//ワイヤー
 
 	//描画
 	DX::DeviceResources* m_deviceResources;

@@ -39,7 +39,7 @@ private:
 	Clock* m_clock;		//時計
 	Player* m_player;	//プレイヤー
 	Wire* m_wire;		//ワイヤー
-	Fragment* m_fragment[3];	//欠片（同時に３つ以上出さない）
+	Fragment* m_fragment[FRAGMENT_MAX];	//欠片（同時に6つ以上出さない）
 
 
 };

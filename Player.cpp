@@ -42,7 +42,7 @@ Player::Player()
 	m_jump_flug = false;
 	m_vec = RIGHT;	//初期の向きは右向き
 
-	wire = new Wire();
+	m_wire = new Wire();
 
 	m_y_render = m_posY;
 
@@ -200,6 +200,16 @@ void Player::run(DirectX::SimpleMath::Vector2 needle, DirectX::SimpleMath::Vecto
 		}
 
 	}
+	//エンターキーでワイヤー
+	if (g_keyTracker->pressed.Enter)
+	{
+		if (Existence(needle, tip_origin))
+		{
+			m_vec = RIGHT;
+			m_spdX++;
+		}
+
+	}
 	//ジャンプ処理
 	if (m_jump_flug)
 	{
@@ -279,7 +289,7 @@ void Player::Render()
 	m_spriteBatch->End();
 
 	//ワイヤーの描画
-	wire->Render(m_y_render,m_vec);
+	//m_wire->Render(m_y_render,m_vec);
 }
 
 

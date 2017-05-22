@@ -29,6 +29,9 @@ using Microsoft::WRL::ComPtr;
 //∞------------------------------------------------------------------∞
 Wire::Wire()
 {
+
+	m_state = false;		//非表示状態
+
 	//描画用
 	m_deviceResources = Game::m_deviceResources.get();
 	m_spriteBatch = Game::m_spriteBatch.get();
@@ -82,18 +85,37 @@ void Wire::Render(float pos_y, bool player_vec)
 	CommonStates m_states(m_deviceResources->GetD3DDevice());
 	m_spriteBatch->Begin(SpriteSortMode_Deferred, m_states.NonPremultiplied());	//NonPremultipliedで不透明の設定
 
-	switch (player_vec)
+	if (m_state)
 	{
-	case LEFT:
-		m_spriteBatch->Draw(m_wire_L_tex.Get(), Vector2(700, pos_y), nullptr, Colors::White, 0.f, m_origin);
-		break;
-	case RIGHT:
-		m_spriteBatch->Draw(m_wire_tex.Get(), Vector2(700, pos_y), nullptr, Colors::White, 0.f, m_origin);
-		break;
+		switch (player_vec)
+		{
+		case LEFT:
+			m_spriteBatch->Draw(m_wire_L_tex.Get(), Vector2(700, pos_y), nullptr, Colors::White, 0.f, m_origin);
+			break;
+		case RIGHT:
+			m_spriteBatch->Draw(m_wire_tex.Get(), Vector2(700, pos_y), nullptr, Colors::White, 0.f, m_origin);
+			break;
+		}
+
 	}
 	m_spriteBatch->End();
 
 
+}
+
+//∞------------------------------------------------------------------∞
+//∞*func：表示させる関数（m_state）
+//∞*arg：なし
+//∞*return：m_state
+//∞*heed：ワイヤーを出す動作をしたらtrueにする。
+//∞------------------------------------------------------------------∞
+bool Wire::Appears()
+{
+	if (!m_state)
+	{
+		m_state = true;
+	}
+	return m_state;
 }
 
 
