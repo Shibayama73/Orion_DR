@@ -39,6 +39,11 @@ Wire::Wire()
 		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/wire.png",
 			wire_resource.GetAddressOf(),
 			m_wire_tex.ReleaseAndGetAddressOf()));
+	DX::ThrowIfFailed(
+		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/wire_L.png",
+			wire_resource.GetAddressOf(),
+			m_wire_L_tex.ReleaseAndGetAddressOf()));
+
 
 
 	//	リソースから背景のテクスチャと判断
@@ -71,14 +76,21 @@ Wire::~Wire()
 //∞*arg：プレイヤーの座標y
 //∞*return：なし
 //∞------------------------------------------------------------------∞
-void Wire::Render(float pos_y)
+void Wire::Render(float pos_y, bool player_vec)
 {
 	//描画
 	CommonStates m_states(m_deviceResources->GetD3DDevice());
 	m_spriteBatch->Begin(SpriteSortMode_Deferred, m_states.NonPremultiplied());	//NonPremultipliedで不透明の設定
 
-	m_spriteBatch->Draw(m_wire_tex.Get(), Vector2(700, pos_y), nullptr, Colors::White, 0.f, m_origin);
-
+	switch (player_vec)
+	{
+	case LEFT:
+		m_spriteBatch->Draw(m_wire_L_tex.Get(), Vector2(700, pos_y), nullptr, Colors::White, 0.f, m_origin);
+		break;
+	case RIGHT:
+		m_spriteBatch->Draw(m_wire_tex.Get(), Vector2(700, pos_y), nullptr, Colors::White, 0.f, m_origin);
+		break;
+	}
 	m_spriteBatch->End();
 
 

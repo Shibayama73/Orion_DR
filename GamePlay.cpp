@@ -82,10 +82,8 @@ int GamePlay::UpdateGame()
 	m_clock->Update();
 	m_player->Needle(m_clock->getLongTipPos(), m_clock->getLongTipOrigin());
 	//	プレイヤーの移動処理
-	//if (m_player->Existence(m_clock->getLongTipPos(), m_clock->getLongTipOrigin()))
-	//{
-		m_player->run(m_clock->getLongTipPos(), m_clock->getLongTipOrigin());
-	//}
+	m_player->run(m_clock->getLongTipPos(), m_clock->getLongTipOrigin());
+
 	//	プレイヤーの更新
 	m_player->Update();
 

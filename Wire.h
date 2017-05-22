@@ -17,7 +17,7 @@ public:
 	Wire();
 	~Wire();
 
-	void Render(float pos_y);
+	void Render(float pos_y, bool player_vec);
 
 private:
 	//描画
@@ -26,6 +26,6 @@ private:
 	DirectX::SimpleMath::Vector2 m_origin;
 
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_wire_tex;	//通常時テクスチャ
-
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_wire_L_tex;	//通常時左テクスチャ
 };
 

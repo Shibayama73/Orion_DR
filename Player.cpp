@@ -39,7 +39,8 @@ Player::Player()
 	m_grpH = GRP_HEIGHT;
 	m_spdX = 0.0f;
 	m_spdY = 0.0f;
-	jump_flug = false;
+	m_jump_flug = false;
+	m_vec = RIGHT;	//初期の向きは右向き
 
 	wire = new Wire();
 
@@ -55,6 +56,12 @@ Player::Player()
 		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/orion_normal.png",
 			normal_resource.GetAddressOf(),
 			m_orion_normal_tex.ReleaseAndGetAddressOf()));
+
+	DX::ThrowIfFailed(
+		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/orion_normal_L.png",
+			normal_resource.GetAddressOf(),
+			m_orion_normal_left_tex.ReleaseAndGetAddressOf()));
+
 
 
 	//	リソースから背景のテクスチャと判断
@@ -126,7 +133,7 @@ bool Player::Existence(DirectX::SimpleMath::Vector2 needle, DirectX::SimpleMath:
 	//針の長さを指定する
 	needle_length = sqrtf(((tip_origin.x - needle.x) * (tip_origin.x - needle.x)) + ((tip_origin.y - needle.y) * (tip_origin.y - needle.y)));
 	//needle_length = 20;
-	if (!jump_judge_flug)
+	if (!m_jump_judge_flug)
 	{
 		//ジャンプ中は判定しない
 		return true;
@@ -165,7 +172,7 @@ void Player::run(DirectX::SimpleMath::Vector2 needle, DirectX::SimpleMath::Vecto
 	{
 		if (Existence(needle, tip_origin))
 		{
-
+			m_vec = LEFT;
 			m_spdX--;
 		}
 	}
@@ -173,7 +180,7 @@ void Player::run(DirectX::SimpleMath::Vector2 needle, DirectX::SimpleMath::Vecto
 	{
 		if (Existence(needle, tip_origin))
 		{
-
+			m_vec = RIGHT;
 			m_spdX++;
 		}
 	}
@@ -181,10 +188,10 @@ void Player::run(DirectX::SimpleMath::Vector2 needle, DirectX::SimpleMath::Vecto
 	//スペースキーでジャンプ処理
 	if (g_keyTracker->pressed.Space)
 	{
-		if (!jump_flug)
+		if (!m_jump_flug)
 		{
-			jump_flug = true;
-			jump_judge_flug = false;
+			m_jump_flug = true;
+			m_jump_judge_flug = false;
 			m_y_render = m_posY;
 
 			m_y_prev = m_posY;		//現在のyの座標を保存
@@ -194,7 +201,7 @@ void Player::run(DirectX::SimpleMath::Vector2 needle, DirectX::SimpleMath::Vecto
 
 	}
 	//ジャンプ処理
-	if (jump_flug)
+	if (m_jump_flug)
 	{
 		m_y_temp = m_posY;			//現在のy座標を保存
 		m_posY += (m_posY - m_y_prev) + 1;	
@@ -203,15 +210,15 @@ void Player::run(DirectX::SimpleMath::Vector2 needle, DirectX::SimpleMath::Vecto
 		//放物線のトップまで行ったらジャッジのフラグ
 		if (((m_posY - m_y_prev) + 1) > 0)
 		{
-			jump_judge_flug = true;	
+			m_jump_judge_flug = true;	
 
 		}
 		//本来使用したい方
-		if (jump_judge_flug)
+		if (m_jump_judge_flug)
 		{
 			if (Existence(needle, tip_origin))
 			{
-				jump_flug = false;
+				m_jump_flug = false;
 			}
 
 		}
@@ -256,13 +263,23 @@ void Player::Render()
 	CommonStates m_states(m_deviceResources->GetD3DDevice());
 	m_spriteBatch->Begin(SpriteSortMode_Deferred, m_states.NonPremultiplied());	//NonPremultipliedで不透明の設定
 
-	//ノーマル時
-	m_spriteBatch->Draw(m_orion_normal_tex.Get(), Vector2(m_posX, m_posY), nullptr, Colors::White, 0.f, m_origin);
+	switch (m_vec)
+	{
+	case LEFT:
+	//ノーマル（左向き）時
+		m_spriteBatch->Draw(m_orion_normal_left_tex.Get(), Vector2(m_posX, m_posY), nullptr, Colors::White, 0.f, m_origin);
 
+		break;
+	case RIGHT:
+	//ノーマル（右向き）時
+		m_spriteBatch->Draw(m_orion_normal_tex.Get(), Vector2(m_posX, m_posY), nullptr, Colors::White, 0.f, m_origin);
+		break;
+		
+	}
 	m_spriteBatch->End();
 
 	//ワイヤーの描画
-	wire->Render(m_y_render);
+	wire->Render(m_y_render,m_vec);
 }
 
 

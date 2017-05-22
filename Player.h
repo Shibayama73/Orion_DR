@@ -26,6 +26,11 @@ enum
 	DOWN,		//下降
 	DIE,		//死亡
 };
+enum
+{
+	LEFT,		//左向き
+	RIGHT,		//右向き
+};
 
 class Player :public ObjectBase
 {
@@ -56,13 +61,14 @@ private:
 	float a;	//y=ax+bのa（傾き）
 	float b;	
 
+	bool m_vec;		//向き（０：左、１：右）
 
-	bool jump_flug;		//ジャンプフラグ
-	bool jump_judge_flug;
+	bool m_jump_flug;		//ジャンプフラグ
+	bool m_jump_judge_flug;
 
 	float m_y_prev;		//ジャンプ用。キャラのｙ座標を保存
 	float m_y_temp;		//ジャンプ用。キャラのｙ座標を保存
-	float m_y_render;		//ワイヤーのRender用
+	float m_y_render;		//ワSイヤーのRender用
 
 	Wire* wire;			//ワイヤー
 
@@ -72,7 +78,7 @@ private:
 	DirectX::SimpleMath::Vector2 m_origin;
 
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_orion_normal_tex;	//通常時テクスチャ
-
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_orion_normal_left_tex;	//通常時左向きテクスチャ
 
 };
 
