@@ -206,7 +206,7 @@ void Player::run(DirectX::SimpleMath::Vector2 needle, DirectX::SimpleMath::Vecto
 		if (Existence(needle, tip_origin))
 		{
 			m_vec = RIGHT;
-			m_spdX++;
+			m_wire->Appears();
 		}
 
 	}
@@ -289,7 +289,7 @@ void Player::Render()
 	m_spriteBatch->End();
 
 	//ƒƒCƒ„[‚Ì•`‰æ
-	//m_wire->Render(m_y_render,m_vec);
+	m_wire->Render(m_y_render,m_vec);
 }
 
 
