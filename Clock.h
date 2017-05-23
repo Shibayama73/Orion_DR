@@ -39,18 +39,22 @@ private:
 	//	ÉeÉNÉXÉ`ÉÉ
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_clockTex;	//éûåv
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_LongTipTex;	//í∑êj
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_OriginTex;	//í∑êj
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_ShortTipTex;	//íZêj
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_OriginTex;	//å¥ì_
 
 	DirectX::SimpleMath::Vector2 m_screenPos;
 	DirectX::SimpleMath::Vector2 m_longTPos;
 	DirectX::SimpleMath::Vector2 m_origin;
 	DirectX::SimpleMath::Vector2 m_longTOri;	//í∑êjå¥ì_
+	DirectX::SimpleMath::Vector2 m_shortTOri;	//íZêjå¥ì_
 
 	DirectX::SimpleMath::Vector2 m_ori;
 
 
-	float m_rotPos;		//	âÒì]
-	float m_LTPos;	//	í∑êjç¿ïWäpìx
+	float m_rotLongPos;		//í∑êjâÒì]
+	float m_rotShortPos;	//íZêjâÒì]
+	float m_LTPos;		//í∑êjç¿ïWäpìx
+	float m_STPos;		//íZêjç¿ïWäpìx
 
 
 };

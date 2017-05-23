@@ -43,11 +43,17 @@ Clock::Clock()
 	m_spdY = 0.0f;
 	m_state = 0;
 
-	//m_rotPos = 270.0f;	//‰ñ“]
-	m_rotPos = 0.0f;	//‰ñ“]
+	//	æ’[À•W
 	m_longTipPos = Vector2(0.0f, 0.0f);
-	m_LTPos = 270.0f;
-	//m_LTPos = 0.0f;
+	m_shotTipPos = Vector2(0.0f, 0.0f);
+
+	//	‰ñ“]
+	m_rotLongPos = 0.0f;	//’·j‰ñ“]
+	m_rotShortPos = 3.15f;	//’Zj‰ñ“]
+
+	//	À•WŠp“x
+	m_LTPos = 270.0f;		//’·jÀ•WŠp“x
+	m_STPos = 90.0f;		//’ZjÀ•WŠp“x
 
 	//	•`‰æ“Ç‚İ‚İ============================================================================
 	m_deviceResources = Game::m_deviceResources.get();
@@ -66,6 +72,13 @@ Clock::Clock()
 		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/longTip.png",
 			LongTipRes.GetAddressOf(),
 			m_LongTipTex.ReleaseAndGetAddressOf()));
+
+	//	’Zj‰æ‘œ
+	ComPtr<ID3D11Resource> shortTipRes;
+	DX::ThrowIfFailed(
+		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/shortTip.png",
+			shortTipRes.GetAddressOf(),
+			m_ShortTipTex.ReleaseAndGetAddressOf()));
 
 	//	Œ´“_‰æ‘œ
 	ComPtr<ID3D11Resource> OriginRes;
@@ -161,9 +174,9 @@ void Clock::Render()
 	//	Œv
 	m_spriteBatch->Draw(m_clockTex.Get(), m_screenPos, nullptr, Colors::White, 0.f, m_origin);
 	//	’·j
-	//m_spriteBatch->Draw(m_LongTipTex.Get(), m_longTPos, nullptr, Colors::White, m_headPos, m_longTOri);
-	m_spriteBatch->Draw(m_LongTipTex.Get(), m_screenPos, nullptr, Colors::White, m_rotPos);
-
+	m_spriteBatch->Draw(m_LongTipTex.Get(), m_screenPos, nullptr, Colors::White, m_rotLongPos);
+	//	’Zj
+	m_spriteBatch->Draw(m_ShortTipTex.Get(), m_screenPos, nullptr, Colors::White, m_rotShortPos);
 	//	Œ´“_
 	m_spriteBatch->Draw(m_OriginTex.Get(), m_screenPos+Vector2(-30.0f,-35.0f), nullptr, Colors::White, 0.f);
 
@@ -206,6 +219,13 @@ DirectX::SimpleMath::Vector2 Clock::getLongTipPos()
 //==================================//
 DirectX::SimpleMath::Vector2 Clock::getShotTipPos()
 {
+	float m_shortTipAng;	//	’ZjŠp“x
+
+	//	‰ñ“]Šp“x‚Ìæ“¾
+	m_shortTipAng = XMConvertToRadians(m_STPos);
+
+	m_shotTipPos = Vector2(ORIGINE_X + (RADIUS * cosf(m_shortTipAng)), ORIGINE_Y + (RADIUS * sinf(m_shortTipAng)));
+
 	return m_shotTipPos;
 }
 
@@ -217,7 +237,8 @@ DirectX::SimpleMath::Vector2 Clock::getShotTipPos()
 void Clock::clockwise()
 {
 	//	‰ñ“]‚³‚¹‚é
-	m_rotPos += 0.01f;
+	m_rotLongPos += 0.05f;
+	m_rotShortPos += 0.005f;
 
 	//	æ’[À•WŠp“x‚ª360“xˆÈ“à‚Ì‚Æ‚«
 	if (m_LTPos <= 360.0f) {
@@ -226,6 +247,15 @@ void Clock::clockwise()
 	}
 	else {
 		m_LTPos = 0.0f;
+	}
+
+	//	æ’[À•WŠp“x‚ª360“xˆÈ“à‚Ì‚Æ‚«
+	if (m_STPos <= 360.0f) {
+		//	æ’[À•W‚ÌŠp“x‚ğŒ¸‚ç‚·
+		m_STPos += 0.01f;
+	}
+	else {
+		m_STPos = 0.0f;
 	}
 
 }
