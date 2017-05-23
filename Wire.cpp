@@ -42,10 +42,6 @@ Wire::Wire()
 		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/wire.png",
 			wire_resource.GetAddressOf(),
 			m_wire_tex.ReleaseAndGetAddressOf()));
-	DX::ThrowIfFailed(
-		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/wire_L.png",
-			wire_resource.GetAddressOf(),
-			m_wire_L_tex.ReleaseAndGetAddressOf()));
 
 
 
@@ -76,10 +72,10 @@ Wire::~Wire()
 
 //∞------------------------------------------------------------------∞
 //∞*func：描画関数
-//∞*arg：プレイヤーの座標y
+//∞*arg：プレイヤーの座標x
 //∞*return：なし
 //∞------------------------------------------------------------------∞
-void Wire::Render(float pos_y, bool player_vec)
+void Wire::Render(float pos_x, bool player_vec)
 {
 	//描画
 	CommonStates m_states(m_deviceResources->GetD3DDevice());
@@ -87,16 +83,7 @@ void Wire::Render(float pos_y, bool player_vec)
 
 	if (m_state)
 	{
-		switch (player_vec)
-		{
-		case LEFT:
-			m_spriteBatch->Draw(m_wire_L_tex.Get(), Vector2(700, pos_y), nullptr, Colors::White, 0.f, m_origin);
-			break;
-		case RIGHT:
-			m_spriteBatch->Draw(m_wire_tex.Get(), Vector2(700, pos_y), nullptr, Colors::White, 0.f, m_origin);
-			break;
-		}
-
+		m_spriteBatch->Draw(m_wire_tex.Get(), Vector2(pos_x, 30), nullptr, Colors::White, 0.f, m_origin);
 	}
 	m_spriteBatch->End();
 
@@ -115,6 +102,17 @@ bool Wire::Appears()
 	{
 		m_state = true;
 	}
+	return m_state;
+}
+
+//∞------------------------------------------------------------------∞
+//∞*func：表示情報の取得関数（m_state）
+//∞*arg：なし
+//∞*return：m_state
+//∞*heed：ワイヤーを出す動作をしたらtrueにする。
+//∞------------------------------------------------------------------∞
+bool Wire::State()
+{
 	return m_state;
 }
 

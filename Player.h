@@ -72,6 +72,8 @@ private:
 
 	Wire* m_wire;			//ƒƒCƒ„[
 
+	float m_wire_posX;
+
 	//•`‰æ
 	DX::DeviceResources* m_deviceResources;
 	DirectX::SpriteBatch* m_spriteBatch;

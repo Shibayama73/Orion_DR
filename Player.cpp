@@ -34,17 +34,17 @@ Player::Player()
 {
 	//変数の初期化（値はそれぞれ仮値）
 	m_posX = 300.0f;
-	m_posY = 510.0f;
+	m_posY = 560.0f;
 	m_grpW = GRP_WIDTH;
 	m_grpH = GRP_HEIGHT;
 	m_spdX = 0.0f;
 	m_spdY = 0.0f;
-	m_jump_flug = false;
+	//m_jump_flug = false;
 	m_vec = RIGHT;	//初期の向きは右向き
 
 	m_wire = new Wire();
 
-	m_y_render = m_posY;
+	//m_y_render = m_posY;
 
 	//描画用
 	m_deviceResources = Game::m_deviceResources.get();
@@ -170,68 +170,60 @@ void Player::run(DirectX::SimpleMath::Vector2 needle, DirectX::SimpleMath::Vecto
 	//キーボードの情報取得
 	if (g_keyTracker->pressed.Left)
 	{
-		if (Existence(needle, tip_origin))
-		{
-			m_vec = LEFT;
-			m_spdX--;
-		}
+		m_vec = LEFT;
+		m_spdX--;
 	}
 	if (g_keyTracker->pressed.Right)
 	{
-		if (Existence(needle, tip_origin))
-		{
-			m_vec = RIGHT;
-			m_spdX++;
-		}
+		m_vec = RIGHT;
+		m_spdX++;
+
 	}
 
 	//スペースキーでジャンプ処理
+	//if (g_keyTracker->pressed.Space)
+	//{
+	//	if (!m_jump_flug)
+	//	{
+	//		m_jump_flug = true;
+	//		m_jump_judge_flug = false;
+	//		m_y_render = m_posY;
+
+	//		m_y_prev = m_posY;		//現在のyの座標を保存
+	//		m_posY = m_posY - 20;
+
+	//	}
+
+	//}
+	//スペースーキーでワイヤー
 	if (g_keyTracker->pressed.Space)
 	{
-		if (!m_jump_flug)
-		{
-			m_jump_flug = true;
-			m_jump_judge_flug = false;
-			m_y_render = m_posY;
-
-			m_y_prev = m_posY;		//現在のyの座標を保存
-			m_posY = m_posY - 20;
-
-		}
-
-	}
-	//エンターキーでワイヤー
-	if (g_keyTracker->pressed.Enter)
-	{
-		if (Existence(needle, tip_origin))
-		{
-			m_vec = RIGHT;
-			m_wire->Appears();
-		}
-
+		m_vec = RIGHT;
+		m_wire_posX = m_posX;
+		m_wire->Appears();
 	}
 	//ジャンプ処理
-	if (m_jump_flug)
-	{
-		m_y_temp = m_posY;			//現在のy座標を保存
-		m_posY += (m_posY - m_y_prev) + 1;	
-		m_y_prev = m_y_temp;
+	//if (m_jump_flug)
+	//{
+	//	m_y_temp = m_posY;			//現在のy座標を保存
+	//	m_posY += (m_posY - m_y_prev) + 1;	
+	//	m_y_prev = m_y_temp;
 
-		//放物線のトップまで行ったらジャッジのフラグ
-		if (((m_posY - m_y_prev) + 1) > 0)
-		{
-			m_jump_judge_flug = true;	
+	//	//放物線のトップまで行ったらジャッジのフラグ
+	//	if (((m_posY - m_y_prev) + 1) > 0)
+	//	{
+	//		m_jump_judge_flug = true;	
 
-		}
-		//本来使用したい方
-		if (m_jump_judge_flug)
-		{
-			if (Existence(needle, tip_origin))
-			{
-				m_jump_flug = false;
-			}
+	//	}
+	//	//本来使用したい方
+	//	if (m_jump_judge_flug)
+	//	{
+	//		if (Existence(needle, tip_origin))
+	//		{
+	//			m_jump_flug = false;
+	//		}
 
-		}
+	//	}
 
 		//地面に着いたらジャンプをやめる
 		//※300は仮値。本来はExistence関数で針の座標上か判定をする
@@ -240,14 +232,16 @@ void Player::run(DirectX::SimpleMath::Vector2 needle, DirectX::SimpleMath::Vecto
 		//{
 		//	jump_flug = false;
 		//}
-	}
+	//}
 
+	//キーを放したらspdをもとに戻す
 	if (g_keyTracker->released.Left || g_keyTracker->released.Right)
 	{
 		m_spdX = 0.0f;
 	}
-
 }
+
+
 
 //∞------------------------------------------------------------------∞
 //∞*func：PosYを取得する
@@ -289,7 +283,7 @@ void Player::Render()
 	m_spriteBatch->End();
 
 	//ワイヤーの描画
-	m_wire->Render(m_y_render,m_vec);
+	m_wire->Render(m_wire_posX,m_vec);
 }
 
 
