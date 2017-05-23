@@ -5,21 +5,24 @@
 //∞*制作日時　：2017.05.18								∞
 //∞----------------------------------------------------∞
 #pragma once
+#include "ObjectBase.h"
 #include <d3d11_1.h>
 #include <SimpleMath.h>
 #include <SpriteBatch.h>
 #include "DeviceResources.h"
 
 
-class Wire
+class Wire : public ObjectBase
 {
 public:
 	Wire();
 	~Wire();
 
-	void Render(float pos_y, bool player_vec);
+	void Render(float pos_x, bool player_vec);
 
 	bool Appears();		//表示させる
+
+	bool State();		//表示情報の取得
 
 private:
 	//描画
@@ -30,6 +33,6 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_wire_tex;	//通常時テクスチャ
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_wire_L_tex;	//通常時左テクスチャ
 
-	bool m_state;		//表示されているか、非表示になっているか（true：表示、false：非表示）
+	//bool m_state;		//表示されているか、非表示になっているか（true：表示、false：非表示）
 };
 
