@@ -17,19 +17,20 @@ class Clock :public ObjectBase
 protected:
 	bool m_hand;									//Œv‚Ìj(’·j(true)A’Zj(false))
 	DirectX::SimpleMath::Vector2 m_longTipPos;		//’·j‚Ìæ’[À•W
-	DirectX::SimpleMath::Vector2 m_shotTipPos;		//’Zj‚Ìæ’[À•W
+	DirectX::SimpleMath::Vector2 m_shortTipPos;		//’Zj‚Ìæ’[À•W
 
 public:
 	Clock();
 	~Clock();
 	void Update();									//XV
 	void Render();									//•`‰æ
-	bool getHand();									//j‚Ìó‘Ôæ“¾
-	DirectX::SimpleMath::Vector2 getLongTipPos();	//j‚Ìæ’[À•Wæ“¾
-	DirectX::SimpleMath::Vector2 getShotTipPos();	//j‚Ìæ’[À•Wæ“¾
-	void clockwise();								//j‚ğ‰E‰ñ‚è‚É“®‚©‚·
 
+	bool getHand();										//j‚Ìó‘Ôæ“¾
 	DirectX::SimpleMath::Vector2 getLongTipOrigin();	//’·j‚ÌŒ´“_À•Wæ“¾
+	DirectX::SimpleMath::Vector2 getLongTipPos();		//j‚Ìæ’[À•Wæ“¾
+	DirectX::SimpleMath::Vector2 getShortTipPos();		//j‚Ìæ’[À•Wæ“¾
+	void clockwise();									//j‚ğ‰E‰ñ‚è‚É“®‚©‚·
+	float calAngle();			//‚È‚·Šp‚ÌŒvZ
 
 
 private:
@@ -50,9 +51,10 @@ private:
 
 	DirectX::SimpleMath::Vector2 m_ori;
 
-
+	//	‰ñ“]
 	float m_rotLongPos;		//’·j‰ñ“]
 	float m_rotShortPos;	//’Zj‰ñ“]
+	//	À•WŠp“x
 	float m_LTPos;		//’·jÀ•WŠp“x
 	float m_STPos;		//’ZjÀ•WŠp“x
 

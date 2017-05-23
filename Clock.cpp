@@ -45,7 +45,7 @@ Clock::Clock()
 
 	//	先端座標
 	m_longTipPos = Vector2(0.0f, 0.0f);
-	m_shotTipPos = Vector2(0.0f, 0.0f);
+	m_shortTipPos = Vector2(0.0f, 0.0f);
 
 	//	回転
 	m_rotLongPos = 0.0f;	//長針回転
@@ -156,8 +156,7 @@ Clock::~Clock()
 void Clock::Update()
 {
 	//	時計を回転
-	clockwise();
-
+	this->clockwise();
 }
 
 //==================================//
@@ -167,10 +166,9 @@ void Clock::Update()
 //==================================//
 void Clock::Render()
 {
-	//	スプライトの描画========================================================================
+	//	スプライトの描画
 	CommonStates m_states(m_deviceResources->GetD3DDevice());
 	m_spriteBatch->Begin(SpriteSortMode_Deferred, m_states.NonPremultiplied());	//NonPremultipliedで不透明の設定
-	
 	//	時計
 	m_spriteBatch->Draw(m_clockTex.Get(), m_screenPos, nullptr, Colors::White, 0.f, m_origin);
 	//	長針
@@ -179,10 +177,7 @@ void Clock::Render()
 	m_spriteBatch->Draw(m_ShortTipTex.Get(), m_screenPos, nullptr, Colors::White, m_rotShortPos);
 	//	原点
 	m_spriteBatch->Draw(m_OriginTex.Get(), m_screenPos+Vector2(-30.0f,-35.0f), nullptr, Colors::White, 0.f);
-
 	m_spriteBatch->End();
-	//==========================================================================================
-
 }
 
 //==================================//
@@ -196,17 +191,28 @@ bool Clock::getHand()
 }
 
 //==================================//
+//内容		針の原点を取得する
+//引数		なし
+//戻り値	針の原点(Vec2)
+//==================================//
+DirectX::SimpleMath::Vector2 Clock::getLongTipOrigin()
+{
+	return m_screenPos;
+}
+
+//==================================//
 //内容		長針の先端座標取得
 //引数		なし
 //戻り値	先端座標(Vec2)
 //==================================//
 DirectX::SimpleMath::Vector2 Clock::getLongTipPos()
 {
-	float m_longTipAng;	//	長針角度
+	//	長針角度
+	float m_longTipAng;
 
 	//	回転角度の取得
 	m_longTipAng = XMConvertToRadians(m_LTPos);
-
+	//	三角関数
 	m_longTipPos = Vector2(ORIGINE_X + (RADIUS * cosf(m_longTipAng)), ORIGINE_Y + (RADIUS * sinf(m_longTipAng)));
 
 	return m_longTipPos;
@@ -217,16 +223,17 @@ DirectX::SimpleMath::Vector2 Clock::getLongTipPos()
 //引数		なし
 //戻り値	先端座標(Vec2)
 //==================================//
-DirectX::SimpleMath::Vector2 Clock::getShotTipPos()
+DirectX::SimpleMath::Vector2 Clock::getShortTipPos()
 {
-	float m_shortTipAng;	//	短針角度
+	//	短針角度
+	float m_shortTipAng;
 
 	//	回転角度の取得
 	m_shortTipAng = XMConvertToRadians(m_STPos);
 
-	m_shotTipPos = Vector2(ORIGINE_X + (RADIUS * cosf(m_shortTipAng)), ORIGINE_Y + (RADIUS * sinf(m_shortTipAng)));
+	m_shortTipPos = Vector2(ORIGINE_X + (RADIUS * cosf(m_shortTipAng)), ORIGINE_Y + (RADIUS * sinf(m_shortTipAng)));
 
-	return m_shotTipPos;
+	return m_shortTipPos;
 }
 
 //==================================//
@@ -260,13 +267,25 @@ void Clock::clockwise()
 
 }
 
-//==================================//
-//内容		針の原点を取得する
-//引数		なし
-//戻り値	針の原点(Vec2)
-//==================================//
-DirectX::SimpleMath::Vector2 Clock::getLongTipOrigin()
+//=======================================================//
+//内容		3点からなす角を求める
+//引数		長針先端座標(Vec2)、短針先端座標(Vec2)
+//戻り値	なす角(float)
+//=======================================================//
+float Clock::calAngle()
 {
-	return m_screenPos;
+	//	分子
+	float numer = m_longTipPos.x * m_shortTipPos.x + m_longTipPos.y * m_shortTipPos.y;
+	//	分母
+	float denom = (sqrtf(m_longTipPos.x * m_longTipPos.x + m_longTipPos.y * m_longTipPos.y))*
+		(sqrtf(m_shortTipPos.x * m_shortTipPos.x + m_shortTipPos.y * m_shortTipPos.y));
+
+	//	cosθを求める
+	float cosTheta = numer / denom;
+	//	なす角(θ)に変換
+	float angle = acosf(cosTheta);
+
+	return angle;
+
 }
 
