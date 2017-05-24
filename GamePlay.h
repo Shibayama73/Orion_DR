@@ -16,6 +16,7 @@
 #include "Player.h"
 #include "Wire.h"
 #include "Fragment.h"
+#include "Gauge.h"
 
 const int FRAGMENT_MAX = 6;
 
@@ -40,6 +41,6 @@ private:
 	Player* m_player;	//プレイヤー
 	Wire* m_wire;		//ワイヤー
 	Fragment* m_fragment[FRAGMENT_MAX];	//欠片（同時に6つ以上出さない）
-
+	Gauge* m_gauge;		//ゲージ
 
 };

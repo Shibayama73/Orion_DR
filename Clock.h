@@ -30,7 +30,7 @@ public:
 	DirectX::SimpleMath::Vector2 getLongTipPos();		//j‚Ìæ’[À•Wæ“¾
 	DirectX::SimpleMath::Vector2 getShortTipPos();		//j‚Ìæ’[À•Wæ“¾
 	void clockwise();									//j‚ğ‰E‰ñ‚è‚É“®‚©‚·
-	float calAngle();			//‚È‚·Šp‚ÌŒvZ
+	float calAngle();									//’·j‚Æ’Zj‚ÌŠÔ‚ÌŠp“x(‚È‚·Šp)‚ÌŒvZ
 
 
 private:

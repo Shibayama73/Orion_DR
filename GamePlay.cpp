@@ -37,6 +37,8 @@ GamePlay::GamePlay()
 		m_fragment[i] = new Fragment();
 	}
 
+	//	ƒQ[ƒW‚Ì¶¬
+	m_gauge = new Gauge();
 
 
 	////	•`‰æ“Ç‚Ýž‚Ý============================================================================
@@ -83,6 +85,9 @@ GamePlay::~GamePlay()
 		delete m_fragment[i];
 	}
 
+	//	ƒQ[ƒW‚Ì”jŠü
+	delete m_gauge;
+
 }
 
 int GamePlay::UpdateGame()
@@ -127,6 +132,9 @@ void GamePlay::RenderGame()
 
 	//ƒvƒŒƒCƒ„[‚Ì•`‰æ
 	m_player->Render();
+
+	//	ƒQ[ƒW‚Ì•`‰æ
+	m_gauge->Render();
 
 	//Œ‡•Ð‚Ì•`‰æ
 	for (int i = 0; i < FRAGMENT_MAX; i++)

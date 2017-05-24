@@ -169,6 +169,7 @@
     <ClInclude Include="GameOver.h" />
     <ClInclude Include="GamePlay.h" />
     <ClInclude Include="GameTitle.h" />
+    <ClInclude Include="Gauge.h" />
     <ClInclude Include="ObjectBase.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Player.h" />
@@ -188,6 +189,7 @@
     <ClCompile Include="GameOver.cpp" />
     <ClCompile Include="GamePlay.cpp" />
     <ClCompile Include="GameTitle.cpp" />
+    <ClCompile Include="Gauge.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="ObjectBase.cpp" />
     <ClCompile Include="pch.cpp">

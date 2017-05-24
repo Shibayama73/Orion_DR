@@ -56,7 +56,12 @@
     <ClInclude Include="Wire.h">
       <Filter>Game</Filter>
     </ClInclude>
-    <ClInclude Include="Fragment.h" />
+    <ClInclude Include="Fragment.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Gauge.h">
+      <Filter>Game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -97,7 +102,12 @@
     <ClCompile Include="Wire.cpp">
       <Filter>Game</Filter>
     </ClCompile>
-    <ClCompile Include="Fragment.cpp" />
+    <ClCompile Include="Fragment.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Gauge.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
