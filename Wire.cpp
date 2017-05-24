@@ -31,7 +31,7 @@ Wire::Wire()
 {
 
 	m_state = false;		//非表示状態
-
+	m_posY = 650;
 	//描画用
 	m_deviceResources = Game::m_deviceResources.get();
 	m_spriteBatch = Game::m_spriteBatch.get();
@@ -71,11 +71,25 @@ Wire::~Wire()
 }
 
 //∞------------------------------------------------------------------∞
+//∞*func：更新
+//∞*arg：プレイヤーの座標x
+//∞*return：なし
+//∞------------------------------------------------------------------∞
+void Wire::Update(float pos_x)
+{
+	if (m_state)
+	{
+		m_posX = pos_x;
+		m_posY -=2;
+	}
+}
+
+//∞------------------------------------------------------------------∞
 //∞*func：描画関数
 //∞*arg：プレイヤーの座標x
 //∞*return：なし
 //∞------------------------------------------------------------------∞
-void Wire::Render(float pos_x, bool player_vec)
+void Wire::Render(float pos_x)
 {
 	//描画
 	CommonStates m_states(m_deviceResources->GetD3DDevice());
@@ -83,7 +97,7 @@ void Wire::Render(float pos_x, bool player_vec)
 
 	if (m_state)
 	{
-		m_spriteBatch->Draw(m_wire_tex.Get(), Vector2(pos_x, 30), nullptr, Colors::White, 0.f, m_origin);
+		m_spriteBatch->Draw(m_wire_tex.Get(), Vector2(m_posX, m_posY), nullptr, Colors::White, 0.f, m_origin);
 	}
 	m_spriteBatch->End();
 

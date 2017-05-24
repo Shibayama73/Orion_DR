@@ -45,7 +45,7 @@ Fragment::Fragment()
 	//’Êí‰æ‘œ
 	ComPtr<ID3D11Resource> fragment_resource;
 	DX::ThrowIfFailed(
-		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/fragment.png",
+		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/star.png",
 			fragment_resource.GetAddressOf(),
 			m_fragment_tex.ReleaseAndGetAddressOf()));
 
@@ -81,7 +81,7 @@ Fragment::~Fragment()
 //‡------------------------------------------------------------------‡
 void Fragment::Update()
 {
-	m_spdY += 0.1;
+	m_spdY += 0.01;
 	m_posY += m_spdY;
 }
 

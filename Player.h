@@ -15,9 +15,9 @@
 #include "Wire.h"
 
 
-//キャラの幅、高さ
-const int GRP_WIDTH = 96;
-const int GRP_HEIGHT = 96;
+//キャラの数値
+const int GRP_WIDTH = 128;
+const int GRP_HEIGHT = 128;
 
 enum
 {
@@ -26,11 +26,15 @@ enum
 	DOWN,		//下降
 	DIE,		//死亡
 };
+
 enum
 {
-	LEFT,		//左向き
-	RIGHT,		//右向き
+	LEFT,
+	RIGHT,
 };
+
+//プレイヤーが所持している一度に出せるワイヤーの数
+const int WIRE_NUM = 3;
 
 class Player :public ObjectBase
 {
@@ -56,6 +60,7 @@ public:
 	//*Render関数
 	void Render();
 
+
 private:
 	//時計の一次関数を求めるための変数
 	float a;	//y=ax+bのa（傾き）
@@ -70,9 +75,9 @@ private:
 	float m_y_temp;		//ジャンプ用。キャラのｙ座標を保存
 	float m_y_render;		//ワSイヤーのRender用
 
-	Wire* m_wire;			//ワイヤー
+	Wire* m_wire[WIRE_NUM];			//ワイヤー
 
-	float m_wire_posX;
+	float m_wire_posX[WIRE_NUM];
 
 	//描画
 	DX::DeviceResources* m_deviceResources;

@@ -20,9 +20,12 @@
 #include <WICTextureLoader.h>
 
 
+
+
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
 using Microsoft::WRL::ComPtr;
+using namespace std;
 
 
 //∞------------------------------------------------------------------∞
@@ -34,7 +37,7 @@ Player::Player()
 {
 	//変数の初期化（値はそれぞれ仮値）
 	m_posX = 300.0f;
-	m_posY = 560.0f;
+	m_posY = 650.0f;
 	m_grpW = GRP_WIDTH;
 	m_grpH = GRP_HEIGHT;
 	m_spdX = 0.0f;
@@ -42,7 +45,12 @@ Player::Player()
 	//m_jump_flug = false;
 	m_vec = RIGHT;	//初期の向きは右向き
 
-	m_wire = new Wire();
+	//m_wire = new Wire();
+	for (int i = 0; i < WIRE_NUM; i++)
+	{
+		m_wire[i] = nullptr;
+	}
+	
 
 	//m_y_render = m_posY;
 
@@ -198,9 +206,16 @@ void Player::run(DirectX::SimpleMath::Vector2 needle, DirectX::SimpleMath::Vecto
 	//スペースーキーでワイヤー
 	if (g_keyTracker->pressed.Space)
 	{
-		m_vec = RIGHT;
-		m_wire_posX = m_posX;
-		m_wire->Appears();
+		for (int i = 0; i < WIRE_NUM; i++)
+		{
+			if (m_wire[i] == nullptr)
+			{
+				m_wire[i] = new Wire();
+				m_wire_posX[i] = m_posX;
+				m_wire[i]->Appears();
+				break;
+			}
+		}
 	}
 	//ジャンプ処理
 	//if (m_jump_flug)
@@ -238,6 +253,14 @@ void Player::run(DirectX::SimpleMath::Vector2 needle, DirectX::SimpleMath::Vecto
 	if (g_keyTracker->released.Left || g_keyTracker->released.Right)
 	{
 		m_spdX = 0.0f;
+	}
+	for (int i = 0; i < WIRE_NUM; i++)
+	{
+
+		if (m_wire[i] != nullptr)
+		{
+			m_wire[i]->Update(m_wire_posX[i]);
+		}
 	}
 }
 
@@ -283,7 +306,14 @@ void Player::Render()
 	m_spriteBatch->End();
 
 	//ワイヤーの描画
-	m_wire->Render(m_wire_posX,m_vec);
+	for (int i = 0; i < WIRE_NUM; i++)
+	{
+
+		if (m_wire[i] != nullptr)
+		{
+			m_wire[i]->Render(m_wire_posX[i]);
+		}
+	}
 }
 
 
