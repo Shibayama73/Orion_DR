@@ -22,7 +22,7 @@ public:
 
 	void Render(float pos_x);
 
-	bool Appears();		//•\¦‚³‚¹‚é
+	void Elimination();		//Á–Å‚³‚¹‚é
 
 	bool State();		//•\¦î•ñ‚Ìæ“¾
 

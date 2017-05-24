@@ -212,7 +212,6 @@ void Player::run(DirectX::SimpleMath::Vector2 needle, DirectX::SimpleMath::Vecto
 			{
 				m_wire[i] = new Wire();
 				m_wire_posX[i] = m_posX;
-				m_wire[i]->Appears();
 				break;
 			}
 		}
@@ -260,6 +259,12 @@ void Player::run(DirectX::SimpleMath::Vector2 needle, DirectX::SimpleMath::Vecto
 		if (m_wire[i] != nullptr)
 		{
 			m_wire[i]->Update(m_wire_posX[i]);
+			//場外に出ていたら、deleteして、nullptrを入れる
+			if (m_wire[i]->State() == false)
+			{
+				delete m_wire[i];
+				m_wire[i] = nullptr;
+			}
 		}
 	}
 }
@@ -308,7 +313,6 @@ void Player::Render()
 	//ワイヤーの描画
 	for (int i = 0; i < WIRE_NUM; i++)
 	{
-
 		if (m_wire[i] != nullptr)
 		{
 			m_wire[i]->Render(m_wire_posX[i]);

@@ -30,7 +30,7 @@ using Microsoft::WRL::ComPtr;
 Wire::Wire()
 {
 
-	m_state = false;		//非表示状態
+	m_state = true;		//表示状態
 	m_posY = 650;
 	//描画用
 	m_deviceResources = Game::m_deviceResources.get();
@@ -82,6 +82,7 @@ void Wire::Update(float pos_x)
 		m_posX = pos_x;
 		m_posY -=2;
 	}
+	this->Elimination();
 }
 
 //∞------------------------------------------------------------------∞
@@ -105,25 +106,23 @@ void Wire::Render(float pos_x)
 }
 
 //∞------------------------------------------------------------------∞
-//∞*func：表示させる関数（m_state）
+//∞*func：消滅させる関数（m_state）
 //∞*arg：なし
-//∞*return：m_state
-//∞*heed：ワイヤーを出す動作をしたらtrueにする。
+//∞*return：なし
+//∞*heed：画面外に出たら消滅させる
 //∞------------------------------------------------------------------∞
-bool Wire::Appears()
+void Wire::Elimination()
 {
-	if (!m_state)
+	if (m_state && m_posY < 0)
 	{
-		m_state = true;
+		m_state = false;
 	}
-	return m_state;
 }
 
 //∞------------------------------------------------------------------∞
 //∞*func：表示情報の取得関数（m_state）
 //∞*arg：なし
 //∞*return：m_state
-//∞*heed：ワイヤーを出す動作をしたらtrueにする。
 //∞------------------------------------------------------------------∞
 bool Wire::State()
 {
