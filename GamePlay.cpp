@@ -111,13 +111,11 @@ int GamePlay::UpdateGame()
 		}
 	}
 
-
 	/*m_TimeCnt++;
 	if (m_TimeCnt > 120)
 	{
 		m_NextScene = CLEAR;
 	}*/
-
 
 	return m_NextScene;
 }

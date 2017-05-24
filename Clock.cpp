@@ -127,7 +127,8 @@ Clock::Clock()
 
 	//	表示座標を画面中央に指定
 	m_screenPos.x = m_deviceResources->GetOutputSize().right / 2.0f;
-	m_screenPos.y = m_deviceResources->GetOutputSize().bottom / 2.0f;
+//	m_screenPos.y = m_deviceResources->GetOutputSize().bottom / 2.0f;
+	m_screenPos.y = m_deviceResources->GetOutputSize().bottom / 2.0f - 40.0f;
 
 	//	表示座標を画面中央に指定
 	//m_longTPos.x = m_deviceResources->GetOutputSize().right / 1.16f;
@@ -286,6 +287,5 @@ float Clock::calAngle()
 	float angle = acosf(cosTheta);
 
 	return angle;
-
 }
 
