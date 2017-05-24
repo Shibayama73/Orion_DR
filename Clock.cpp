@@ -275,11 +275,16 @@ void Clock::clockwise()
 //=======================================================//
 float Clock::calAngle()
 {
+	//	í∑êjÇÃí∑Ç≥
+	Vector2 longLeng = m_longTipPos - Vector2(ORIGINE_X, ORIGINE_Y);
+	//	íZêjÇÃí∑Ç≥
+	Vector2 shortLeng = m_shortTipPos - Vector2(ORIGINE_X, ORIGINE_Y);
+
 	//	ï™éq
-	float numer = m_longTipPos.x * m_shortTipPos.x + m_longTipPos.y * m_shortTipPos.y;
+	float numer = longLeng.x * shortLeng.x + longLeng.y * shortLeng.y;
 	//	ï™ïÍ
-	float denom = (sqrtf(m_longTipPos.x * m_longTipPos.x + m_longTipPos.y * m_longTipPos.y))*
-		(sqrtf(m_shortTipPos.x * m_shortTipPos.x + m_shortTipPos.y * m_shortTipPos.y));
+	float denom = sqrtf(longLeng.x * longLeng.x + longLeng.y * longLeng.y)*
+		sqrtf(shortLeng.x * shortLeng.x + shortLeng.y * shortLeng.y);
 
 	//	cosÉ∆ÇãÅÇﬂÇÈ
 	float cosTheta = numer / denom;
