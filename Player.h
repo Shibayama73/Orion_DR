@@ -61,7 +61,9 @@ public:
 	void Render();
 
 	//*ワイヤーの情報を取得
-	Wire* GetWire(int i);		
+	Wire* GetWire(int i);
+
+	void Elimination(int i);		//ワイヤーを消滅させる関数
 
 
 private:

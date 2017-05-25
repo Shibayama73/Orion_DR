@@ -32,7 +32,7 @@ public:
 
 	int State();		//Œ‡•Ğ‚Ìó‘Ôæ“¾
 
-	void Collision(ObjectBase * A);		//“–‚½‚è”»’è
+	bool Collision(ObjectBase * A);		//“–‚½‚è”»’è
 
 
 public:

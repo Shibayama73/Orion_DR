@@ -98,7 +98,7 @@ int GamePlay::UpdateGame()
 	//	各クラスの更新
 	//	時計の更新
 	m_clock->Update();
-	m_player->Needle(m_clock->getLongTipPos(), m_clock->getLongTipOrigin());
+	//m_player->Needle(m_clock->getLongTipPos(), m_clock->getLongTipOrigin());
 	//	プレイヤーの移動処理
 	m_player->run(m_clock->getLongTipPos(), m_clock->getLongTipOrigin());
 
@@ -118,6 +118,7 @@ int GamePlay::UpdateGame()
 		//欠片が失われていたら
 		if (m_fragment[i]->State() == FRAGMENT_LOSS)
 		{
+			//破棄して新たに生成する
 			delete m_fragment[i];
 			m_fragment[i] = new Fragment();
 		}
@@ -126,10 +127,15 @@ int GamePlay::UpdateGame()
 	{
 		for (int j = 0; j < FRAGMENT_MAX; j++)
 		{
+			//ワイヤーと欠片、それぞれ存在しているか確認
 			if (m_player_wire[i] != nullptr && m_fragment[j] != nullptr)
 			{
-				//ワイヤーに当たっているかの判定
-				m_fragment[j]->Collision(m_player_wire[i]);
+				//ワイヤーに当たっていたら
+				if (m_fragment[j]->Collision(m_player_wire[i]))
+				{
+					//ワイヤーを消滅させる
+					m_player->Elimination(i);
+				}
 			}
 
 		}

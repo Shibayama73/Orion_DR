@@ -155,7 +155,7 @@ int Fragment::State()
 //∞*return：true（当たっている）、false（当たっていない）
 //∞------------------------------------------------------------------∞
 //反射判定
-void Fragment::Collision(ObjectBase* A)
+bool Fragment::Collision(ObjectBase* A)
 {
 	float x1 = m_posX + m_grpW / 2;
 	float y1 = m_posY + m_grpH / 2;
@@ -167,10 +167,14 @@ void Fragment::Collision(ObjectBase* A)
 	//円のあたり判定
 	if ((x1 - x2)*(x1 - x2) + (y1 - y2)*(y1 - y2) <= (r1 + r2)*(r1 + r2))
 	{
-		m_state = FRAGMENT_CATCH;
-		//return true;
+		//欠片が通常状態なら当たっている
+		if (m_state == FRAGMENT_NORMAL)
+		{
+			m_state = FRAGMENT_CATCH;
+			return true;
+		}
 	}
-	//return false;
+	return false;
 }
 
 

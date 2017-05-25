@@ -61,12 +61,12 @@ Player::Player()
 	//通常時画像
 	ComPtr<ID3D11Resource> normal_resource;
 	DX::ThrowIfFailed(
-		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/orion_normal.png",
+		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/orion_1.png",
 			normal_resource.GetAddressOf(),
 			m_orion_normal_tex.ReleaseAndGetAddressOf()));
 
 	DX::ThrowIfFailed(
-		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/orion_normal_L.png",
+		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/orion_L_1.png",
 			normal_resource.GetAddressOf(),
 			m_orion_normal_left_tex.ReleaseAndGetAddressOf()));
 
@@ -95,6 +95,11 @@ Player::Player()
 
 Player::~Player()
 {
+	//ワイヤーの破棄
+	for (int i = 0; i < WIRE_NUM; i++)
+	{
+		delete m_wire[i];
+	}
 }
 
 
@@ -179,12 +184,12 @@ void Player::run(DirectX::SimpleMath::Vector2 needle, DirectX::SimpleMath::Vecto
 	if (g_keyTracker->pressed.Left)
 	{
 		m_vec = LEFT;
-		m_spdX--;
+		m_spdX-=2;
 	}
 	if (g_keyTracker->pressed.Right)
 	{
 		m_vec = RIGHT;
-		m_spdX++;
+		m_spdX+=2;
 
 	}
 
@@ -320,6 +325,12 @@ void Player::Render()
 	}
 }
 
+//∞------------------------------------------------------------------∞
+//∞*func：ワイヤーを取得（m_wire[i]）
+//∞*arg：何個目か（i）
+//∞*return：ワイヤー。nullptrならnullptrを返す
+//∞*heed：GamePlayで使用
+//∞------------------------------------------------------------------∞
 Wire * Player::GetWire(int i)
 {
 	if (m_wire[i] != nullptr)
@@ -329,6 +340,18 @@ Wire * Player::GetWire(int i)
 
 	return nullptr;
 }
+
+//∞------------------------------------------------------------------∞
+//∞*func：ワイヤーを消滅させる関数
+//∞*arg：何個目のワイヤーか(i）
+//∞*return：なし
+//∞*heed：欠片をキャッチしたらGamePlayで呼び出す
+//∞------------------------------------------------------------------∞
+void Player::Elimination(int i)
+{
+	m_wire[i]->Elimination();
+}
+
 
 
 
