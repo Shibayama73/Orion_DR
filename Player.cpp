@@ -198,12 +198,12 @@ void Player::run(DirectX::SimpleMath::Vector2 needle, DirectX::SimpleMath::Vecto
 	if (g_keyTracker->pressed.Left)
 	{
 		m_vec = LEFT;
-		m_spdX-=3;
+		m_spdX -= 3;
 	}
 	if (g_keyTracker->pressed.Right)
 	{
 		m_vec = RIGHT;
-		m_spdX+=3;
+		m_spdX += 3;
 
 	}
 
@@ -286,19 +286,6 @@ void Player::run(DirectX::SimpleMath::Vector2 needle, DirectX::SimpleMath::Vecto
 			}
 		}
 	}
-}
-
-
-
-//∞------------------------------------------------------------------∞
-//∞*func：PosYを取得する
-//∞*arg：なし
-//∞*return：PosY（float）
-//∞*heed：主にワイヤーの描画更新にて
-//∞------------------------------------------------------------------∞
-float Player::Pos_y()
-{
-	return m_posY;
 }
 
 

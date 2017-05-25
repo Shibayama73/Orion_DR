@@ -152,12 +152,57 @@ int GamePlay::UpdateGame()
 			if (longTipAngle == 0.0f)
 			{
 				//	Œ‡•Ð‚ª’·j‚Æ“¯‚¶•ûŒü‚ÉˆÚ“®‚·‚é
+				float fragment_angle = XMConvertToDegrees(m_clock->calAngle(m_clock->getOrigin(), m_clock->getLongTipPos(), m_clock->getShortTipPos()));
+				if (fragment_angle < 90)
+				{
+					m_fragment[i]->SetSpdX(0.05f);
+					m_fragment[i]->SetSpdY(0.05f);
+
+				}
+				else if (fragment_angle < 180)
+				{
+					m_fragment[i]->SetSpdX(-0.05f);
+					m_fragment[i]->SetSpdY(0.05f);
+				}
+				else if (fragment_angle < 270)
+				{
+					m_fragment[i]->SetSpdX(-0.05f);
+					m_fragment[i]->SetSpdY(-0.05f);
+				}
+				else
+				{
+					m_fragment[i]->SetSpdX(0.05f);
+					m_fragment[i]->SetSpdY(-0.05f);
+				}
 			}
 			//	’Zj‚ÆŒ‡•Ð‚ÌŠp“x‚ªˆê’v‚µ‚½‚Æ‚«
 			if (shortTipAngle == 0.0f)
 			{
 				//	Œ‡•Ð‚ª’Zj‚Æ“¯‚¶•ûŒü‚ÉˆÚ“®‚·‚é
+				float fragment_angle = XMConvertToDegrees(m_clock->calAngle(m_clock->getOrigin(), m_clock->getLongTipPos(), m_clock->getShortTipPos()));
+				if (fragment_angle < 90)
+				{
+					m_fragment[i]->SetSpdX(0.05f);
+					m_fragment[i]->SetSpdY(0.05f);
+
+				}
+				else if (fragment_angle < 180)
+				{
+					m_fragment[i]->SetSpdX(-0.05f);
+					m_fragment[i]->SetSpdY(0.05f);
+				}
+				else if (fragment_angle < 270)
+				{
+					m_fragment[i]->SetSpdX(-0.05f);
+					m_fragment[i]->SetSpdY(-0.05f);
+				}
+				else
+				{
+					m_fragment[i]->SetSpdX(0.05f);
+					m_fragment[i]->SetSpdY(-0.05f);
+				}
 			}
+			
 
 		}
 

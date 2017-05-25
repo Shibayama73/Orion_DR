@@ -58,9 +58,6 @@ public:
 	//*走る関数
 	void run(DirectX::SimpleMath::Vector2 needle, DirectX::SimpleMath::Vector2 tip_origin);
 
-	//*posYを取得する関数
-	float Pos_y();
-
 	//*Render関数
 	void Render();
 
@@ -84,7 +81,7 @@ private:
 
 	float m_y_prev;		//ジャンプ用。キャラのｙ座標を保存
 	float m_y_temp;		//ジャンプ用。キャラのｙ座標を保存
-	float m_y_render;		//ワSイヤーのRender用
+	float m_y_render;		//ワイヤーのRender用
 
 	Wire* m_wire[WIRE_NUM];			//ワイヤー
 

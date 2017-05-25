@@ -34,5 +34,8 @@ public:
 	float GetPosX();
 	float GetPosY();
 
+	void SetSpdX(float spdX);
+	void SetSpdY(float spdY);
+
 };
 
