@@ -83,7 +83,7 @@ void Wire::Update(float pos_x)
 	if (m_state)
 	{
 		m_posX = pos_x;
-		m_posY -=2;
+		m_posY -=3;
 	}
 	if (m_state && m_posY < 0)
 	{

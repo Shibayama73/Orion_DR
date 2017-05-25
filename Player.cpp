@@ -198,12 +198,12 @@ void Player::run(DirectX::SimpleMath::Vector2 needle, DirectX::SimpleMath::Vecto
 	if (g_keyTracker->pressed.Left)
 	{
 		m_vec = LEFT;
-		m_spdX-=2;
+		m_spdX-=3;
 	}
 	if (g_keyTracker->pressed.Right)
 	{
 		m_vec = RIGHT;
-		m_spdX+=2;
+		m_spdX+=3;
 
 	}
 
