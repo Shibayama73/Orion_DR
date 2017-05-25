@@ -114,7 +114,7 @@ int GamePlay::UpdateGame()
 	//Œ‡•Ğ‚ÌXV
 	for (int i = 0; i < FRAGMENT_MAX; i++)
 	{
-		m_fragment[i]->Update();
+		m_fragment[i]->Update(m_clock->getLongTipOrigin(), m_clock->calAngle());
 		//Œ‡•Ğ‚ª¸‚í‚ê‚Ä‚¢‚½‚ç
 		if (m_fragment[i]->State() == FRAGMENT_LOSS)
 		{

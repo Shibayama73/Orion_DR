@@ -31,7 +31,7 @@ using Microsoft::WRL::ComPtr;
 //∞------------------------------------------------------------------∞
 Fragment::Fragment()
 {
-	m_posX = rand() % 700 + 42;
+	m_posX = rand() % 470 + 200;
 	m_posY = (rand() % -1000) - 1010;
 	m_spdX = 0.0f;
 	m_spdY = 0.0f;
@@ -89,10 +89,29 @@ Fragment::~Fragment()
 //∞*arg：なし
 //∞*return：なし
 //∞------------------------------------------------------------------∞
-void Fragment::Update()
+void Fragment::Update(DirectX::SimpleMath::Vector2 origin, float angle)
 {
 	m_spdY += 0.01;
 	m_posY += m_spdY;
+	m_posX += m_spdX;
+
+	if (m_state == FRAGMENT_CATCH)
+	{
+		if (origin.y > m_posY)
+		{
+			m_spdY = 0.1f;
+		}
+		else if (origin.y < m_posY)
+		{
+			m_spdY = -0.1f;
+		}
+		else
+		{
+			m_spdX = 0;
+			m_spdY = 0;
+		}
+	}
+
 
 	//場外に出ているかの判定
 	Outdoor();
