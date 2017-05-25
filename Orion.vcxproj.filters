@@ -62,6 +62,9 @@
     <ClInclude Include="Gauge.h">
       <Filter>Game</Filter>
     </ClInclude>
+    <ClInclude Include="Time.h">
+      <Filter>Game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -106,6 +109,9 @@
       <Filter>Game</Filter>
     </ClCompile>
     <ClCompile Include="Gauge.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Time.cpp">
       <Filter>Game</Filter>
     </ClCompile>
   </ItemGroup>
