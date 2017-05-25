@@ -132,7 +132,7 @@ void Fragment::Render()
 //‡------------------------------------------------------------------‡
 void Fragment::Outdoor()
 {
-	if (m_posY > 640)
+	if (m_posY + m_grpH > 640)
 	{
 		m_state = FRAGMENT_LOSS;
 	}

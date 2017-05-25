@@ -21,7 +21,6 @@
 
 
 
-
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
 using Microsoft::WRL::ComPtr;
@@ -37,22 +36,20 @@ Player::Player()
 {
 	//変数の初期化（値はそれぞれ仮値）
 	m_posX = 300.0f;
-	m_posY = 650.0f;
+	m_posY = 640.0f;
 	m_grpW = GRP_WIDTH;
 	m_grpH = GRP_HEIGHT;
 	m_spdX = 0.0f;
 	m_spdY = 0.0f;
 	//m_jump_flug = false;
 	m_vec = RIGHT;	//初期の向きは右向き
-
+	m_animetion = UP;
+	time_cnt = 0;
 	//m_wire = new Wire();
 	for (int i = 0; i < WIRE_NUM; i++)
 	{
 		m_wire[i] = nullptr;
 	}
-	
-
-	//m_y_render = m_posY;
 
 	//描画用
 	m_deviceResources = Game::m_deviceResources.get();
@@ -69,7 +66,6 @@ Player::Player()
 		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/orion_L_1.png",
 			normal_resource.GetAddressOf(),
 			m_orion_normal_left_tex.ReleaseAndGetAddressOf()));
-
 
 
 	//	リソースから背景のテクスチャと判断
@@ -180,6 +176,24 @@ bool Player::Existence(DirectX::SimpleMath::Vector2 needle, DirectX::SimpleMath:
 
 void Player::run(DirectX::SimpleMath::Vector2 needle, DirectX::SimpleMath::Vector2 tip_origin)
 {
+	time_cnt++;
+	if (time_cnt > 120)
+	{
+		m_spdY = 0.0f;
+		switch (m_animetion)
+		{
+		case UP:
+			m_spdY -= 0.1;
+			m_animetion = DOWN;
+			break;
+		case DOWN:
+			m_spdY += 0.1;
+			m_animetion = UP;
+			break;
+		}
+
+		time_cnt = 0;
+	}
 	//キーボードの情報取得
 	if (g_keyTracker->pressed.Left)
 	{

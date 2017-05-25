@@ -19,18 +19,22 @@
 const int GRP_WIDTH = 128;
 const int GRP_HEIGHT = 128;
 
-enum
+enum STATE
 {
 	NORMAL,		//通常
-	UP,			//上昇
-	DOWN,		//下降
 	DIE,		//死亡
 };
 
-enum
+enum VEC
 {
 	LEFT,
 	RIGHT,
+};
+
+enum ANIMATEION
+{
+	UP,
+	DOWN,
 };
 
 //プレイヤーが所持している一度に出せるワイヤーの数
@@ -75,6 +79,8 @@ private:
 
 	bool m_jump_flug;		//ジャンプフラグ
 	bool m_jump_judge_flug;
+	bool m_animetion;	//0がUP、1がDOWN
+	int time_cnt;
 
 	float m_y_prev;		//ジャンプ用。キャラのｙ座標を保存
 	float m_y_temp;		//ジャンプ用。キャラのｙ座標を保存
