@@ -197,7 +197,7 @@ bool Clock::getHand()
 //引数		なし
 //戻り値	針の原点(Vec2)
 //==================================//
-DirectX::SimpleMath::Vector2 Clock::getLongTipOrigin()
+DirectX::SimpleMath::Vector2 Clock::getOrigin()
 {
 	return m_screenPos;
 }
@@ -269,23 +269,24 @@ void Clock::clockwise()
 
 }
 
+
 //=============================================================//
-//内容		長針と短針の間の角度算出(3点からなす角を求める)
-//引数		長針先端座標(Vec2)、短針先端座標(Vec2)
+//内容		3点の座標からなす角の算出
+//引数		原点(Vec2)、長針先端座標(Vec2)、短針先端座標(Vec2)
 //戻り値	なす角(float)
 //=============================================================//
-float Clock::calAngle()
+float Clock::calAngle(Vector2 origin, Vector2 longTip, Vector2 shortTip)
 {
-	//	長針の長さ
-	Vector2 longLeng = m_longTipPos - Vector2(ORIGINE_X, ORIGINE_Y);
-	//	短針の長さ
-	Vector2 shortLeng = m_shortTipPos - Vector2(ORIGINE_X, ORIGINE_Y);
+	//	原点からlongTipまでの長さ
+	Vector2 longLeng = longTip - origin;
+	//	原点からshortTipまでの長さ
+	Vector2 shortLeng = shortTip - origin;
 
 	//	分子
-	float numer = longLeng.x * shortLeng.x + longLeng.y * shortLeng.y;
+	float numer = longTip.x * shortTip.x + longTip.y * shortTip.y;
 	//	分母
-	float denom = sqrtf(longLeng.x * longLeng.x + longLeng.y * longLeng.y)*
-		sqrtf(shortLeng.x * shortLeng.x + shortLeng.y * shortLeng.y);
+	float denom = sqrtf(longTip.x * longTip.x + longTip.y * longTip.y)*
+		sqrtf(shortTip.x * shortTip.x + shortTip.y * shortTip.y);
 
 	//	cosθを求める
 	float cosTheta = numer / denom;
@@ -294,4 +295,31 @@ float Clock::calAngle()
 
 	return angle;
 }
+
+//
+////=============================================================//
+////内容		長針と短針の間の角度算出(3点からなす角を求める)
+////引数		長針先端座標(Vec2)、短針先端座標(Vec2)
+////戻り値	なす角(float)
+////=============================================================//
+//float Clock::calAngle()
+//{
+//	//	長針の長さ
+//	Vector2 longLeng = m_longTipPos - Vector2(ORIGINE_X, ORIGINE_Y);
+//	//	短針の長さ
+//	Vector2 shortLeng = m_shortTipPos - Vector2(ORIGINE_X, ORIGINE_Y);
+//
+//	//	分子
+//	float numer = longLeng.x * shortLeng.x + longLeng.y * shortLeng.y;
+//	//	分母
+//	float denom = sqrtf(longLeng.x * longLeng.x + longLeng.y * longLeng.y)*
+//		sqrtf(shortLeng.x * shortLeng.x + shortLeng.y * shortLeng.y);
+//
+//	//	cosθを求める
+//	float cosTheta = numer / denom;
+//	//	なす角(θ)に変換
+//	float angle = acosf(cosTheta);
+//
+//	return angle;
+//}
 

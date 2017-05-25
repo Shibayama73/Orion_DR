@@ -25,7 +25,7 @@ class Fragment :
 public:
 	Fragment();
 	~Fragment();
-	void Update(DirectX::SimpleMath::Vector2 orijin, float angle);
+	void Update(DirectX::SimpleMath::Vector2 origin);
 	void Render();
 
 	void Outdoor();		//‰æ–Ê“à‚ÉŒ‡•Ð‚ª‚ ‚é‚©‚Ç‚¤‚©
