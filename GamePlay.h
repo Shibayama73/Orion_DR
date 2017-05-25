@@ -18,7 +18,7 @@
 #include "Fragment.h"
 #include "Gauge.h"
 
-const int FRAGMENT_MAX = 6;
+const int FRAGMENT_MAX = 20;
 
 class GamePlay :public GameBase
 {

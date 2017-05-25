@@ -31,8 +31,8 @@ using Microsoft::WRL::ComPtr;
 //‡------------------------------------------------------------------‡
 Fragment::Fragment()
 {
-	m_posX = rand() % 700;
-	m_posY = (rand() % -100) - 100;
+	m_posX = rand() % 700 + 42;
+	m_posY = (rand() % -1000) - 1010;
 	m_spdX = 0.0f;
 	m_spdY = 0.0f;
 	m_grpW = 32;
@@ -132,7 +132,7 @@ void Fragment::Render()
 //‡------------------------------------------------------------------‡
 void Fragment::Outdoor()
 {
-	if (m_posY + m_grpH > 640)
+	if (m_posY + m_grpH > 700)
 	{
 		m_state = FRAGMENT_LOSS;
 	}
