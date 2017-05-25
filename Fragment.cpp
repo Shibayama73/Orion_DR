@@ -89,7 +89,7 @@ Fragment::~Fragment()
 //‡*argF‚È‚µ
 //‡*returnF‚È‚µ
 //‡------------------------------------------------------------------‡
-void Fragment::Update(DirectX::SimpleMath::Vector2 origin, float angle)
+void Fragment::Update(DirectX::SimpleMath::Vector2 origin)
 {
 	m_spdY += 0.01;
 	m_posY += m_spdY;

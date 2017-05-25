@@ -114,7 +114,7 @@ int GamePlay::UpdateGame()
 	//欠片の更新
 	for (int i = 0; i < FRAGMENT_MAX; i++)
 	{
-		m_fragment[i]->Update(m_clock->getLongTipOrigin(), m_clock->calAngle());
+		m_fragment[i]->Update(m_clock->getOrigin());
 		//欠片が失われていたら
 		if (m_fragment[i]->State() == FRAGMENT_LOSS)
 		{
@@ -144,9 +144,9 @@ int GamePlay::UpdateGame()
 		if (m_fragment[i]->State() == FRAGMENT_CATCH)
 		{
 			//	原点、長針、欠片の座標から角度を算出する
-			float longTipAngle = m_clock->calAngle(m_clock->getOrigin(), m_clock->getLongTipPos(), Vector2(m_fragment[i]->GetPosX, m_fragment[i]->GetPosY));
+			float longTipAngle = m_clock->calAngle(m_clock->getOrigin(), m_clock->getLongTipPos(), Vector2(m_fragment[i]->GetPosX(), m_fragment[i]->GetPosY()));
 			//	原点、短針、欠片の座標から角度を算出する
-			float shortTipAngle = m_clock->calAngle(m_clock->getOrigin(), m_clock->getShortTipPos(), Vector2(m_fragment[i]->GetPosX, m_fragment[i]->GetPosY));
+			float shortTipAngle = m_clock->calAngle(m_clock->getOrigin(), m_clock->getShortTipPos(), Vector2(m_fragment[i]->GetPosX(), m_fragment[i]->GetPosY()));
 
 			//	長針と欠片の角度が一致したとき
 			if (longTipAngle == 0.0f)
