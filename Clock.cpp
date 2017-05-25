@@ -21,8 +21,8 @@ using namespace DirectX;
 using namespace DirectX::SimpleMath;
 using Microsoft::WRL::ComPtr;
 
-const float ORIGINE_X = 400.0f;
-const float ORIGINE_Y = 300.0f;
+const float ORIGINE_X = 450.0f;
+const float ORIGINE_Y = 310.0f;
 const float RADIUS = 310.0f;
 
 //==================================//
@@ -126,6 +126,7 @@ Clock::Clock()
 	//m_ori.y = float(originDesc.Height / 2.0f);
 
 	//	表示座標を画面中央に指定
+	//原点(x,y)=(450,310)
 	m_screenPos.x = m_deviceResources->GetOutputSize().right / 2.0f;
 //	m_screenPos.y = m_deviceResources->GetOutputSize().bottom / 2.0f;
 	m_screenPos.y = m_deviceResources->GetOutputSize().bottom / 2.0f - 40.0f;
