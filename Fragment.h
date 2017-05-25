@@ -12,6 +12,13 @@
 #include <SpriteBatch.h>
 #include "DeviceResources.h"
 
+enum
+{
+	FRAGMENT_NORMAL,
+	FRAGMENT_CATCH,
+	FRAGMENT_LOSS,
+};
+
 class Fragment :
 	public ObjectBase
 {
@@ -21,7 +28,12 @@ public:
 	void Update();
 	void Render();
 
-	bool Outdoor();		//画面内に欠片があるかどうか
+	void Outdoor();		//画面内に欠片があるかどうか
+
+	int State();		//欠片の状態取得
+
+	void Collision(ObjectBase * A);		//当たり判定
+
 
 public:
 	DX::DeviceResources* m_deviceResources;
@@ -29,7 +41,6 @@ public:
 	DirectX::SimpleMath::Vector2 m_origin;
 
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_fragment_tex;	//通常時テクスチャ
-
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_fragment_catch_tex;	//キャッチ後テクスチャ
 
 };
-

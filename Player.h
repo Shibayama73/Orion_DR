@@ -60,6 +60,9 @@ public:
 	//*Render関数
 	void Render();
 
+	//*ワイヤーの情報を取得
+	Wire* GetWire(int i);		
+
 
 private:
 	//時計の一次関数を求めるための変数
@@ -78,6 +81,8 @@ private:
 	Wire* m_wire[WIRE_NUM];			//ワイヤー
 
 	float m_wire_posX[WIRE_NUM];
+
+
 
 	//描画
 	DX::DeviceResources* m_deviceResources;

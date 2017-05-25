@@ -320,6 +320,16 @@ void Player::Render()
 	}
 }
 
+Wire * Player::GetWire(int i)
+{
+	if (m_wire[i] != nullptr)
+	{
+		return m_wire[i];
+	}
+
+	return nullptr;
+}
+
 
 
 

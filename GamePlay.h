@@ -28,6 +28,7 @@ public:
 	int UpdateGame();	//	データの更新
 	void RenderGame();	//	描画する
 
+
 private:
 	DX::DeviceResources* m_deviceResources;
 	DirectX::SpriteBatch* m_spriteBatch;
@@ -39,7 +40,7 @@ private:
 
 	Clock* m_clock;		//時計
 	Player* m_player;	//プレイヤー
-	Wire* m_wire;		//ワイヤー
+	Wire* m_player_wire[WIRE_NUM];		//ワイヤー（プレイヤーの所持しているワイヤーを一時的に保管する）
 	Fragment* m_fragment[FRAGMENT_MAX];	//欠片（同時に6つ以上出さない）
 	Gauge* m_gauge;		//ゲージ
 

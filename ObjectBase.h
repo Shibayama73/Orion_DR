@@ -26,5 +26,13 @@ public:
 	virtual void Update();	//XV
 	virtual void Render();	//•`‰æ
 
+	//æ“¾ŠÖ”
+	float GetGrpX();
+	float GetGrpY();
+	float GetGrpW();
+	float GetGrpH();
+	float GetPosX();
+	float GetPosY();
+
 };
 

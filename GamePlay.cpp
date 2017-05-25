@@ -105,22 +105,36 @@ int GamePlay::UpdateGame()
 	//	プレイヤーの更新
 	m_player->Update();
 
+	//プレイヤーの所持しているワイヤーの保管
+	for (int i = 0; i < WIRE_NUM; i++)
+	{
+		m_player_wire[i] = m_player->GetWire(i);
+	}
+
 	//欠片の更新
 	for (int i = 0; i < FRAGMENT_MAX; i++)
 	{
-		m_fragment[i] ->Update();
-		if (m_fragment[i]->Outdoor() == false)
+		m_fragment[i]->Update();
+		//欠片が失われていたら
+		if (m_fragment[i]->State() == FRAGMENT_LOSS)
 		{
 			delete m_fragment[i];
 			m_fragment[i] = new Fragment();
 		}
 	}
-
-	/*m_TimeCnt++;
-	if (m_TimeCnt > 120)
+	for (int i = 0; i < WIRE_NUM; i++)
 	{
-		m_NextScene = CLEAR;
-	}*/
+		for (int j = 0; j < FRAGMENT_MAX; j++)
+		{
+			if (m_player_wire[i] != nullptr && m_fragment[j] != nullptr)
+			{
+				//ワイヤーに当たっているかの判定
+				m_fragment[j]->Collision(m_player_wire[i]);
+			}
+
+		}
+	}
+
 
 	return m_NextScene;
 }
@@ -130,17 +144,18 @@ void GamePlay::RenderGame()
 	//	時計描画
 	m_clock->Render();
 
+	//欠片の描画
+	for (int i = 0; i < FRAGMENT_MAX; i++)
+	{
+		m_fragment[i]->Render();
+	}
+
 	//プレイヤーの描画
 	m_player->Render();
 
 	//	ゲージの描画
 	m_gauge->Render();
 
-	//欠片の描画
-	for (int i = 0; i < FRAGMENT_MAX; i++)
-	{
-		m_fragment[i]->Render();
-	}
 
 
 
@@ -153,3 +168,4 @@ void GamePlay::RenderGame()
 	////==========================================================================================
 
 }
+

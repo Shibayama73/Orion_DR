@@ -32,6 +32,9 @@ Wire::Wire()
 
 	m_state = true;		//表示状態
 	m_posY = 650;
+
+	m_grpH = 64.0f;
+	m_grpW = 64.0f;
 	//描画用
 	m_deviceResources = Game::m_deviceResources.get();
 	m_spriteBatch = Game::m_spriteBatch.get();
@@ -82,7 +85,10 @@ void Wire::Update(float pos_x)
 		m_posX = pos_x;
 		m_posY -=2;
 	}
-	this->Elimination();
+	if (m_state && m_posY < 0)
+	{
+		Elimination();
+	}
 }
 
 //∞------------------------------------------------------------------∞
@@ -109,14 +115,11 @@ void Wire::Render(float pos_x)
 //∞*func：消滅させる関数（m_state）
 //∞*arg：なし
 //∞*return：なし
-//∞*heed：画面外に出たら消滅させる
+//∞*heed：画面外に出たら消滅させる、もしくは、欠片をキャッチしたら
 //∞------------------------------------------------------------------∞
 void Wire::Elimination()
 {
-	if (m_state && m_posY < 0)
-	{
-		m_state = false;
-	}
+	m_state = false;
 }
 
 //∞------------------------------------------------------------------∞
