@@ -41,7 +41,7 @@ private:
 	Clock* m_clock;		//時計
 	Player* m_player;	//プレイヤー
 	Wire* m_player_wire[WIRE_NUM];		//ワイヤー（プレイヤーの所持しているワイヤーを一時的に保管する）
-	Fragment* m_fragment[FRAGMENT_MAX];	//欠片（同時に6つ以上出さない）
+	Fragment* m_fragment[FRAGMENT_MAX];	//欠片
 	Gauge* m_gauge;		//ゲージ
 
 };
