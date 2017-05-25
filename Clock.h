@@ -26,11 +26,13 @@ public:
 	void Render();									//•`‰æ
 
 	bool getHand();										//j‚Ìó‘Ôæ“¾
-	DirectX::SimpleMath::Vector2 getLongTipOrigin();	//’·j‚ÌŒ´“_À•Wæ“¾
+	DirectX::SimpleMath::Vector2 getOrigin();			//’·j‚ÌŒ´“_À•Wæ“¾
 	DirectX::SimpleMath::Vector2 getLongTipPos();		//j‚Ìæ’[À•Wæ“¾
 	DirectX::SimpleMath::Vector2 getShortTipPos();		//j‚Ìæ’[À•Wæ“¾
 	void clockwise();									//j‚ğ‰E‰ñ‚è‚É“®‚©‚·
-	float calAngle();									//’·j‚Æ’Zj‚ÌŠÔ‚ÌŠp“x(‚È‚·Šp)‚ÌŒvZ
+	float calAngle(DirectX::SimpleMath::Vector2 origin,
+		DirectX::SimpleMath::Vector2 longTip,
+		DirectX::SimpleMath::Vector2 shortTip);			//3“_‚ÌÀ•W‚©‚ç‚È‚·Šp)‚ÌŒvZ
 
 
 private:
