@@ -27,6 +27,7 @@ private:
 
 	//	テクスチャ
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_bottleTex;	//瓶
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_colorTex;	//欠片色
 
 	//	テクスチャ原点
 	DirectX::SimpleMath::Vector2 m_origin;
