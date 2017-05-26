@@ -179,6 +179,11 @@ int GamePlay::UpdateGame()
 	}
 	
 
+	//Žc‚èŽžŠÔ‚ª‚O‚É‚È‚Á‚½‚ç
+	//if (!(m_time->RemnantTime()))
+	//{
+	//	m_NextScene = OVER;
+	//}
 	return m_NextScene;
 }
 

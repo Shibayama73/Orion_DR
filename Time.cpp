@@ -114,12 +114,16 @@ void Time::CurrentTime()
 //‡------------------------------------------------------------------‡
 bool Time::RemnantTime()
 {
-	if (m_remnant_time < TIME_MAX)
+	if (m_remnant_time != 0)
 	{
+		//§ŒÀŠÔ-¡‚ÌŠÔ‚ğc‚è‚ÌŠÔ‚É‚·‚é
 		m_remnant_time = TIME_MAX - m_current_time;
 		return true;
 	}
-	return false;
+	else
+	{
+		return false;
+	}
 }
 
 //‡------------------------------------------------------------------‡
