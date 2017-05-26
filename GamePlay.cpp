@@ -138,21 +138,24 @@ int GamePlay::UpdateGame()
 			//	’Zjæ’[À•W‚ÌŽæ“¾
 			Vector2 shortTipAngle = m_clock->getShortTipPos();
 
-			////	’·j‚ÆŒ‡•Ð‚ÌŠp“x‚ªˆê’v‚µ‚½‚Æ‚«
-			//if (longTipAngle == 0.0f)
-			//{
-			//	//	Œ‡•Ð‚ª’·j‚Æ“¯‚¶•ûŒü‚ÉˆÚ“®‚·‚é
-			//	float fragment_angle = XMConvertToDegrees(m_clock->calAngle(m_clock->getOrigin(), m_clock->getLongTipPos(), m_clock->getShortTipPos()));
-			//	m_fragment[i]->AttackTip(fragment_angle);
-			//}
-			////	’Zj‚ÆŒ‡•Ð‚ÌŠp“x‚ªˆê’v‚µ‚½‚Æ‚«
-			//if (shortTipAngle == 0.0f)
-			//{
-			//	//	Œ‡•Ð‚ª’Zj‚Æ“¯‚¶•ûŒü‚ÉˆÚ“®‚·‚é
-			//	float fragment_angle = XMConvertToDegrees(m_clock->calAngle(m_clock->getOrigin(), m_clock->getLongTipPos(), m_clock->getShortTipPos()));
-			//	m_fragment[i]->AttackTip(fragment_angle);
-			//}
+			float fragmentLongAngle = XMConvertToDegrees(m_clock->getRotLong());
+			float fragmentShortAngle = XMConvertToDegrees(m_clock->getRotShort());
+
+			//	’·j‚ÆŒ‡•Ð‚ÌŠp“x‚ªˆê’v‚µ‚½‚Æ‚«
+			if (m_clock->getRotLong() == fragmentLongAngle)
+			{
+				//	Œ‡•Ð‚ª’·j‚Æ“¯‚¶•ûŒü‚ÉˆÚ“®‚·‚é
+				m_fragment[i]->AttackTip(fragmentLongAngle);
+			}
+			//	’Zj‚ÆŒ‡•Ð‚ÌŠp“x‚ªˆê’v‚µ‚½‚Æ‚«
+			if (m_clock->getRotShort() == fragmentShortAngle)
+			{
+				//	Œ‡•Ð‚ª’Zj‚Æ“¯‚¶•ûŒü‚ÉˆÚ“®‚·‚é
+				m_fragment[i]->AttackTip(fragmentShortAngle);
+			}
+
 		}
+
 		//Œ‡•Ð‚ªŽ¸‚í‚ê‚Ä‚¢‚½‚ç
 		if (m_fragment[i]->State() == FRAGMENT_LOSS)
 		{

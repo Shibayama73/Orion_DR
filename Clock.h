@@ -29,6 +29,8 @@ public:
 	DirectX::SimpleMath::Vector2 getOrigin();			//’·j‚ÌŒ´“_À•Wæ“¾
 	DirectX::SimpleMath::Vector2 getLongTipPos();		//j‚Ìæ’[À•Wæ“¾
 	DirectX::SimpleMath::Vector2 getShortTipPos();		//j‚Ìæ’[À•Wæ“¾
+	float getRotLong();									//’·j‚Ì‰ñ“]Špæ“¾
+	float getRotShort();								//’Zj‚Ì‰ñ“]Špæ“¾
 	void clockwise();									//j‚ğ‰E‰ñ‚è‚É“®‚©‚·
 	//float calAngle(DirectX::SimpleMath::Vector2 origin,
 	//	DirectX::SimpleMath::Vector2 longTip,

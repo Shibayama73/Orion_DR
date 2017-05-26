@@ -235,12 +235,10 @@ DirectX::SimpleMath::Vector2 Clock::getLongTipPos()
 
 	////	’·jŠp“x
 	//float m_longTipAng;
-
 	////	‰ñ“]Šp“x‚Ìæ“¾
 	//m_longTipAng = XMConvertToRadians(m_LTPos);
 	////	OŠpŠÖ”
 	//m_longTipPos = Vector2(ORIGINE_X + (RADIUS * cosf(m_longTipAng)), ORIGINE_Y + (RADIUS * sinf(m_longTipAng)));
-
 	//return m_longTipPos;
 }
 
@@ -260,13 +258,30 @@ DirectX::SimpleMath::Vector2 Clock::getShortTipPos()
 
 	////	’ZjŠp“x
 	//float m_shortTipAng;
-
 	////	‰ñ“]Šp“x‚Ìæ“¾
 	//m_shortTipAng = XMConvertToRadians(m_STPos);
-
 	//m_shortTipPos = Vector2(ORIGINE_X + (RADIUS * cosf(m_shortTipAng)), ORIGINE_Y + (RADIUS * sinf(m_shortTipAng)));
-
 	//return m_shortTipPos;
+}
+
+//==================================//
+//“à—e		’·j‚Ì‰ñ“]Šp“xæ“¾
+//ˆø”		‚È‚µ
+//–ß‚è’l	Šp“x(float)
+//==================================//
+float Clock::getRotLong()
+{
+	return m_rotLongPos;
+}
+
+//==================================//
+//“à—e		’Zj‚Ì‰ñ“]Šp“xæ“¾
+//ˆø”		‚È‚µ
+//–ß‚è’l	Šp“x(float)
+//==================================//
+float Clock::getRotShort()
+{
+	return m_rotShortPos;
 }
 
 //==================================//
