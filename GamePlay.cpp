@@ -98,6 +98,11 @@ int GamePlay::UpdateGame()
 	//	各クラスの更新
 	//	時計の更新
 	m_clock->Update();
+
+	if (m_clock->getLongTipPos().x == 450 && m_clock->getLongTipPos().y == 0)
+	{
+		delete m_player;
+	}
 	//m_player->Needle(m_clock->getLongTipPos(), m_clock->getLongTipOrigin());
 	//	プレイヤーの移動処理
 	m_player->run(m_clock->getLongTipPos(), m_clock->getOrigin());
@@ -189,6 +194,8 @@ int GamePlay::UpdateGame()
 			m_fragment[i] = new Fragment();
 		}
 	}
+
+	//ワイヤーと欠片の当たり判定（ワイヤーの処理のみで、欠片の処理は関数内で）
 	for (int i = 0; i < WIRE_NUM; i++)
 	{
 		for (int j = 0; j < FRAGMENT_MAX; j++)
@@ -208,7 +215,7 @@ int GamePlay::UpdateGame()
 
 		
 	}
-
+	
 
 	return m_NextScene;
 }

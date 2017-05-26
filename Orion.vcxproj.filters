@@ -53,9 +53,6 @@
     </ClInclude>
     <ClInclude Include="Direct3D.h" />
     <ClInclude Include="DirectXTK.h" />
-    <ClInclude Include="Wire.h">
-      <Filter>Game</Filter>
-    </ClInclude>
     <ClInclude Include="Fragment.h">
       <Filter>Game</Filter>
     </ClInclude>
@@ -65,6 +62,7 @@
     <ClInclude Include="Time.h">
       <Filter>Game</Filter>
     </ClInclude>
+    <ClInclude Include="Wire.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />

@@ -35,8 +35,11 @@ using namespace std;
 Player::Player()
 {
 	//変数の初期化（値はそれぞれ仮値）
-	m_posX = 300.0f;
-	m_posY = 640.0f;
+	//m_posX = 300.0f;
+	//m_posY = 640.0f;
+
+	m_posX = 450.0f;
+	m_posY = 0.0f;
 	m_grpW = GRP_WIDTH;
 	m_grpH = GRP_HEIGHT;
 	m_spdX = 0.0f;
