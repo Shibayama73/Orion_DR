@@ -16,7 +16,7 @@ public:
 	Time();
 	~Time();
 	void Render();
-	//*今の時間をカウントする
+	//*今の時間をカウントする(-1した値が正値）
 	void CurrentTime();
 	//残りの時間の計算、falseになったらゲームオーバー
 	bool RemnantTime();

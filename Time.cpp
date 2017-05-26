@@ -77,7 +77,8 @@ Time::Time()
 }
 Time::~Time()
 {	
-}	
+}
+
 
 //∞------------------------------------------------------------------∞
 //∞*func：描画関数
@@ -87,7 +88,7 @@ Time::~Time()
 void Time::Render()
 {
 	//現在の時間表示
-	DrawNum(180, 80, m_current_time);
+	DrawNum(180, 80, m_current_time - 1);
 
 	//残りの時間表示
 	DrawNum(180, 180, m_remnant_time);
@@ -117,7 +118,11 @@ bool Time::RemnantTime()
 	if (m_remnant_time != 0)
 	{
 		//制限時間-今の時間を残りの時間にする
-		m_remnant_time = TIME_MAX - m_current_time;
+		m_remnant_time = TIME_MAX - (m_current_time - 1);
+		if (m_remnant_time > TIME_MAX)
+		{
+			m_remnant_time = TIME_MAX;
+		}
 		return true;
 	}
 	else
