@@ -21,8 +21,18 @@ public:
 	//残りの時間の計算、falseになったらゲームオーバー
 	bool RemnantTime();
 
+	void DrawNum(float x, float y, int n);			//*数字の描画関数
+
 private:
 	int	m_current_time;		//*現在の時間
 	int m_remnant_time;		//*残りの時間
+
+	DX::DeviceResources* m_deviceResources;
+	DirectX::SpriteBatch* m_spriteBatch;
+	DirectX::SimpleMath::Vector2 m_origin;
+
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_time_tex;	//通常時テクスチャ
+
+
 };
 

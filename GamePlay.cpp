@@ -25,6 +25,8 @@ GamePlay::GamePlay()
 {
 	//m_TimeCnt = 0;
 
+	//ŠÔ‚Ì¶¬
+	m_time = new Time();
 	//	Œv¶¬
 	m_clock = new Clock();
 
@@ -88,6 +90,9 @@ GamePlay::~GamePlay()
 	//	ƒQ[ƒW‚Ì”jŠü
 	delete m_gauge;
 
+	//Œv‚Ì”jŠü
+	delete m_time;
+
 }
 
 int GamePlay::UpdateGame()
@@ -98,6 +103,7 @@ int GamePlay::UpdateGame()
 	//	ŠeƒNƒ‰ƒX‚ÌXV
 	//	Œv‚ÌXV
 	m_clock->Update();
+	m_time->CurrentTime();
 
 	if (m_clock->getLongTipPos().x == 450 && m_clock->getLongTipPos().y == 0)
 	{
@@ -192,6 +198,9 @@ void GamePlay::RenderGame()
 
 	//	ƒQ[ƒW‚Ì•`‰æ
 	m_gauge->Render();
+
+	//ŠÔ‚Ì•`‰æ
+	m_time->Render();
 
 
 
