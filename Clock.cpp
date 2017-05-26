@@ -17,6 +17,11 @@
 #include "pch.h"
 #include <WICTextureLoader.h>
 
+//デバック用
+#include <Windows.h>
+#include <Windef.h>
+
+
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
 using Microsoft::WRL::ComPtr;
@@ -48,12 +53,12 @@ Clock::Clock()
 	m_shortTipPos = Vector2(0.0f, 0.0f);
 
 	//	回転
-	m_rotLongPos = 3.15f;	//長針回転
-	m_rotShortPos = 3.15f;	//短針回転
+	m_rotLongPos = 1.57f;	//長針回転
+	m_rotShortPos = 4.71f;	//短針回転
 
 	//	座標角度
-	m_LTPos = 270.0f;		//長針座標角度
-	m_STPos = 90.0f;		//短針座標角度
+//	m_LTPos = 0.0f;		//長針座標角度
+//	m_STPos = 0.0f;		//短針座標角度
 
 	//	描画読み込み============================================================================
 	m_deviceResources = Game::m_deviceResources.get();
@@ -92,28 +97,29 @@ Clock::Clock()
 	DX::ThrowIfFailed(clockRes.As(&clock));
 
 	////	リソースから長針のテクスチャと判断
-	//ComPtr<ID3D11Texture2D> longTip;
-	//DX::ThrowIfFailed(clockRes.As(&longTip));
+	ComPtr<ID3D11Texture2D> longTip;
+	DX::ThrowIfFailed(clockRes.As(&longTip));
 
-	////	リソースから原点のテクスチャと判断
-	//ComPtr<ID3D11Texture2D> originTip;
-	//DX::ThrowIfFailed(clockRes.As(&originTip));
+	//	リソースから原点のテクスチャと判断
+	ComPtr<ID3D11Texture2D> originTip;
+	DX::ThrowIfFailed(clockRes.As(&originTip));
 
 	//	テクスチャ情報
 	CD3D11_TEXTURE2D_DESC clockDesc;
 	clock->GetDesc(&clockDesc);
 
 	////	テクスチャ情報
-	//CD3D11_TEXTURE2D_DESC longTipDesc;
-	//longTip->GetDesc(&longTipDesc);
+	CD3D11_TEXTURE2D_DESC longTipDesc;
+	longTip->GetDesc(&longTipDesc);
 
-	////	テクスチャ情報
-	//CD3D11_TEXTURE2D_DESC originDesc;
-	//originTip->GetDesc(&originDesc);
+	//	テクスチャ情報
+	CD3D11_TEXTURE2D_DESC originDesc;
+	originTip->GetDesc(&originDesc);
 
 	//	テクスチャ原点を画像の中心にする
-	m_origin.x = float(clockDesc.Width / 2.0f);
-	m_origin.y = float(clockDesc.Height / 2.0f);
+	m_origin.x = 8.0f;
+	//m_origin.y = float(clockDesc.Height / 2.0f);
+	m_origin.y = 0.0f;
 
 	//	テクスチャ原点を画像の中心にする
 	//m_longTOri.x = float(longTipDesc.Width / 2.0f);
@@ -138,6 +144,20 @@ Clock::Clock()
 //	m_longTPos.y = m_deviceResources->GetOutputSize().bottom / 2.0f;	//2.05
 
 	//==========================================================================================
+	//通常時画像
+	ComPtr<ID3D11Resource> time_resource;
+	DX::ThrowIfFailed(
+		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/number.png",
+			time_resource.GetAddressOf(),
+			m_time_tex.ReleaseAndGetAddressOf()));
+
+	//	リソースから背景のテクスチャと判断
+	ComPtr<ID3D11Texture2D> time;
+	DX::ThrowIfFailed(time_resource.As(&time));
+
+	//	テクスチャ情報
+	CD3D11_TEXTURE2D_DESC timeDesc;
+	time->GetDesc(&timeDesc);
 
 }
 
@@ -174,12 +194,17 @@ void Clock::Render()
 	//	時計
 	m_spriteBatch->Draw(m_clockTex.Get(), m_screenPos, nullptr, Colors::White, 0.f, m_origin);
 	//	長針
-	m_spriteBatch->Draw(m_LongTipTex.Get(), m_screenPos, nullptr, Colors::White, m_rotLongPos);
+	m_spriteBatch->Draw(m_LongTipTex.Get(), m_screenPos, nullptr, Colors::White, m_rotLongPos,m_origin);
 	//	短針
 	m_spriteBatch->Draw(m_ShortTipTex.Get(), m_screenPos, nullptr, Colors::White, m_rotShortPos);
 	//	原点
-	m_spriteBatch->Draw(m_OriginTex.Get(), m_screenPos+Vector2(-30.0f,-35.0f), nullptr, Colors::White, 0.f);
+	//m_spriteBatch->Draw(m_OriginTex.Get(), m_screenPos+Vector2(-30.0f,-35.0f), nullptr, Colors::White, 0.f);
 	m_spriteBatch->End();
+
+	//デバック用数値描画
+	//DrawNum(100, 80, (int)m_longTipPos.x);
+	//DrawNum(100, 100, (int)m_longTipPos.y);
+
 }
 
 //==================================//
@@ -209,15 +234,22 @@ DirectX::SimpleMath::Vector2 Clock::getOrigin()
 //==================================//
 DirectX::SimpleMath::Vector2 Clock::getLongTipPos()
 {
-	//	長針角度
-	float m_longTipAng;
+	Vector2 position;
 
-	//	回転角度の取得
-	m_longTipAng = XMConvertToRadians(m_LTPos);
-	//	三角関数
-	m_longTipPos = Vector2(ORIGINE_X + (RADIUS * cosf(m_longTipAng)), ORIGINE_Y + (RADIUS * sinf(m_longTipAng)));
+	position.x = (sinf(-m_rotLongPos) * 310.0f) + 450.0f;
+	position.y = (cosf(-m_rotLongPos) * 310.0f) + 310.0f;
 
-	return m_longTipPos;
+	return position;
+
+	////	長針角度
+	//float m_longTipAng;
+
+	////	回転角度の取得
+	//m_longTipAng = XMConvertToRadians(m_LTPos);
+	////	三角関数
+	//m_longTipPos = Vector2(ORIGINE_X + (RADIUS * cosf(m_longTipAng)), ORIGINE_Y + (RADIUS * sinf(m_longTipAng)));
+
+	//return m_longTipPos;
 }
 
 //==================================//
@@ -227,15 +259,22 @@ DirectX::SimpleMath::Vector2 Clock::getLongTipPos()
 //==================================//
 DirectX::SimpleMath::Vector2 Clock::getShortTipPos()
 {
-	//	短針角度
-	float m_shortTipAng;
+	Vector2 position;
 
-	//	回転角度の取得
-	m_shortTipAng = XMConvertToRadians(m_STPos);
+	position.x = (sinf(-m_rotShortPos) * 198.0f) + 450.0f;
+	position.y = (cosf(-m_rotShortPos) * 198.0f) + 310.0f;
 
-	m_shortTipPos = Vector2(ORIGINE_X + (RADIUS * cosf(m_shortTipAng)), ORIGINE_Y + (RADIUS * sinf(m_shortTipAng)));
+	return position;
 
-	return m_shortTipPos;
+	////	短針角度
+	//float m_shortTipAng;
+
+	////	回転角度の取得
+	//m_shortTipAng = XMConvertToRadians(m_STPos);
+
+	//m_shortTipPos = Vector2(ORIGINE_X + (RADIUS * cosf(m_shortTipAng)), ORIGINE_Y + (RADIUS * sinf(m_shortTipAng)));
+
+	//return m_shortTipPos;
 }
 
 //==================================//
@@ -249,71 +288,44 @@ void Clock::clockwise()
 	m_rotLongPos += 0.05f;
 	m_rotShortPos += 0.005f;
 
-	//	先端座標角度が360度以内のとき
-	if (m_LTPos <= 360.0f) {
-		//	先端座標の角度を減らす
-		m_LTPos += 0.01f;
-	}
-	else {
-		m_LTPos = 0.0f;
-	}
+	////	先端座標角度が360度以内のとき
+	//if (m_LTPos <= 360.0f) {
+	//	//	先端座標の角度を減らす
+	//	m_LTPos += 0.01f;
+	//}
+	//else {
+	//	m_LTPos = 0.0f;
+	//}
 
-	//	先端座標角度が360度以内のとき
-	if (m_STPos <= 360.0f) {
-		//	先端座標の角度を減らす
-		m_STPos += 0.01f;
-	}
-	else {
-		m_STPos = 0.0f;
-	}
+	////	先端座標角度が360度以内のとき
+	//if (m_STPos <= 360.0f) {
+	//	//	先端座標の角度を減らす
+	//	m_STPos += 0.01f;
+	//}
+	//else {
+	//	m_STPos = 0.0f;
+	//}
 
 }
 
 
-//=============================================================//
-//内容		3点の座標からなす角の算出
-//引数		原点(Vec2)、長針先端座標(Vec2)、短針先端座標(Vec2)
-//戻り値	なす角(float)
-//=============================================================//
-float Clock::calAngle(Vector2 origin, Vector2 longTip, Vector2 shortTip)
-{
-	//	原点からlongTipまでの長さ
-	Vector2 longLeng = longTip - origin;
-	//	原点からshortTipまでの長さ
-	Vector2 shortLeng = shortTip - origin;
-
-	//	分子
-	float numer = longTip.x * shortTip.x + longTip.y * shortTip.y;
-	//	分母
-	float denom = sqrtf(longTip.x * longTip.x + longTip.y * longTip.y)*
-		sqrtf(shortTip.x * shortTip.x + shortTip.y * shortTip.y);
-
-	//	cosθを求める
-	float cosTheta = numer / denom;
-	//	なす角(θ)に変換
-	float angle = acosf(cosTheta);
-
-	return angle;
-}
-
-//
 ////=============================================================//
-////内容		長針と短針の間の角度算出(3点からなす角を求める)
-////引数		長針先端座標(Vec2)、短針先端座標(Vec2)
+////内容		3点の座標からなす角の算出
+////引数		原点(Vec2)、長針先端座標(Vec2)、短針先端座標(Vec2)
 ////戻り値	なす角(float)
 ////=============================================================//
-//float Clock::calAngle()
+//float Clock::calAngle(Vector2 origin, Vector2 longTip, Vector2 shortTip)
 //{
-//	//	長針の長さ
-//	Vector2 longLeng = m_longTipPos - Vector2(ORIGINE_X, ORIGINE_Y);
-//	//	短針の長さ
-//	Vector2 shortLeng = m_shortTipPos - Vector2(ORIGINE_X, ORIGINE_Y);
+//	//	原点からlongTipまでの長さ
+//	Vector2 longLeng = longTip - origin;
+//	//	原点からshortTipまでの長さ
+//	Vector2 shortLeng = shortTip - origin;
 //
 //	//	分子
-//	float numer = longLeng.x * shortLeng.x + longLeng.y * shortLeng.y;
+//	float numer = longTip.x * shortTip.x + longTip.y * shortTip.y;
 //	//	分母
-//	float denom = sqrtf(longLeng.x * longLeng.x + longLeng.y * longLeng.y)*
-//		sqrtf(shortLeng.x * shortLeng.x + shortLeng.y * shortLeng.y);
+//	float denom = sqrtf(longTip.x * longTip.x + longTip.y * longTip.y)*
+//		sqrtf(shortTip.x * shortTip.x + shortTip.y * shortTip.y);
 //
 //	//	cosθを求める
 //	float cosTheta = numer / denom;
@@ -322,4 +334,47 @@ float Clock::calAngle(Vector2 origin, Vector2 longTip, Vector2 shortTip)
 //
 //	return angle;
 //}
+
+//∞------------------------------------------------------------------∞
+//∞*func：時間描画関数
+//∞*arg：描画位置(float x、float y)、描画する数値(int n)
+//∞*return：なし
+//∞------------------------------------------------------------------∞
+void Clock::DrawNum(float x, float y, int n)
+{
+	//描画
+	CommonStates m_states(m_deviceResources->GetD3DDevice());
+	m_spriteBatch->Begin(SpriteSortMode_Deferred, m_states.NonPremultiplied());	//NonPremultipliedで不透明の設定
+
+	int w = n;		//作業用
+	int i = 0;		//文字数
+
+	RECT rect;
+
+	if (w == 0)
+	{
+		rect = { (LONG)m_grpX, (LONG)m_grpY,(LONG)(m_grpX + m_grpW), (LONG)(m_grpY + m_grpH) };
+
+		m_spriteBatch->Draw(m_time_tex.Get(), Vector2(x, y), &rect, Colors::White, 0.0f, Vector2(0, 0), Vector2(1, 1));
+
+		//DrawRectGraph(x, y, 0, 48, 25, 32, g_PongImage, TRUE, FALSE);
+	}
+
+	else
+	{
+		while (w)
+		{
+			m_grpX = (w % 10) * 25;
+			rect = { (LONG)0, (LONG)48, (LONG)(m_grpX + 25), (LONG)(48 + 32) };
+			m_spriteBatch->Draw(m_time_tex.Get(), Vector2((x - i * 25), y), &rect, Colors::White, 0.0f, Vector2(0, 0), Vector2(1, 1));
+
+			//DrawRectGraph(x - i * 25, y, (w % 10) * 25, 48, 25, 32, g_PongImage, TRUE, FALSE);
+			w = w / 10;
+			i++;
+		}
+	}
+
+	m_spriteBatch->End();
+}
+
 

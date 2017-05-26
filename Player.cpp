@@ -38,8 +38,8 @@ Player::Player()
 	//m_posX = 300.0f;
 	//m_posY = 640.0f;
 
-	m_posX = 760.0f;
-	m_posY = 310.0f;
+	m_posX = 450.0f;
+	m_posY = 600.0f;
 	m_grpW = GRP_WIDTH;
 	m_grpH = GRP_HEIGHT;
 	m_spdX = 0.0f;

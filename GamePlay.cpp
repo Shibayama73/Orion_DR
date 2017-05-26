@@ -103,6 +103,7 @@ int GamePlay::UpdateGame()
 	//	ŠeƒNƒ‰ƒX‚ÌXV
 	//	Œv‚ÌXV
 	m_clock->Update();
+
 	m_time->CurrentTime();
 
 	if (m_clock->getLongTipPos().x == 450 && m_clock->getLongTipPos().y == 0)
@@ -130,25 +131,25 @@ int GamePlay::UpdateGame()
 		//	Œ‡•Ğ‚ª’Í‚Ü‚ê‚½ó‘Ô‚Ì‚Æ‚«
 		if (m_fragment[i]->State() == FRAGMENT_CATCH)
 		{
-			//	Œ´“_A’·jAŒ‡•Ğ‚ÌÀ•W‚©‚çŠp“x‚ğZo‚·‚é
-			float longTipAngle = m_clock->calAngle(m_clock->getOrigin(), m_clock->getLongTipPos(), Vector2(m_fragment[i]->GetPosX(), m_fragment[i]->GetPosY()));
-			//	Œ´“_A’ZjAŒ‡•Ğ‚ÌÀ•W‚©‚çŠp“x‚ğZo‚·‚é
-			float shortTipAngle = m_clock->calAngle(m_clock->getOrigin(), m_clock->getShortTipPos(), Vector2(m_fragment[i]->GetPosX(), m_fragment[i]->GetPosY()));
+			//	’·jæ’[À•W‚Ìæ“¾
+			Vector2 longTipAngle = m_clock->getLongTipPos();
+			//	’Zjæ’[À•W‚Ìæ“¾
+			Vector2 shortTipAngle = m_clock->getShortTipPos();
 
-			//	’·j‚ÆŒ‡•Ğ‚ÌŠp“x‚ªˆê’v‚µ‚½‚Æ‚«
-			if (longTipAngle == 0.0f)
-			{
-				//	Œ‡•Ğ‚ª’·j‚Æ“¯‚¶•ûŒü‚ÉˆÚ“®‚·‚é
-				float fragment_angle = XMConvertToDegrees(m_clock->calAngle(m_clock->getOrigin(), m_clock->getLongTipPos(), m_clock->getShortTipPos()));
-				m_fragment[i]->AttackTip(fragment_angle);
-			}
-			//	’Zj‚ÆŒ‡•Ğ‚ÌŠp“x‚ªˆê’v‚µ‚½‚Æ‚«
-			if (shortTipAngle == 0.0f)
-			{
-				//	Œ‡•Ğ‚ª’Zj‚Æ“¯‚¶•ûŒü‚ÉˆÚ“®‚·‚é
-				float fragment_angle = XMConvertToDegrees(m_clock->calAngle(m_clock->getOrigin(), m_clock->getLongTipPos(), m_clock->getShortTipPos()));
-				m_fragment[i]->AttackTip(fragment_angle);
-			}
+			////	’·j‚ÆŒ‡•Ğ‚ÌŠp“x‚ªˆê’v‚µ‚½‚Æ‚«
+			//if (longTipAngle == 0.0f)
+			//{
+			//	//	Œ‡•Ğ‚ª’·j‚Æ“¯‚¶•ûŒü‚ÉˆÚ“®‚·‚é
+			//	float fragment_angle = XMConvertToDegrees(m_clock->calAngle(m_clock->getOrigin(), m_clock->getLongTipPos(), m_clock->getShortTipPos()));
+			//	m_fragment[i]->AttackTip(fragment_angle);
+			//}
+			////	’Zj‚ÆŒ‡•Ğ‚ÌŠp“x‚ªˆê’v‚µ‚½‚Æ‚«
+			//if (shortTipAngle == 0.0f)
+			//{
+			//	//	Œ‡•Ğ‚ª’Zj‚Æ“¯‚¶•ûŒü‚ÉˆÚ“®‚·‚é
+			//	float fragment_angle = XMConvertToDegrees(m_clock->calAngle(m_clock->getOrigin(), m_clock->getLongTipPos(), m_clock->getShortTipPos()));
+			//	m_fragment[i]->AttackTip(fragment_angle);
+			//}
 		}
 		//Œ‡•Ğ‚ª¸‚í‚ê‚Ä‚¢‚½‚ç
 		if (m_fragment[i]->State() == FRAGMENT_LOSS)
@@ -200,7 +201,7 @@ void GamePlay::RenderGame()
 	m_gauge->Render();
 
 	//ŠÔ‚Ì•`‰æ
-	m_time->Render();
+	//m_time->Render();
 
 
 
