@@ -70,21 +70,18 @@ Clock::Clock()
 		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/clock.png",
 			clockRes.GetAddressOf(),
 			m_clockTex.ReleaseAndGetAddressOf()));
-
 	//	長針画像
 	ComPtr<ID3D11Resource> LongTipRes;
 	DX::ThrowIfFailed(
 		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/longTip.png",
 			LongTipRes.GetAddressOf(),
 			m_LongTipTex.ReleaseAndGetAddressOf()));
-
 	//	短針画像
 	ComPtr<ID3D11Resource> shortTipRes;
 	DX::ThrowIfFailed(
 		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/shortTip.png",
 			shortTipRes.GetAddressOf(),
 			m_ShortTipTex.ReleaseAndGetAddressOf()));
-
 	//	原点画像
 	ComPtr<ID3D11Resource> OriginRes;
 	DX::ThrowIfFailed(
@@ -93,55 +90,50 @@ Clock::Clock()
 			m_OriginTex.ReleaseAndGetAddressOf()));
 
 	//	リソースから時計のテクスチャと判断
+	//	時計
 	ComPtr<ID3D11Texture2D> clock;
 	DX::ThrowIfFailed(clockRes.As(&clock));
-
-	////	リソースから長針のテクスチャと判断
+	//	長針
 	ComPtr<ID3D11Texture2D> longTip;
-	DX::ThrowIfFailed(clockRes.As(&longTip));
-
-	//	リソースから原点のテクスチャと判断
+	DX::ThrowIfFailed(LongTipRes.As(&longTip));
+	//	短針
+	ComPtr<ID3D11Texture2D> shortTip;
+	DX::ThrowIfFailed(shortTipRes.As(&shortTip));
+	//	原点
 	ComPtr<ID3D11Texture2D> originTip;
-	DX::ThrowIfFailed(clockRes.As(&originTip));
+	DX::ThrowIfFailed(OriginRes.As(&originTip));
 
 	//	テクスチャ情報
+	//	時計
 	CD3D11_TEXTURE2D_DESC clockDesc;
 	clock->GetDesc(&clockDesc);
-
-	////	テクスチャ情報
+	//	長針
 	CD3D11_TEXTURE2D_DESC longTipDesc;
 	longTip->GetDesc(&longTipDesc);
-
-	//	テクスチャ情報
+	//	短針
+	CD3D11_TEXTURE2D_DESC shortTipDesc;
+	shortTip->GetDesc(&shortTipDesc);
+	//	原点
 	CD3D11_TEXTURE2D_DESC originDesc;
 	originTip->GetDesc(&originDesc);
 
 	//	テクスチャ原点を画像の中心にする
-	m_origin.x = 8.0f;
-	//m_origin.y = float(clockDesc.Height / 2.0f);
-	m_origin.y = 0.0f;
-
-	//	テクスチャ原点を画像の中心にする
-	//m_longTOri.x = float(longTipDesc.Width / 2.0f);
-	//m_longTOri.y = float(longTipDesc.Height / 1.2f);
-	//m_longTOri.x = float(longTipDesc.Width / 2.0f);
-	//m_longTOri.y = float(longTipDesc.Height / 1.0f);
-
-	////	テクスチャ原点を画像の中心にする
-	//m_ori.x = float(originDesc.Width / 2.0f);
-	//m_ori.y = float(originDesc.Height / 2.0f);
+	//	時計
+	m_origin.x = float(clockDesc.Width / 2.0f);
+	m_origin.y = float(clockDesc.Height / 2.0f);
+	//	長針
+	m_longTOri.x = float(longTipDesc.Width / 2.0f);
+	m_longTOri.y = float(longTipDesc.Height / 1.0f);
+	//	短針
+	m_shortTOri.x = float(shortTipDesc.Width / 2.0f);
+	m_shortTOri.y = float(shortTipDesc.Height / 1.0f);
+	//	原点
+	m_ori.x = float(originDesc.Width / 2.0f);
+	m_ori.y = float(originDesc.Height / 2.0f);
 
 	//	表示座標を画面中央に指定
-	//原点(x,y)=(450,310)
 	m_screenPos.x = m_deviceResources->GetOutputSize().right / 2.0f;
-//	m_screenPos.y = m_deviceResources->GetOutputSize().bottom / 2.0f;
 	m_screenPos.y = m_deviceResources->GetOutputSize().bottom / 2.0f - 40.0f;
-
-	//	表示座標を画面中央に指定
-	//m_longTPos.x = m_deviceResources->GetOutputSize().right / 1.16f;
-	//m_longTPos.y = m_deviceResources->GetOutputSize().bottom / 3.8f;
-//	m_longTPos.x = m_deviceResources->GetOutputSize().right / 2.0f;	//2.03
-//	m_longTPos.y = m_deviceResources->GetOutputSize().bottom / 2.0f;	//2.05
 
 	//==========================================================================================
 	//通常時画像
@@ -194,11 +186,11 @@ void Clock::Render()
 	//	時計
 	m_spriteBatch->Draw(m_clockTex.Get(), m_screenPos, nullptr, Colors::White, 0.f, m_origin);
 	//	長針
-	m_spriteBatch->Draw(m_LongTipTex.Get(), m_screenPos, nullptr, Colors::White, m_rotLongPos,m_origin);
+	m_spriteBatch->Draw(m_LongTipTex.Get(), m_screenPos, nullptr, Colors::White, m_rotLongPos, m_longTOri);
 	//	短針
-	m_spriteBatch->Draw(m_ShortTipTex.Get(), m_screenPos, nullptr, Colors::White, m_rotShortPos);
+	m_spriteBatch->Draw(m_ShortTipTex.Get(), m_screenPos, nullptr, Colors::White, m_rotShortPos, m_shortTOri);
 	//	原点
-	//m_spriteBatch->Draw(m_OriginTex.Get(), m_screenPos+Vector2(-30.0f,-35.0f), nullptr, Colors::White, 0.f);
+	m_spriteBatch->Draw(m_OriginTex.Get(), m_screenPos, nullptr, Colors::White, 0.f, m_ori);
 	m_spriteBatch->End();
 
 	//デバック用数値描画

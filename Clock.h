@@ -48,13 +48,14 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_ShortTipTex;	//短針
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_OriginTex;	//原点
 
-	DirectX::SimpleMath::Vector2 m_screenPos;
-	DirectX::SimpleMath::Vector2 m_longTPos;
-	DirectX::SimpleMath::Vector2 m_origin;
-	DirectX::SimpleMath::Vector2 m_longTOri;	//長針原点
-	DirectX::SimpleMath::Vector2 m_shortTOri;	//短針原点
+	//	表示座標
+	DirectX::SimpleMath::Vector2 m_screenPos;	//時計原点
 
-	DirectX::SimpleMath::Vector2 m_ori;
+	//	テクスチャ原点
+	DirectX::SimpleMath::Vector2 m_origin;		//時計
+	DirectX::SimpleMath::Vector2 m_longTOri;	//長針
+	DirectX::SimpleMath::Vector2 m_shortTOri;	//短針
+	DirectX::SimpleMath::Vector2 m_ori;			//原点
 
 	//	回転
 	float m_rotLongPos;		//長針回転
