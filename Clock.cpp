@@ -291,9 +291,23 @@ float Clock::getRotShort()
 //==================================//
 void Clock::clockwise()
 {
-	//	‰ñ“]‚³‚¹‚é
-	m_rotLongPos += 0.05f;
-	m_rotShortPos += 0.005f;
+	//	’·j‚ªˆêüˆÈ“à‚Ì‚Æ‚«
+	if (m_rotLongPos <= 6.3f) {
+		//	‰ñ“]‚³‚¹‚é
+		m_rotLongPos += 0.05f;
+	}
+	else {
+		m_rotLongPos = 0.0f;
+	}
+
+	//	’Zj‚ªˆêüˆÈ“à‚Ì‚Æ‚«
+	if (m_rotShortPos <= 6.3f) {
+		//	‰ñ“]‚³‚¹‚é
+		m_rotShortPos += 0.005f;
+	}
+	else {
+		m_rotShortPos = 0.0f;
+	}
 
 	////	æ’[À•WŠp“x‚ª360“xˆÈ“à‚Ì‚Æ‚«
 	//if (m_LTPos <= 360.0f) {
