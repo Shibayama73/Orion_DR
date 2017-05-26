@@ -115,30 +115,6 @@ int GamePlay::UpdateGame()
 	for (int i = 0; i < FRAGMENT_MAX; i++)
 	{
 		m_fragment[i]->Update(m_clock->getOrigin());
-		//欠片が失われていたら
-		if (m_fragment[i]->State() == FRAGMENT_LOSS)
-		{
-			//破棄して新たに生成する
-			delete m_fragment[i];
-			m_fragment[i] = new Fragment();
-		}
-	}
-	for (int i = 0; i < WIRE_NUM; i++)
-	{
-		for (int j = 0; j < FRAGMENT_MAX; j++)
-		{
-			//ワイヤーと欠片、それぞれ存在しているか確認
-			if (m_player_wire[i] != nullptr && m_fragment[j] != nullptr)
-			{
-				//ワイヤーに当たっていたら
-				if (m_fragment[j]->Collision(m_player_wire[i]))
-				{
-					//ワイヤーを消滅させる
-					m_player->Elimination(i);
-				}
-			}
-
-		}
 
 		//	欠片が掴まれた状態のとき
 		if (m_fragment[i]->State() == FRAGMENT_CATCH)
@@ -203,6 +179,30 @@ int GamePlay::UpdateGame()
 				}
 			}
 			
+
+		}
+		//欠片が失われていたら
+		if (m_fragment[i]->State() == FRAGMENT_LOSS)
+		{
+			//破棄して新たに生成する
+			delete m_fragment[i];
+			m_fragment[i] = new Fragment();
+		}
+	}
+	for (int i = 0; i < WIRE_NUM; i++)
+	{
+		for (int j = 0; j < FRAGMENT_MAX; j++)
+		{
+			//ワイヤーと欠片、それぞれ存在しているか確認
+			if (m_player_wire[i] != nullptr && m_fragment[j] != nullptr)
+			{
+				//ワイヤーに当たっていたら
+				if (m_fragment[j]->Collision(m_player_wire[i]))
+				{
+					//ワイヤーを消滅させる
+					m_player->Elimination(i);
+				}
+			}
 
 		}
 
