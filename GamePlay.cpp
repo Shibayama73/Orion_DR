@@ -104,12 +104,14 @@ int GamePlay::UpdateGame()
 	//	時計の更新
 	m_clock->Update();
 
-	m_time->CurrentTime();
+	//m_time->CurrentTime();
 
-	if (m_clock->getLongTipPos().x == 450 && m_clock->getLongTipPos().y == 0)
+	//長針が12時のところに来たら、現在時刻を追加
+	if (m_clock->getLongTipPos().y > 0 && m_clock->getLongTipPos().y < 0.1)
 	{
-		delete m_player;
+		m_time->CurrentTime();
 	}
+
 	//m_player->Needle(m_clock->getLongTipPos(), m_clock->getLongTipOrigin());
 	//	プレイヤーの移動処理
 	m_player->run(m_clock->getLongTipPos(), m_clock->getOrigin());
@@ -181,10 +183,10 @@ int GamePlay::UpdateGame()
 	
 
 	//残り時間が０になったら
-	//if (!(m_time->RemnantTime()))
-	//{
-	//	m_NextScene = OVER;
-	//}
+	if (!(m_time->RemnantTime()))
+	{
+		m_NextScene = OVER;
+	}
 	return m_NextScene;
 }
 
@@ -206,7 +208,7 @@ void GamePlay::RenderGame()
 	m_gauge->Render();
 
 	//時間の描画
-	//m_time->Render();
+	m_time->Render();
 
 
 

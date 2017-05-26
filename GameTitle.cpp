@@ -72,7 +72,7 @@ int GameTitle::UpdateGame()
 	//}
 
 	//スペースキーでプレイシーン
-	if (g_keyTracker->pressed.Space)
+	if (g_keyTracker->pressed.Enter)
 	{
 		m_NextScene = PLAY;
 	}
