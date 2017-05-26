@@ -17,6 +17,7 @@
 #include "Wire.h"
 #include "Fragment.h"
 #include "Gauge.h"
+#include "Time.h"
 
 const int FRAGMENT_MAX = 20;
 
@@ -43,5 +44,6 @@ private:
 	Wire* m_player_wire[WIRE_NUM];		//ワイヤー（プレイヤーの所持しているワイヤーを一時的に保管する）
 	Fragment* m_fragment[FRAGMENT_MAX];	//欠片
 	Gauge* m_gauge;		//ゲージ
+	Time* m_time;			//時間
 
 };

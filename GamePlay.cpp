@@ -25,6 +25,8 @@ GamePlay::GamePlay()
 {
 	//m_TimeCnt = 0;
 
+	//ŽžŠÔ‚Ì¶¬
+	m_time = new Time();
 	//	ŽžŒv¶¬
 	m_clock = new Clock();
 
@@ -88,6 +90,9 @@ GamePlay::~GamePlay()
 	//	ƒQ[ƒW‚Ì”jŠü
 	delete m_gauge;
 
+	//ŽžŒv‚Ì”jŠü
+	delete m_time;
+
 }
 
 int GamePlay::UpdateGame()
@@ -98,6 +103,7 @@ int GamePlay::UpdateGame()
 	//	ŠeƒNƒ‰ƒX‚ÌXV
 	//	ŽžŒv‚ÌXV
 	m_clock->Update();
+	m_time->CurrentTime();
 
 	if (m_clock->getLongTipPos().x == 450 && m_clock->getLongTipPos().y == 0)
 	{
@@ -134,57 +140,15 @@ int GamePlay::UpdateGame()
 			{
 				//	Œ‡•Ð‚ª’·j‚Æ“¯‚¶•ûŒü‚ÉˆÚ“®‚·‚é
 				float fragment_angle = XMConvertToDegrees(m_clock->calAngle(m_clock->getOrigin(), m_clock->getLongTipPos(), m_clock->getShortTipPos()));
-				if (fragment_angle < 90)
-				{
-					m_fragment[i]->SetSpdX(0.05f);
-					m_fragment[i]->SetSpdY(0.05f);
-
-				}
-				else if (fragment_angle < 180)
-				{
-					m_fragment[i]->SetSpdX(-0.05f);
-					m_fragment[i]->SetSpdY(0.05f);
-				}
-				else if (fragment_angle < 270)
-				{
-					m_fragment[i]->SetSpdX(-0.05f);
-					m_fragment[i]->SetSpdY(-0.05f);
-				}
-				else
-				{
-					m_fragment[i]->SetSpdX(0.05f);
-					m_fragment[i]->SetSpdY(-0.05f);
-				}
+				m_fragment[i]->AttackTip(fragment_angle);
 			}
 			//	’Zj‚ÆŒ‡•Ð‚ÌŠp“x‚ªˆê’v‚µ‚½‚Æ‚«
 			if (shortTipAngle == 0.0f)
 			{
 				//	Œ‡•Ð‚ª’Zj‚Æ“¯‚¶•ûŒü‚ÉˆÚ“®‚·‚é
 				float fragment_angle = XMConvertToDegrees(m_clock->calAngle(m_clock->getOrigin(), m_clock->getLongTipPos(), m_clock->getShortTipPos()));
-				if (fragment_angle < 90)
-				{
-					m_fragment[i]->SetSpdX(0.05f);
-					m_fragment[i]->SetSpdY(0.05f);
-
-				}
-				else if (fragment_angle < 180)
-				{
-					m_fragment[i]->SetSpdX(-0.05f);
-					m_fragment[i]->SetSpdY(0.05f);
-				}
-				else if (fragment_angle < 270)
-				{
-					m_fragment[i]->SetSpdX(-0.05f);
-					m_fragment[i]->SetSpdY(-0.05f);
-				}
-				else
-				{
-					m_fragment[i]->SetSpdX(0.05f);
-					m_fragment[i]->SetSpdY(-0.05f);
-				}
+				m_fragment[i]->AttackTip(fragment_angle);
 			}
-			
-
 		}
 		//Œ‡•Ð‚ªŽ¸‚í‚ê‚Ä‚¢‚½‚ç
 		if (m_fragment[i]->State() == FRAGMENT_LOSS)
@@ -212,8 +176,6 @@ int GamePlay::UpdateGame()
 			}
 
 		}
-
-		
 	}
 	
 
@@ -236,6 +198,9 @@ void GamePlay::RenderGame()
 
 	//	ƒQ[ƒW‚Ì•`‰æ
 	m_gauge->Render();
+
+	//ŽžŠÔ‚Ì•`‰æ
+	m_time->Render();
 
 
 
