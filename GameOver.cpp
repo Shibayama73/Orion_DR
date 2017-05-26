@@ -65,10 +65,18 @@ int GameOver::UpdateGame()
 	m_TimeCnt++;
 	m_NextScene = OVER;
 	m_scene = OVER;
-	if (m_TimeCnt > 120)
+	//if (m_TimeCnt > 120)
+	//{
+	//	m_NextScene = TITLE;
+	//}
+
+
+	//スペースキーでタイトルシーン
+	if (g_keyTracker->pressed.Space)
 	{
 		m_NextScene = TITLE;
 	}
+
 
 	return m_NextScene;
 }

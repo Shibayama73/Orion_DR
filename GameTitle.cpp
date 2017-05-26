@@ -62,11 +62,17 @@ GameTitle::~GameTitle()
 
 int GameTitle::UpdateGame()
 {
-	m_TimeCnt++;
+	//m_TimeCnt++;
 	m_NextScene = TITLE;
 	m_scene = TITLE;
 
-	if (m_TimeCnt > 120)
+	//if (m_TimeCnt > 120)
+	//{
+	//	m_NextScene = PLAY;
+	//}
+
+	//スペースキーでプレイシーン
+	if (g_keyTracker->pressed.Space)
 	{
 		m_NextScene = PLAY;
 	}
