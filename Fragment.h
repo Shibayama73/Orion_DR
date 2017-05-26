@@ -34,7 +34,7 @@ public:
 
 	bool Collision(ObjectBase * A);		//“–‚½‚è”»’è
 
-	void AttackTip(float angle);		//j‚Æ“–‚½‚Á‚½Û‚Éj‚Æ“¯‚¶•ûŒü‚É“®‚­ˆ—
+	void AttackTip(float TipAngle);		//j‚Æ“–‚½‚Á‚½Û‚Éj‚Æ“¯‚¶•ûŒü‚É“®‚­ˆ—
 
 
 public:

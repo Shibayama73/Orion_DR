@@ -202,29 +202,33 @@ bool Fragment::Collision(ObjectBase* A)
 //‡*returnF‚È‚µ
 //‡*heedF
 //‡------------------------------------------------------------------‡
-void Fragment::AttackTip(float angle)
+void Fragment::AttackTip(float TipAngle)
 {
-	if (angle < 90)
-	{
-		m_spdX = 0.05f;
-		m_spdY = 0.05f;
+	
+	//float angle;
+	//angle = XMConvertToDegrees(TipAngle);
+	//if(angle < 90)
+	//{
+	//	m_spdX = 0.05f;
+	//	m_spdY = -0.05f;
+	//}
 
-	}
-	else if (angle < 180)
-	{
-		m_spdX = -0.05f;
-		m_spdY = 0.05f;
-	}
-	else if (angle < 270)
-	{
-		m_spdX = -0.05f;
-		m_spdY = -0.05f;
-	}
-	else
-	{
-		m_spdX = 0.05f;
-		m_spdY = -0.05f;
-	}
+	//else if (angle < 180)
+	//{
+	//	m_spdX = 0.05f;
+	//	m_spdY = 0.05f;
+
+	//}
+	//else if (angle < 270)
+	//{
+	//	m_spdX = -0.05f;
+	//	m_spdY = 0.05f;
+	//}
+	//else if (angle < 360)
+	//{
+	//	m_spdX = -0.05f;
+	//	m_spdY = -0.05f;
+	//}
 
 }
 
