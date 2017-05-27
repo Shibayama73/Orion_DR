@@ -208,6 +208,9 @@ int GamePlay::UpdateGame()
 				{
 					//	欠片が消失する
 					m_fragment[i]->AttackTip();
+					//	ゲージがカウントされる
+					m_gauge->addGradation(m_fragment[i]->State());
+
 				}
 			}
 			//短針と長針の間の角が60度以下の場合のみ判定
@@ -218,6 +221,9 @@ int GamePlay::UpdateGame()
 				{
 					//	欠片が消失する
 					m_fragment[i]->AttackTip();
+					//	ゲージがカウントされる
+					m_gauge->addGradation(m_fragment[i]->State());
+
 				}
 			}
 		//∞-------------------------------------------------------------------------------------------------------------------∞//
