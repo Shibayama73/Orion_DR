@@ -19,7 +19,7 @@
 #include "Gauge.h"
 #include "Time.h"
 
-const int FRAGMENT_MAX = 20;
+const int FRAGMENT_MAX = 3;
 
 class GamePlay :public GameBase
 {

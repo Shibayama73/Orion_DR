@@ -53,8 +53,8 @@ Clock::Clock()
 	m_shortTipPos = Vector2(0.0f, 0.0f);
 
 	//	‰ñ“]
-	m_rotLongPos = 3.15f;	//’·j‰ñ“]
-	m_rotShortPos = 3.15f;	//’Zj‰ñ“]
+	m_rotLongPos = 0.0f;	//’·j‰ñ“]
+	m_rotShortPos = 0.0f;	//’Zj‰ñ“]
 
 	//	À•WŠp“x
 //	m_LTPos = 0.0f;		//’·jÀ•WŠp“x

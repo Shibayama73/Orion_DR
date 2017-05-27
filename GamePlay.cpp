@@ -107,7 +107,7 @@ int GamePlay::UpdateGame()
 	//m_time->CurrentTime();
 
 	//’·j‚ª12Žž‚Ì‚Æ‚±‚ë‚É—ˆ‚½‚çAŒ»ÝŽž‚ð’Ç‰Á
-	if (m_clock->getLongTipPos().y > 0 && m_clock->getLongTipPos().y < 0.1)
+	if (m_clock->getRotLong() > 0 && m_clock->getRotLong() < 0.1)
 	{
 		m_time->CurrentTime();
 	}
@@ -145,7 +145,7 @@ int GamePlay::UpdateGame()
 			if (m_clock->getRotLong() == fragmentLongAngle)
 			{
 				//	Œ‡•Ð‚ª’·j‚Æ“¯‚¶•ûŒü‚ÉˆÚ“®‚·‚é
-				m_fragment[i]->AttackTip(fragmentLongAngle);
+ 				m_fragment[i]->AttackTip(fragmentLongAngle);
 			}
 			//	’Zj‚ÆŒ‡•Ð‚ÌŠp“x‚ªˆê’v‚µ‚½‚Æ‚«
 			if (m_clock->getRotShort() == fragmentShortAngle)

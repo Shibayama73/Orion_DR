@@ -118,7 +118,7 @@ bool Time::RemnantTime()
 	if (m_remnant_time != 0)
 	{
 		//§ŒÀŽžŠÔ-¡‚ÌŽžŠÔ‚ðŽc‚è‚ÌŽžŠÔ‚É‚·‚é
-		m_remnant_time = TIME_MAX - (m_current_time - 1);
+		m_remnant_time = TIME_MAX - (m_current_time-1);
 		if (m_remnant_time > TIME_MAX)
 		{
 			m_remnant_time = TIME_MAX;
@@ -147,7 +147,7 @@ void Time::DrawNum(float x, float y, int n)
 
 	RECT rect;
 
-	if (w == 0)
+	if (w < 0)
 	{
 		rect = { (LONG)m_grpX, (LONG)m_grpY,(LONG)(m_grpX + m_grpW), (LONG)(m_grpY + m_grpH) };
 

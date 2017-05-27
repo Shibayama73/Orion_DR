@@ -38,6 +38,8 @@ Fragment::Fragment()
 	m_grpW = 32;
 	m_grpH = 32;
 
+
+
 	m_state = FRAGMENT_NORMAL;
 
 	//ï`âÊóp
@@ -204,7 +206,7 @@ bool Fragment::Collision(ObjectBase* A)
 //Åá------------------------------------------------------------------Åá
 void Fragment::AttackTip(float TipAngle)
 {
-	
+	m_state = FRAGMENT_LOSS;
 	//float angle;
 	//angle = XMConvertToDegrees(TipAngle);
 	//if(angle < 90)
