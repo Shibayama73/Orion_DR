@@ -21,6 +21,7 @@ public:
 	void Update();									//更新
 	void Render();									//描画
 	void addGradation(int state);				//ゲージを増やす
+	int getGradation();							//ゲージの値取得
 
 private:
 	DX::DeviceResources* m_deviceResources;

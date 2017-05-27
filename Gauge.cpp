@@ -73,7 +73,7 @@ Gauge::Gauge()
 	m_origin.y = float(bottleDesc.Height / 2.0f);
 	//	欠片色
 	m_gradationOrigin.x = float(gradationDesc.Width / 1.0f);
-	m_gradationOrigin.y = float(gradationDesc.Height / 2.0f);
+	m_gradationOrigin.y = float(gradationDesc.Height / 1.0f);
 
 	//	表示座標を画面中央に指定
 	//	瓶
@@ -81,7 +81,7 @@ Gauge::Gauge()
 	m_screenPos.y = m_deviceResources->GetOutputSize().bottom / 2.0f;
 	//	欠片色
 	m_gradationPos.x = m_deviceResources->GetOutputSize().right - 10.0f;
-	m_gradationPos.y = m_deviceResources->GetOutputSize().bottom / 2.0f;
+	m_gradationPos.y = m_deviceResources->GetOutputSize().bottom / 1.0f;
 
 	
 }
@@ -127,4 +127,9 @@ void Gauge::addGradation(int state)
 		m_gradation++;
 	}
 
+}
+
+int Gauge::getGradation()
+{
+	return m_gradation;
 }
