@@ -11,6 +11,7 @@
 #include <SimpleMath.h>
 #include <SpriteBatch.h>
 #include "DeviceResources.h"
+#include "Fragment.h"
 
 class Gauge:public ObjectBase
 {
@@ -19,7 +20,7 @@ public:
 	~Gauge();
 	void Update();									//更新
 	void Render();									//描画
-
+	void addGradation(int state);				//ゲージを増やす
 
 private:
 	DX::DeviceResources* m_deviceResources;
@@ -31,9 +32,12 @@ private:
 
 	//	テクスチャ原点
 	DirectX::SimpleMath::Vector2 m_origin;
+	DirectX::SimpleMath::Vector2 m_gradationOrigin;
 	//	表示座標
 	DirectX::SimpleMath::Vector2 m_screenPos;
+	DirectX::SimpleMath::Vector2 m_gradationPos;
 
-
+	//	ゲージの目盛り数(グラデーション)
+	int m_gradation;
 
 };

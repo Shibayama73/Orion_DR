@@ -146,12 +146,16 @@ int GamePlay::UpdateGame()
 			{
 				//	Œ‡•Ğ‚ª’·j‚Æ“¯‚¶•ûŒü‚ÉˆÚ“®‚·‚é
  				m_fragment[i]->AttackTip(fragmentLongAngle);
+				//	ƒQ[ƒW‚ªƒJƒEƒ“ƒg‚³‚ê‚é
+				m_gauge->addGradation(m_fragment[i]->State());
 			}
 			//	’Zj‚ÆŒ‡•Ğ‚ÌŠp“x‚ªˆê’v‚µ‚½‚Æ‚«
 			if (m_clock->getRotShort() == fragmentShortAngle)
 			{
 				//	Œ‡•Ğ‚ª’Zj‚Æ“¯‚¶•ûŒü‚ÉˆÚ“®‚·‚é
 				m_fragment[i]->AttackTip(fragmentShortAngle);
+				//	ƒQ[ƒW‚ªƒJƒEƒ“ƒg‚³‚ê‚é
+				m_gauge->addGradation(m_fragment[i]->State());
 			}
 
 		}

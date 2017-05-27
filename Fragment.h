@@ -46,6 +46,6 @@ public:
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_fragment_catch_tex;	//キャッチ後テクスチャ
 
 	float m_fragmentLongAngle;		//角度（長針との当たり判定用
-	float m_fragmentShortAngle		//角度（短針との当たり判定用
+	float m_fragmentShortAngle;		//角度（短針との当たり判定用
 
 };
