@@ -42,6 +42,8 @@ GamePlay::GamePlay()
 	//	ƒQ[ƒW‚Ì¶¬
 	m_gauge = new Gauge();
 
+	//Žž‰ÁŽZ—p•Ï”‚Ì‰Šú‰»
+	m_time_flag = 0;
 
 	////	•`‰æ“Ç‚Ýž‚Ý============================================================================
 	//m_deviceResources = Game::m_deviceResources.get();
@@ -70,7 +72,6 @@ GamePlay::GamePlay()
 	//m_screenPos.y = m_deviceResources->GetOutputSize().bottom / 2.0f;
 
 	////==========================================================================================
-
 }
 
 GamePlay::~GamePlay()
@@ -104,12 +105,23 @@ int GamePlay::UpdateGame()
 	//	ŽžŒv‚ÌXV
 	m_clock->Update();
 
+
 	//m_time->CurrentTime();
 
 	//’·j‚ª12Žž‚Ì‚Æ‚±‚ë‚É—ˆ‚½‚çAŒ»ÝŽž‚ð’Ç‰Á
-	if (m_clock->getRotLong() > 0 && m_clock->getRotLong() < 0.1)
+	if (m_clock->LongAngle() == 270)
 	{
-		m_time->CurrentTime();
+		if (m_time_flag == 0)
+		{
+			m_time->CurrentTime();
+		}
+		m_time_flag++;
+
+		if (m_time_flag > 3)
+		{
+			m_time_flag = 0;
+		}
+
 	}
 
 	//m_player->Needle(m_clock->getLongTipPos(), m_clock->getLongTipOrigin());
@@ -133,27 +145,82 @@ int GamePlay::UpdateGame()
 		//	Œ‡•Ð‚ª’Í‚Ü‚ê‚½ó‘Ô‚Ì‚Æ‚«
 		if (m_fragment[i]->State() == FRAGMENT_CATCH)
 		{
-			//	’·jæ’[À•W‚ÌŽæ“¾
-			Vector2 longTipAngle = m_clock->getLongTipPos();
-			//	’Zjæ’[À•W‚ÌŽæ“¾
-			Vector2 shortTipAngle = m_clock->getShortTipPos();
+		//‡-------------------------------------------------------------------------------------------------------------------‡//
+		//‡j‚ÆŒ‡•Ð‚Ì“–‚½‚è”»’è
 
-			float fragmentLongAngle = XMConvertToDegrees(m_clock->getRotLong());
-			float fragmentShortAngle = XMConvertToDegrees(m_clock->getRotShort());
+			float under_angle;			//*’·j‚Æ’Zj‚ÌŠÔ‚ÌŠp
+			float under_angle2;			//*’Zj‚Æ’·j‚ÌŠÔ‚ÌŠp
+			float long_angle;			//*’·j‚ÆŒ´“_‚ÌŠÔ‚ÌŠp“x
+			float short_angle;			//*’Zj‚ÆŒ´“_‚ÌŠÔ‚ÌŠp“x
 
-			//	’·j‚ÆŒ‡•Ð‚ÌŠp“x‚ªˆê’v‚µ‚½‚Æ‚«
-			if (m_clock->getRotLong() == fragmentLongAngle)
+			float big_angle;			//*‘å‚«‚³”»’è—pB’·j‚Æ’Zj‚ð”ä‚×‚Ä‘å‚«‚¢•û‚ÌŠp“x‚ð‘ã“ü
+			float small_angle;			//*‘å‚«‚³”»’è—pB’·j‚Æ’Zj‚ð”ä‚×‚Ä¬‚³‚¢•û‚ÌŠp“x‚ð‘ã“ü
+			float null_angle;			//*“ü‚ê‘Ö‚¦—p
+
+			//’·j‚ÆŒ´“_‚ÌŠÔ‚ÌŠp“x‚ð‘ã“ü
+			long_angle = m_clock->LongAngle();
+			//’Zj‚ÆŒ´“_‚ÌŠÔ‚ÌŠp“x‚ð‘ã“ü
+			short_angle = m_clock->ShortAngle();
+
+			//’·j‚ÌŠp“x-’Zj‚ÌŠp“x
+			under_angle = long_angle - short_angle;
+			//’Zj‚ÌŠp“x-’·j‚ÌŠp“x
+			under_angle2 = short_angle - long_angle;
+
+			//‚»‚ê‚¼‚ê‚ÌŠÔ‚ÌŠp“x‚ª180“xˆÈã‚Ìê‡A‹t‘¤‚ÌŠp“x‚ð‹‚ß‚Ä‘ã“ü‚·‚é
+			if (under_angle > 180)
 			{
-				//	Œ‡•Ð‚ª’·j‚Æ“¯‚¶•ûŒü‚ÉˆÚ“®‚·‚é
- 				m_fragment[i]->AttackTip(fragmentLongAngle);
+				under_angle = (360 - long_angle) + short_angle;
 			}
-			//	’Zj‚ÆŒ‡•Ð‚ÌŠp“x‚ªˆê’v‚µ‚½‚Æ‚«
-			if (m_clock->getRotShort() == fragmentShortAngle)
+			if (under_angle2 > 180)
 			{
-				//	Œ‡•Ð‚ª’Zj‚Æ“¯‚¶•ûŒü‚ÉˆÚ“®‚·‚é
-				m_fragment[i]->AttackTip(fragmentShortAngle);
+				under_angle2 = (360 - short_angle) + long_angle;
 			}
 
+
+			//’·j‚ÌŠp“x‚Æ’Zj‚ÌŠp“x‚ð”ä‚×‚ÄA‘å‚«‚¢•û‚ðbigA¬‚³‚¢•û‚ðshort‚É‘ã“ü
+			if (long_angle > short_angle)
+			{
+				big_angle = long_angle;
+				small_angle = short_angle;
+			}
+			else
+			{
+				big_angle = short_angle;
+				small_angle = long_angle;
+			}
+
+			//‘å‚«‚¢•û‚ÌŠp‚ª301“xˆÈã‚ÅAX‚É¬‚³‚¢•û‚ÌŠp‚ª60“x–¢–ž‚Ìê‡A¬‚³‚¢•û‚ÌŠp‚É360‘«‚µ‚ÄA‘å‚«‚¢•û‚Æ¬‚³‚¢•û‚ð“ü‚ê‘Ö‚¦‚é
+			//¦Œ´“_‚Æ‚ÌŠÔ‚ÌŠp‚ª0`60‚ÌŽž‚ÉŒ‡•Ð‚ð‹²‚Þ‚±‚Æ‚ªo—ˆ‚È‚­‚È‚éƒoƒO–hŽ~‚Ì‚½‚ß
+			if (big_angle > 301 && small_angle < 60)
+			{
+				small_angle += 360;
+				null_angle = big_angle;
+				big_angle = small_angle;
+				small_angle = big_angle;
+			}
+
+			//’·j‚Æ’Zj‚ÌŠÔ‚ÌŠp‚ª60“xˆÈ‰º‚Ìê‡‚Ì‚Ý”»’è
+			if (under_angle > 0 && under_angle < 60)
+			{
+				//¬‚³‚¢•û‚Ìj‚ÌŠp“x‚æ‚è‚àŒ‡•Ð‚ÌŠp“x‚ª‘å‚«‚¢A‚©‚Â‘å‚«‚¢j‚ÌŠp“x‚æ‚è‚àŒ‡•Ð‚ÌŠp“x‚ª¬‚³‚¢ê‡
+				if ((small_angle < m_fragment[i]->Angle(m_clock->getOrigin())) && (big_angle > m_fragment[i]->Angle(m_clock->getOrigin())))
+				{
+					//	Œ‡•Ð‚ªÁŽ¸‚·‚é
+					m_fragment[i]->AttackTip();
+				}
+			}
+			//’Zj‚Æ’·j‚ÌŠÔ‚ÌŠp‚ª60“xˆÈ‰º‚Ìê‡‚Ì‚Ý”»’è
+			if (under_angle2 > 0 && under_angle2 < 60)
+			{
+				//¬‚³‚¢•û‚Ìj‚ÌŠp“x‚æ‚è‚àŒ‡•Ð‚ÌŠp“x‚ª‘å‚«‚¢A‚©‚Â‘å‚«‚¢j‚ÌŠp“x‚æ‚è‚àŒ‡•Ð‚ÌŠp“x‚ª¬‚³‚¢ê‡
+				if ((big_angle > m_fragment[i]->Angle(m_clock->getOrigin())) && (small_angle < m_fragment[i]->Angle(m_clock->getOrigin())))
+				{
+					//	Œ‡•Ð‚ªÁŽ¸‚·‚é
+					m_fragment[i]->AttackTip();
+				}
+			}
+		//‡-------------------------------------------------------------------------------------------------------------------‡//
 		}
 
 		//Œ‡•Ð‚ªŽ¸‚í‚ê‚Ä‚¢‚½‚ç
@@ -183,7 +250,7 @@ int GamePlay::UpdateGame()
 
 		}
 	}
-	
+
 
 	//Žc‚èŽžŠÔ‚ª‚O‚É‚È‚Á‚½‚ç
 	if (!(m_time->RemnantTime()))

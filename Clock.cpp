@@ -229,7 +229,8 @@ DirectX::SimpleMath::Vector2 Clock::getLongTipPos()
 	Vector2 position;
 
 	position.x = (sinf(-m_rotLongPos) * 310.0f) + 450.0f;
-	position.y = (cosf(-m_rotLongPos) * 310.0f) + 310.0f;
+ 	position.y = (cosf(-m_rotLongPos) * 310.0f) + 310.0f;
+
 
 	return position;
 
@@ -294,7 +295,7 @@ void Clock::clockwise()
 	//	’·j‚ªˆêüˆÈ“à‚Ì‚Æ‚«
 	if (m_rotLongPos <= 6.3f) {
 		//	‰ñ“]‚³‚¹‚é
-		m_rotLongPos += 0.05f;
+		m_rotLongPos += 0.01f;
 	}
 	else {
 		m_rotLongPos = 0.0f;
@@ -303,7 +304,7 @@ void Clock::clockwise()
 	//	’Zj‚ªˆêüˆÈ“à‚Ì‚Æ‚«
 	if (m_rotShortPos <= 6.3f) {
 		//	‰ñ“]‚³‚¹‚é
-		m_rotShortPos += 0.005f;
+		m_rotShortPos += 0.001f;
 	}
 	else {
 		m_rotShortPos = 0.0f;
@@ -397,5 +398,60 @@ void Clock::DrawNum(float x, float y, int n)
 
 	m_spriteBatch->End();
 }
+
+//‡------------------------------------------------------------------‡
+//‡*funcF’·j‚ÆŒ´“_‚ÌŠÔ‚ÌŠp“x‚ğ‹‚ß‚é
+//‡*argF‚È‚µ
+//‡*returnFŠp“x
+//‡------------------------------------------------------------------‡
+float Clock::LongAngle()
+{
+	float angle;
+	angle = atan2f((getLongTipPos().y - m_screenPos.y), (getLongTipPos().x - m_screenPos.x));
+	angle /= 3.1415926535;
+	angle *= 180;
+	angle += 360;
+
+	angle = (int)angle % 360;
+
+	//angle += 180;
+
+	if (angle <= 180)
+	{
+		angle += 180;
+	}
+	else
+	{
+		angle -= 180;
+	}
+	return angle;
+}
+
+//‡------------------------------------------------------------------‡
+//‡*funcF’Zj‚ÆŒ´“_‚ÌŠÔ‚ÌŠp“x‚ğ‹‚ß‚é
+//‡*argF‚È‚µ
+//‡*returnFŠp“x
+//‡------------------------------------------------------------------‡
+float Clock::ShortAngle()
+{
+	float angle;
+	angle = atan2f((getShortTipPos().y - m_screenPos.y), (getShortTipPos().x - m_screenPos.x));
+	angle /= 3.1415926535;
+	angle *= 180;
+	angle += 360;
+
+	angle = (int)angle % 360;
+
+	if (angle <= 180)
+	{
+		angle += 180;
+	}
+	else
+	{
+		angle -= 180;
+	}
+	return angle;
+}
+
 
 

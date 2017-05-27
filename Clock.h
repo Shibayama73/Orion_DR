@@ -39,6 +39,10 @@ public:
 	//デバック用数値
 	void DrawNum(float x, float y, int n);
 
+	//欠片との当たり判定用関数
+	float LongAngle();		//長針と原点の間の角
+	float ShortAngle();		//短針と原点の間の角
+
 
 private:
 	DX::DeviceResources* m_deviceResources;

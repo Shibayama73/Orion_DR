@@ -34,7 +34,9 @@ public:
 
 	bool Collision(ObjectBase * A);		//当たり判定
 
-	void AttackTip(float TipAngle);		//針と当たった際に針と同じ方向に動く処理
+	float Angle(DirectX::SimpleMath::Vector2 tip_origin);				//欠片のある角度
+
+	void AttackTip();		//針と当たった際に針と同じ方向に動く処理
 
 
 public:
@@ -46,6 +48,6 @@ public:
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_fragment_catch_tex;	//キャッチ後テクスチャ
 
 	float m_fragmentLongAngle;		//角度（長針との当たり判定用
-	float m_fragmentShortAngle		//角度（短針との当たり判定用
+	float m_fragmentShortAngle;		//角度（短針との当たり判定用
 
 };

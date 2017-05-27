@@ -15,6 +15,7 @@
 #include "Direct3D.h"
 #include "DirectXTK.h"
 #include <SimpleMath.h>
+#include <Math.h>
 
 #include "Game.h"
 #include "pch.h"
@@ -99,19 +100,19 @@ void Fragment::Update(DirectX::SimpleMath::Vector2 origin)
 
 	if (m_state == FRAGMENT_CATCH)
 	{
-		if (origin.y > m_posY)
-		{
-			m_spdY = 0.1f;
-		}
-		else if (origin.y < m_posY)
-		{
-			m_spdY = -0.1f;
-		}
-		else
-		{
+	//	if (origin.y > m_posY)
+	//	{
+	//		m_spdY = 0.1f;
+	//	}
+	//	else if (origin.y < m_posY)
+	//	{
+	//		m_spdY = -0.1f;
+	//	}
+	//	else
+	//	{
 			m_spdX = 0;
 			m_spdY = 0;
-		}
+	//	}
 	}
 
 
@@ -199,39 +200,38 @@ bool Fragment::Collision(ObjectBase* A)
 }
 
 //∞------------------------------------------------------------------∞
-//∞*func：針と当たったら、同じ方向に動く関数
-//∞*arg：長針（短針）の角度
+//∞*func：欠片の角度を求める
+//∞*arg：針の原点座標
+//∞*return：なし
+//∞*heed：欠片が当たっていたら常に取得（針との当たり判定に使用）
+//∞------------------------------------------------------------------∞
+float Fragment::Angle(Vector2 tip_origin)
+{
+	float angle;
+	angle = atan2f((m_posY - tip_origin.y) , (m_posX - tip_origin.x));
+	angle /= 3.1415926535;
+	angle *= 180;
+	angle += 360;
+
+	angle = (int)angle % 360;
+
+	//if (angle > 180)
+	//{
+	//	angle-
+	//}
+
+ 	return angle;
+}
+
+//∞------------------------------------------------------------------∞
+//∞*func：針と当たったら、欠片を消す巻子
+//∞*arg：なし
 //∞*return：なし
 //∞*heed：
 //∞------------------------------------------------------------------∞
-void Fragment::AttackTip(float TipAngle)
+void Fragment::AttackTip()
 {
 	m_state = FRAGMENT_LOSS;
-	//float angle;
-	//angle = XMConvertToDegrees(TipAngle);
-	//if(angle < 90)
-	//{
-	//	m_spdX = 0.05f;
-	//	m_spdY = -0.05f;
-	//}
-
-	//else if (angle < 180)
-	//{
-	//	m_spdX = 0.05f;
-	//	m_spdY = 0.05f;
-
-	//}
-	//else if (angle < 270)
-	//{
-	//	m_spdX = -0.05f;
-	//	m_spdY = 0.05f;
-	//}
-	//else if (angle < 360)
-	//{
-	//	m_spdX = -0.05f;
-	//	m_spdY = -0.05f;
-	//}
-
 }
 
 

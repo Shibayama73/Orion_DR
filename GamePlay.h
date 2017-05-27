@@ -46,4 +46,6 @@ private:
 	Gauge* m_gauge;		//ƒQ[ƒW
 	Time* m_time;			//ŠÔ
 
+	int m_time_flag;		//‰ÁZ—p•Ï”
+
 };
