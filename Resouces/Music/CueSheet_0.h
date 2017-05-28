@@ -19,14 +19,14 @@
 
 
 /* Cue List (Cue ID) */
-#define CRI_CUESHEET_0_FLY_MOVE  ( 0) /*   */
-#define CRI_CUESHEET_0_HIT       ( 1) /*   */
-#define CRI_CUESHEET_0_PLAY      ( 2) /*   */
-#define CRI_CUESHEET_0_PUSH_KEY  ( 3) /*   */
-#define CRI_CUESHEET_0_RESULT    ( 4) /*   */
-#define CRI_CUESHEET_0_THROW     ( 5) /*   */
-#define CRI_CUESHEET_0_TITLE     ( 6) /*   */
-#define CRI_CUESHEET_0_VANISH    ( 7) /*   */
+#define CRI_CUESHEET_0_FLY_MOVE  ( 0)	//プレイヤーの移動SE
+#define CRI_CUESHEET_0_HIT       ( 1)	//欠片とワイヤーが当たったSE
+#define CRI_CUESHEET_0_PLAY      ( 2)	//ゲームプレイBGM
+#define CRI_CUESHEET_0_PUSH_KEY  ( 3)	//タイトルのスペースキーが押された際のSE
+#define CRI_CUESHEET_0_RESULT    ( 4)	//リザルトBGN
+#define CRI_CUESHEET_0_THROW     ( 5)	//ワイヤーを投げたSE
+#define CRI_CUESHEET_0_TITLE     ( 6)	//タイトルBGM
+#define CRI_CUESHEET_0_VANISH    ( 7)	//欠片と針が当たって欠片が消えるSE
 
 /* Block List (Block Index) */
 
