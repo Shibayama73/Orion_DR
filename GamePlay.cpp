@@ -151,6 +151,8 @@ int GamePlay::UpdateGame()
 	if (g_keyTracker->pressed.Space)
 	{
 		m_player->WireShot();
+		//	Œø‰Ê‰¹
+		ADX2Le::Play(CRI_CUESHEET_0_THROW);
 	}
 
 
