@@ -291,6 +291,7 @@ int GamePlay::UpdateGame()
 	//écÇËéûä‘Ç™ÇOÇ…Ç»Ç¡ÇΩÇÁ
 	if (!(m_time->RemnantTime()))
 	{
+		FileIO(1, m_gauge->getGradation());
 		m_NextScene = OVER;
 	}
 	return m_NextScene;
@@ -324,8 +325,34 @@ void GamePlay::RenderGame()
 	m_time->Render();
 
 
+}
 
+int GamePlay::FileIO(int io, int score)
+{
+	char *Filename = "data.txt";
+	FILE *fp;
 
-
+	if (io == 0)
+	{
+		//ì«Ç›çûÇ›
+		fp = fopen(Filename, "r");
+		if (fp == NULL)
+		{
+			return 1;
+		}
+		fscanf(fp, "%d", &score);
+	}
+	else
+	{
+		//èëÇ´çûÇ›
+		fp = fopen(Filename, "w");
+		if (fp == NULL)
+		{
+			return 1;
+		}
+		fprintf(fp, "%d", score);
+	}
+	fclose(fp);
+	return 0;
 }
 

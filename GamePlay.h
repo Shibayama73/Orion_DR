@@ -30,6 +30,8 @@ public:
 	int UpdateGame();	//	データの更新
 	void RenderGame();	//	描画する
 
+	int FileIO(int io, int score);
+
 
 private:
 	DX::DeviceResources* m_deviceResources;
