@@ -30,8 +30,8 @@ GameOver::GameOver()
 
 	m_grpX = 0.0f;
 	m_grpY = 0.0f;
-	m_grpW = 26.0f;
-	m_grpH = 32.0f;
+	m_grpW = 60.0f;
+	m_grpH = 80.0f;
 
 	if (FileIO(0, &m_score))
 	{
@@ -45,11 +45,11 @@ GameOver::GameOver()
 
 	ComPtr<ID3D11Resource> resource;
 	DX::ThrowIfFailed(
-		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/background_result.jpg",
+		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/background_result.png",
 			resource.GetAddressOf(),
 			m_texture.ReleaseAndGetAddressOf()));
 	DX::ThrowIfFailed(
-		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/number2.png",
+		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/result.png",
 			resource.GetAddressOf(),
 			m_time_tex.ReleaseAndGetAddressOf()));
 
@@ -101,8 +101,8 @@ int GameOver::UpdateGame()
 	//}
 
 
-	//スペースキーでタイトルシーン
-	if (g_keyTracker->pressed.Space)
+	//エンターキーでタイトルシーン
+	if (g_keyTracker->pressed.Enter)
 	{
 		m_NextScene = TITLE;
 	}
@@ -121,7 +121,7 @@ void GameOver::RenderGame()
 	m_spriteBatch->End();
 	//==========================================================================================
 
-	DrawNum(100, 400, m_score);
+	DrawNum(500, 400, m_score);
 }
 
 //∞------------------------------------------------------------------∞

@@ -29,7 +29,7 @@ using Microsoft::WRL::ComPtr;
 using namespace std;
 
 //§ŒÀŠÔ
-const int TIME_MAX = 72;
+const int TIME_MAX = 24;
 
 
 //‡------------------------------------------------------------------‡
@@ -39,8 +39,8 @@ const int TIME_MAX = 72;
 Time::Time()
 {
 	//”’l‚Ì‰Šú‰»
-	//m_current_time = 0;
-	m_current_time = 70;
+	m_current_time = 0;
+	//m_current_time = 70;
 
 	m_remnant_time = 10;
 	m_spdX = 0.0f;

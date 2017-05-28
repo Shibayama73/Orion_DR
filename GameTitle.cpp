@@ -37,7 +37,10 @@ GameTitle::GameTitle()
 		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/background_title.png",
 			resource.GetAddressOf(),
 			m_texture.ReleaseAndGetAddressOf()));
-
+	DX::ThrowIfFailed(
+		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/title_font.png",
+			resource.GetAddressOf(),
+			m_texture2.ReleaseAndGetAddressOf()));
 	//	リソースから背景のテクスチャと判断
 	ComPtr<ID3D11Texture2D> clock;
 	DX::ThrowIfFailed(resource.As(&clock));
@@ -47,8 +50,8 @@ GameTitle::GameTitle()
 	clock->GetDesc(&clockDesc);
 
 	//	テクスチャ原点を画像の中心にする
-	m_origin.x = float(clockDesc.Width / 2.0f);
-	m_origin.y = float(clockDesc.Height / 2.0f);
+	m_origin.x = 0.0f;
+	m_origin.y = 0.0f;
 
 	//	表示座標を画面中央に指定
 	m_screenPos.x = m_deviceResources->GetOutputSize().right / 2.0f;
@@ -85,8 +88,8 @@ int GameTitle::UpdateGame()
 	//	m_NextScene = PLAY;
 	//}
 
-	//スペースキーでプレイシーン
-	if (g_keyTracker->pressed.Space)
+	//エンターキーでプレイシーン
+	if (g_keyTracker->pressed.Enter)
 	{
 		//	効果音
 		ADX2Le::Play(CRI_CUESHEET_0_PUSH_KEY);
@@ -102,8 +105,8 @@ void GameTitle::RenderGame()
 	//	スプライトの描画========================================================================
 	CommonStates m_states(m_deviceResources->GetD3DDevice());
 	m_spriteBatch->Begin(SpriteSortMode_Deferred, m_states.NonPremultiplied());	//NonPremultipliedで不透明の設定
-	m_spriteBatch->Draw(m_texture.Get(), m_screenPos, nullptr, Colors::White, 0.f, m_origin);
-
+	m_spriteBatch->Draw(m_texture.Get(), Vector2(0, 0), nullptr, Colors::White, 0.f, m_origin);
+	m_spriteBatch->Draw(m_texture2.Get(), Vector2(220,520), nullptr, Colors::White, 0.f, m_origin);
 	m_spriteBatch->End();
 	//==========================================================================================
 
