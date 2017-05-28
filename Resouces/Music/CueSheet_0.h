@@ -23,7 +23,7 @@
 #define CRI_CUESHEET_0_HIT       ( 1)	//欠片とワイヤーが当たったSE
 #define CRI_CUESHEET_0_PLAY      ( 2)	//プレイシーンBGM
 #define CRI_CUESHEET_0_PUSH_KEY  ( 3)	//キーが押されたSE
-#define CRI_CUESHEET_0_RESULT    ( 4)	//リザルト(クリアシーン)BGM
+#define CRI_CUESHEET_0_RESULT    ( 4)	//リザルト(オーバーシーン)BGM
 #define CRI_CUESHEET_0_THROW     ( 5)	//ワイヤーを投げたSE
 #define CRI_CUESHEET_0_TITLE     ( 6)	//タイトルシーンBGM
 #define CRI_CUESHEET_0_VANISH    ( 7)	//欠片と針が当たって欠片が消えるSE

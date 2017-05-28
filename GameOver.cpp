@@ -17,6 +17,9 @@
 #include "pch.h"
 #include <WICTextureLoader.h>
 
+//	サウンド
+#include "Resouces\Music\CueSheet_0.h"
+
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
 using Microsoft::WRL::ComPtr;
@@ -53,11 +56,18 @@ GameOver::GameOver()
 
 	//==========================================================================================
 
+	//	サウンドファイルの読み込み
+	ADX2Le::Initialize("Resouces/Music/OrionMusic.acf");
+	ADX2Le::LoadAcb("Resouces/Music/CueSheet_0.acb", "Resouces/Music/CueSheet_0.awb");
+
+	//	サウンド再生
+	ADX2Le::Play(CRI_CUESHEET_0_RESULT);
 }
 
 GameOver::~GameOver()
 {
-
+	//	サウンドライブラリの終了処理
+	ADX2Le::Finalize();
 }
 
 int GameOver::UpdateGame()
@@ -65,6 +75,10 @@ int GameOver::UpdateGame()
 	m_TimeCnt++;
 	m_NextScene = OVER;
 	m_scene = OVER;
+
+	//	サウンドの更新
+	ADX2Le::Update();
+
 	//if (m_TimeCnt > 120)
 	//{
 	//	m_NextScene = TITLE;

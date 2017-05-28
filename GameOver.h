@@ -11,6 +11,7 @@
 #include <SimpleMath.h>
 #include <SpriteBatch.h>
 #include "DeviceResources.h"
+#include "ADX2Le.h"
 
 class GameOver :public GameBase
 {
