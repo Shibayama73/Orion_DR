@@ -32,6 +32,9 @@ private:
 	DirectX::SimpleMath::Vector2 m_origin;
 
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_time_tex;	//通常時テクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_remaining_tex;	//通常時テクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_h_tex;	//通常時テクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_now_tex;	//通常時テクスチャ
 
 
 };

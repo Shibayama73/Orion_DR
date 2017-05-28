@@ -39,13 +39,15 @@ const int TIME_MAX = 72;
 Time::Time()
 {
 	//数値の初期化
-	m_current_time = 0;
+	//m_current_time = 0;
+	m_current_time = 70;
+
 	m_remnant_time = 10;
 	m_spdX = 0.0f;
 	m_spdY = 0.0f;
 	m_grpX = 0.0f;
-	m_grpY = 48.0f;
-	m_grpW = 25.0f;
+	m_grpY = 0.0f;
+	m_grpW = 26.0f;
 	m_grpH = 32.0f;
 	m_posX = 0.0f;
 	m_posY = 0.0f;
@@ -57,9 +59,21 @@ Time::Time()
 	//通常時画像
 	ComPtr<ID3D11Resource> time_resource;
 	DX::ThrowIfFailed(
-		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/number.png",
+		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/number2.png",
 			time_resource.GetAddressOf(),
 			m_time_tex.ReleaseAndGetAddressOf()));
+	DX::ThrowIfFailed(
+		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/remaining.png",
+			time_resource.GetAddressOf(),
+			m_remaining_tex.ReleaseAndGetAddressOf()));
+	DX::ThrowIfFailed(
+		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/time.png",
+			time_resource.GetAddressOf(),
+			m_h_tex.ReleaseAndGetAddressOf()));
+	DX::ThrowIfFailed(
+		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/now.png",
+			time_resource.GetAddressOf(),
+			m_now_tex.ReleaseAndGetAddressOf()));
 
 	//	リソースから背景のテクスチャと判断
 	ComPtr<ID3D11Texture2D> time;
@@ -87,11 +101,20 @@ Time::~Time()
 //∞------------------------------------------------------------------∞
 void Time::Render()
 {
+	CommonStates m_states(m_deviceResources->GetD3DDevice());
+	m_spriteBatch->Begin(SpriteSortMode_Deferred, m_states.NonPremultiplied());	//NonPremultipliedで不透明の設定
+	m_spriteBatch->Draw(m_remaining_tex.Get(), Vector2(100, 185), nullptr, Colors::White, 0.f, m_origin);
+	m_spriteBatch->Draw(m_now_tex.Get(), Vector2(100, 65), nullptr, Colors::White, 0.f, m_origin);
+	m_spriteBatch->Draw(m_h_tex.Get(), Vector2(180, 105), nullptr, Colors::White, 0.f, m_origin);
+	m_spriteBatch->Draw(m_h_tex.Get(), Vector2(180, 225), nullptr, Colors::White, 0.f, m_origin);
+
+	m_spriteBatch->End();
+
 	//現在の時間表示
-	DrawNum(180, 80, m_current_time - 1);
+	DrawNum(100, 90, m_current_time - 1);
 
 	//残りの時間表示
-	DrawNum(180, 180, m_remnant_time);
+	DrawNum(100, 210, m_remnant_time);
 
 
 }
@@ -160,11 +183,10 @@ void Time::DrawNum(float x, float y, int n)
 	{
 		while (w)
 		{
-			m_grpX = (w % 10) * 25;
+			m_grpX = (w % 10) * m_grpW;
 			rect = {(LONG)m_grpX, (LONG)m_grpY, (LONG)(m_grpX + m_grpW), (LONG)(m_grpY + m_grpH) };
-			m_spriteBatch->Draw(m_time_tex.Get(), Vector2((x - i * 25), y), &rect, Colors::White, 0.0f, Vector2(0, 0), Vector2(1, 1));
+			m_spriteBatch->Draw(m_time_tex.Get(), Vector2((x - i * m_grpW), y), &rect, Colors::White, 0.0f, Vector2(0, 0), Vector2(1, 1));
 
-			//DrawRectGraph(x - i * 25, y, (w % 10) * 25, 48, 25, 32, g_PongImage, TRUE, FALSE);
 			w = w / 10;
 			i++;
 		}
