@@ -31,7 +31,7 @@ GameTitle::GameTitle()
 
 	ComPtr<ID3D11Resource> resource;
 	DX::ThrowIfFailed(
-		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/img_orion.jpg",
+		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/background_title.jpg",
 			resource.GetAddressOf(),
 			m_texture.ReleaseAndGetAddressOf()));
 

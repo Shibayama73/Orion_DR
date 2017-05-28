@@ -49,30 +49,30 @@ GamePlay::GamePlay()
 	m_time_flag = 0;
 
 	////	描画読み込み============================================================================
-	//m_deviceResources = Game::m_deviceResources.get();
-	//m_spriteBatch = Game::m_spriteBatch.get();
+	m_deviceResources = Game::m_deviceResources.get();
+	m_spriteBatch = Game::m_spriteBatch.get();
 
-	//ComPtr<ID3D11Resource> resource;
-	//DX::ThrowIfFailed(
-	//	CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/clock.png",
-	//		resource.GetAddressOf(),
-	//		m_texture.ReleaseAndGetAddressOf()));
+	ComPtr<ID3D11Resource> resource;
+	DX::ThrowIfFailed(
+		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/background_play.jpg",
+			resource.GetAddressOf(),
+			m_texture.ReleaseAndGetAddressOf()));
 
-	////	リソースから背景のテクスチャと判断
-	//ComPtr<ID3D11Texture2D> clock;
-	//DX::ThrowIfFailed(resource.As(&clock));
+	//	リソースから背景のテクスチャと判断
+	ComPtr<ID3D11Texture2D> backgraund;
+	DX::ThrowIfFailed(resource.As(&backgraund));
 
-	////	テクスチャ情報
-	//CD3D11_TEXTURE2D_DESC clockDesc;
-	//clock->GetDesc(&clockDesc);
+	//	テクスチャ情報
+	CD3D11_TEXTURE2D_DESC backgraundDesc;
+	backgraund->GetDesc(&backgraundDesc);
 
-	////	テクスチャ原点を画像の中心にする
-	//m_origin.x = float(clockDesc.Width / 2.0f);
-	//m_origin.y = float(clockDesc.Height / 2.0f);
+	//	テクスチャ原点を画像の中心にする
+	m_origin.x = float(backgraundDesc.Width / 2.0f);
+	m_origin.y = float(backgraundDesc.Height / 2.0f);
 
-	////	表示座標を画面中央に指定
-	//m_screenPos.x = m_deviceResources->GetOutputSize().right / 2.0f;
-	//m_screenPos.y = m_deviceResources->GetOutputSize().bottom / 2.0f;
+	//	表示座標を画面中央に指定
+	m_screenPos.x = m_deviceResources->GetOutputSize().right / 2.0f;
+	m_screenPos.y = m_deviceResources->GetOutputSize().bottom / 2.0f;
 
 	////==========================================================================================
 
@@ -291,6 +291,13 @@ int GamePlay::UpdateGame()
 
 void GamePlay::RenderGame()
 {
+	////	スプライトの描画========================================================================
+	CommonStates m_states(m_deviceResources->GetD3DDevice());
+	m_spriteBatch->Begin(SpriteSortMode_Deferred, m_states.NonPremultiplied());	//NonPremultipliedで不透明の設定
+	m_spriteBatch->Draw(m_texture.Get(), m_screenPos, nullptr, Colors::White, 0.f, m_origin);
+
+	m_spriteBatch->End();
+	////==========================================================================================
 	//	時計描画
 	m_clock->Render();
 
@@ -312,13 +319,6 @@ void GamePlay::RenderGame()
 
 
 
-	////	スプライトの描画========================================================================
-	//CommonStates m_states(m_deviceResources->GetD3DDevice());
-	//m_spriteBatch->Begin(SpriteSortMode_Deferred, m_states.NonPremultiplied());	//NonPremultipliedで不透明の設定
-	//m_spriteBatch->Draw(m_texture.Get(), m_screenPos, nullptr, Colors::White, 0.f, m_origin);
-
-	//m_spriteBatch->End();
-	////==========================================================================================
 
 }
 

@@ -20,7 +20,7 @@
 #include "Time.h"
 #include "ADX2Le.h"
 
-const int FRAGMENT_MAX = 3;
+const int FRAGMENT_MAX = 20;
 
 class GamePlay :public GameBase
 {
