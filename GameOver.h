@@ -20,8 +20,10 @@ public:
 	int UpdateGame();	//	データの更新
 	void RenderGame();	//	描画する
 
+	//数字描画
 	void DrawNum(float x, float y, int n);
 
+	//ファイル読み書き
 	int FileIO(int io, int *score);
 
 private:
