@@ -228,19 +228,19 @@ void Player::run(DirectX::SimpleMath::Vector2 needle, DirectX::SimpleMath::Vecto
 	//	}
 
 	//}
-	//スペースーキーでワイヤー
-	if (g_keyTracker->pressed.Space)
-	{
-		for (int i = 0; i < WIRE_NUM; i++)
-		{
-			if (m_wire[i] == nullptr)
-			{
-				m_wire[i] = new Wire();
-				m_wire_posX[i] = m_posX;
-				break;
-			}
-		}
-	}
+	////スペースキーでワイヤー
+	//if (g_keyTracker->pressed.Space)
+	//{
+		//for (int i = 0; i < WIRE_NUM; i++)
+		//{
+		//	if (m_wire[i] == nullptr)
+		//	{
+		//		m_wire[i] = new Wire();
+		//		m_wire_posX[i] = m_posX;
+		//		break;
+		//	}
+		//}
+	//}
 	//ジャンプ処理
 	//if (m_jump_flug)
 	//{
@@ -346,6 +346,27 @@ Wire * Player::GetWire(int i)
 	}
 
 	return nullptr;
+}
+
+//∞------------------------------------------------------------------∞
+//∞*func：ワイヤーを発射する
+//∞*arg：なし
+//∞*return：なし
+//∞*heed：スペースキーが押されたら呼び出し
+//∞------------------------------------------------------------------∞
+void Player::WireShot()
+{
+	for (int i = 0; i < WIRE_NUM; i++)
+	{
+		//ワイヤーが作られてなかったら
+		if (m_wire[i] == nullptr)
+		{
+			m_wire[i] = new Wire();
+			m_wire_posX[i] = m_posX;
+			break;
+		}
+	}
+
 }
 
 //∞------------------------------------------------------------------∞

@@ -34,7 +34,7 @@ GameTitle::GameTitle()
 
 	ComPtr<ID3D11Resource> resource;
 	DX::ThrowIfFailed(
-		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/background_title.jpg",
+		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/background_title.png",
 			resource.GetAddressOf(),
 			m_texture.ReleaseAndGetAddressOf()));
 
