@@ -31,7 +31,7 @@ GameLogo::GameLogo()
 
 	ComPtr<ID3D11Resource> resource;
 	DX::ThrowIfFailed(
-		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/clock.png",
+		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/logo.png",
 			resource.GetAddressOf(),
 			m_texture.ReleaseAndGetAddressOf()));
 

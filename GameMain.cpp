@@ -17,7 +17,7 @@ GameMain::GameMain()
 	//m_base = new GamePlay();
 
 	//プロトタイプ用、タイトルから
-	m_base = new GameTitle();
+	m_base = new GameLogo();
 
 }
 
