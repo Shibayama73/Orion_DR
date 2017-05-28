@@ -304,7 +304,7 @@ void Clock::clockwise()
 	//	’Zj‚ªˆêŽüˆÈ“à‚Ì‚Æ‚«
 	if (m_rotShortPos <= 6.3f) {
 		//	‰ñ“]‚³‚¹‚é
-		m_rotShortPos += 0.001f;
+		m_rotShortPos += 0.003f;
 	}
 	else {
 		m_rotShortPos = 0.0f;

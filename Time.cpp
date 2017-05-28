@@ -29,7 +29,7 @@ using Microsoft::WRL::ComPtr;
 using namespace std;
 
 //êßå¿éûä‘
-const int TIME_MAX = 24;
+const int TIME_MAX = 12;
 
 
 //Åá------------------------------------------------------------------Åá
