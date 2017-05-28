@@ -147,6 +147,13 @@ int GamePlay::UpdateGame()
 	//	プレイヤーの更新
 	m_player->Update();
 
+	//スペースキーでワイヤー
+	if (g_keyTracker->pressed.Space)
+	{
+		m_player->WireShot();
+	}
+
+
 	//プレイヤーの所持しているワイヤーの保管
 	for (int i = 0; i < WIRE_NUM; i++)
 	{

@@ -64,7 +64,11 @@ public:
 	//*ワイヤーの情報を取得
 	Wire* GetWire(int i);
 
-	void Elimination(int i);		//ワイヤーを消滅させる関数
+	//*ワイヤーを発射させる関数
+	void WireShot();
+
+	//*ワイヤーを消滅させる関数
+	void Elimination(int i);
 
 
 private:
