@@ -17,6 +17,9 @@
 #include "pch.h"
 #include <WICTextureLoader.h>
 
+//	サウンド
+#include "Resouces\Music\CueSheet_0.h"
+
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
 using Microsoft::WRL::ComPtr;
@@ -72,6 +75,14 @@ GamePlay::GamePlay()
 	m_screenPos.y = m_deviceResources->GetOutputSize().bottom / 2.0f;
 
 	////==========================================================================================
+
+	//	サウンドファイルの読み込み
+	ADX2Le::Initialize("Resouces/Music/OrionMusic.acf");
+	ADX2Le::LoadAcb("Resouces/Music/CueSheet_0.acb", "Resouces/Music/CueSheet_0.awb");
+
+	//	サウンド再生
+	ADX2Le::Play(CRI_CUESHEET_0_PLAY);
+
 }
 
 GamePlay::~GamePlay()
@@ -94,6 +105,9 @@ GamePlay::~GamePlay()
 	//時計の破棄
 	delete m_time;
 
+	//	サウンドライブラリの終了処理
+	ADX2Le::Finalize();
+
 }
 
 int GamePlay::UpdateGame()
@@ -101,10 +115,12 @@ int GamePlay::UpdateGame()
 	m_NextScene = PLAY;
 	m_scene = PLAY;
 
-	//	各クラスの更新
+	//各クラスの更新===============================================//
+	//	サウンドの更新
+	ADX2Le::Update();
+
 	//	時計の更新
 	m_clock->Update();
-
 
 	//m_time->CurrentTime();
 
@@ -208,6 +224,8 @@ int GamePlay::UpdateGame()
 				{
 					//	欠片が消失する
 					m_fragment[i]->AttackTip();
+					//	効果音
+					ADX2Le::Play(CRI_CUESHEET_0_VANISH);
 					//	ゲージがカウントされる
 					m_gauge->addGradation(m_fragment[i]->State());
 
@@ -221,6 +239,8 @@ int GamePlay::UpdateGame()
 				{
 					//	欠片が消失する
 					m_fragment[i]->AttackTip();
+					//	効果音
+					ADX2Le::Play(CRI_CUESHEET_0_VANISH);
 					//	ゲージがカウントされる
 					m_gauge->addGradation(m_fragment[i]->State());
 
@@ -251,6 +271,9 @@ int GamePlay::UpdateGame()
 				{
 					//ワイヤーを消滅させる
 					m_player->Elimination(i);
+
+					//	効果音
+					ADX2Le::Play(CRI_CUESHEET_0_HIT);
 				}
 			}
 

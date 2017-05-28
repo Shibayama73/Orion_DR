@@ -62,7 +62,11 @@
     <ClInclude Include="Time.h">
       <Filter>Game</Filter>
     </ClInclude>
-    <ClInclude Include="Wire.h" />
+    <ClInclude Include="ADX2Le.h" />
+    <ClInclude Include="Resouces\Music\CueSheet_0.h" />
+    <ClInclude Include="Wire.h">
+      <Filter>Game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -112,6 +116,7 @@
     <ClCompile Include="Time.cpp">
       <Filter>Game</Filter>
     </ClCompile>
+    <ClCompile Include="ADX2Le.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
