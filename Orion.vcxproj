@@ -156,6 +156,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="ADX2Le.h" />
     <ClInclude Include="Clock.h" />
     <ClInclude Include="DeviceResources.h" />
     <ClInclude Include="Direct3D.h" />
@@ -173,11 +174,13 @@
     <ClInclude Include="ObjectBase.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Resouces\Music\CueSheet_0.h" />
     <ClInclude Include="StepTimer.h" />
     <ClInclude Include="Time.h" />
     <ClInclude Include="Wire.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ADX2Le.cpp" />
     <ClCompile Include="Clock.cpp" />
     <ClCompile Include="DeviceResources.cpp" />
     <ClCompile Include="Direct3D.cpp" />

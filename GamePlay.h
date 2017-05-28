@@ -18,6 +18,7 @@
 #include "Fragment.h"
 #include "Gauge.h"
 #include "Time.h"
+#include "ADX2Le.h"
 
 const int FRAGMENT_MAX = 3;
 
