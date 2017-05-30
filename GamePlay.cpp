@@ -301,13 +301,13 @@ int GamePlay::UpdateGame()
 
 void GamePlay::RenderGame()
 {
-	////	スプライトの描画========================================================================
+	//	スプライトの描画========================================================================
 	CommonStates m_states(m_deviceResources->GetD3DDevice());
 	m_spriteBatch->Begin(SpriteSortMode_Deferred, m_states.NonPremultiplied());	//NonPremultipliedで不透明の設定
 	m_spriteBatch->Draw(m_texture.Get(), m_screenPos, nullptr, Colors::White, 0.f, m_origin);
 
 	m_spriteBatch->End();
-	////==========================================================================================
+	//==========================================================================================
 	//	時計描画
 	m_clock->Render();
 
