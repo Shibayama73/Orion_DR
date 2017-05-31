@@ -210,7 +210,19 @@ void Player::run(DirectX::SimpleMath::Vector2 needle, DirectX::SimpleMath::Vecto
 	{
 		m_vec = RIGHT;
 		m_spdX += 3;
+	}
 
+	//左の壁の判定
+	if (m_posX - (GRP_WIDTH / 2)< 180)
+	{
+		m_posX = 180 + (GRP_WIDTH / 2);
+		m_spdX = 0;
+	}
+	//右の壁の判定
+	if (m_posX + (GRP_WIDTH / 2)> 750)
+	{
+		m_posX = 750-(GRP_WIDTH / 2);
+		m_spdX = 0;
 	}
 
 	//スペースキーでジャンプ処理
