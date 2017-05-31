@@ -21,14 +21,14 @@
 #include <Windows.h>
 #include <Windef.h>
 
-
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
 using Microsoft::WRL::ComPtr;
 
 const float ORIGINE_X = 450.0f;
 const float ORIGINE_Y = 310.0f;
-const float RADIUS = 310.0f;
+const float LONG_RADIUS = 310.0f;
+const float SHORT_RADIUS = 198.0f;
 
 //==================================//
 //ì‡óe		ÉRÉìÉXÉgÉâÉNÉ^
@@ -55,10 +55,6 @@ Clock::Clock()
 	//	âÒì]
 	m_rotLongPos = 0.0f;	//í∑êjâÒì]
 	m_rotShortPos = 0.0f;	//íZêjâÒì]
-
-	//	ç¿ïWäpìx
-//	m_LTPos = 0.0f;		//í∑êjç¿ïWäpìx
-//	m_STPos = 0.0f;		//íZêjç¿ïWäpìx
 
 	//	ï`âÊì«Ç›çûÇ›============================================================================
 	m_deviceResources = Game::m_deviceResources.get();
@@ -228,19 +224,12 @@ DirectX::SimpleMath::Vector2 Clock::getLongTipPos()
 {
 	Vector2 position;
 
-	position.x = (sinf(-m_rotLongPos) * 310.0f) + 450.0f;
- 	position.y = (cosf(-m_rotLongPos) * 310.0f) + 310.0f;
-
+	//position.x = (sinf(-m_rotLongPos) * 310.0f) + 450.0f;
+ 	//position.y = (cosf(-m_rotLongPos) * 310.0f) + 310.0f;
+	position.x = (sinf(-m_rotLongPos) * LONG_RADIUS) + ORIGINE_X;
+	position.y = (cosf(-m_rotLongPos) * LONG_RADIUS) + ORIGINE_Y;
 
 	return position;
-
-	////	í∑êjäpìx
-	//float m_longTipAng;
-	////	âÒì]äpìxÇÃéÊìæ
-	//m_longTipAng = XMConvertToRadians(m_LTPos);
-	////	éOäpä÷êî
-	//m_longTipPos = Vector2(ORIGINE_X + (RADIUS * cosf(m_longTipAng)), ORIGINE_Y + (RADIUS * sinf(m_longTipAng)));
-	//return m_longTipPos;
 }
 
 //==================================//
@@ -252,17 +241,12 @@ DirectX::SimpleMath::Vector2 Clock::getShortTipPos()
 {
 	Vector2 position;
 
-	position.x = (sinf(-m_rotShortPos) * 198.0f) + 450.0f;
-	position.y = (cosf(-m_rotShortPos) * 198.0f) + 310.0f;
+	//position.x = (sinf(-m_rotShortPos) * 198.0f) + 450.0f;
+	//position.y = (cosf(-m_rotShortPos) * 198.0f) + 310.0f;
+	position.x = (sinf(-m_rotShortPos) * SHORT_RADIUS) + ORIGINE_X;
+	position.y = (cosf(-m_rotShortPos) * SHORT_RADIUS) + ORIGINE_Y;
 
 	return position;
-
-	////	íZêjäpìx
-	//float m_shortTipAng;
-	////	âÒì]äpìxÇÃéÊìæ
-	//m_shortTipAng = XMConvertToRadians(m_STPos);
-	//m_shortTipPos = Vector2(ORIGINE_X + (RADIUS * cosf(m_shortTipAng)), ORIGINE_Y + (RADIUS * sinf(m_shortTipAng)));
-	//return m_shortTipPos;
 }
 
 //==================================//
@@ -309,24 +293,6 @@ void Clock::clockwise()
 	else {
 		m_rotShortPos = 0.0f;
 	}
-
-	////	êÊí[ç¿ïWäpìxÇ™360ìxà»ì‡ÇÃÇ∆Ç´
-	//if (m_LTPos <= 360.0f) {
-	//	//	êÊí[ç¿ïWÇÃäpìxÇå∏ÇÁÇ∑
-	//	m_LTPos += 0.01f;
-	//}
-	//else {
-	//	m_LTPos = 0.0f;
-	//}
-
-	////	êÊí[ç¿ïWäpìxÇ™360ìxà»ì‡ÇÃÇ∆Ç´
-	//if (m_STPos <= 360.0f) {
-	//	//	êÊí[ç¿ïWÇÃäpìxÇå∏ÇÁÇ∑
-	//	m_STPos += 0.01f;
-	//}
-	//else {
-	//	m_STPos = 0.0f;
-	//}
 
 }
 

@@ -11,6 +11,9 @@
     <Filter Include="Game">
       <UniqueIdentifier>{0834be7e-0543-4c81-8fef-a51ebcfdc703}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\Scene">
+      <UniqueIdentifier>{3b053690-1c4e-42f8-8c9d-fa3ed829d7a9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -22,27 +25,6 @@
       <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="ObjectBase.h">
-      <Filter>Game</Filter>
-    </ClInclude>
-    <ClInclude Include="GameTitle.h">
-      <Filter>Game</Filter>
-    </ClInclude>
-    <ClInclude Include="GamePlay.h">
-      <Filter>Game</Filter>
-    </ClInclude>
-    <ClInclude Include="GameOver.h">
-      <Filter>Game</Filter>
-    </ClInclude>
-    <ClInclude Include="GameLogo.h">
-      <Filter>Game</Filter>
-    </ClInclude>
-    <ClInclude Include="GameMain.h">
-      <Filter>Game</Filter>
-    </ClInclude>
-    <ClInclude Include="GameClear.h">
-      <Filter>Game</Filter>
-    </ClInclude>
-    <ClInclude Include="GameBase.h">
       <Filter>Game</Filter>
     </ClInclude>
     <ClInclude Include="Clock.h">
@@ -67,6 +49,27 @@
     <ClInclude Include="Wire.h">
       <Filter>Game</Filter>
     </ClInclude>
+    <ClInclude Include="GamePlay.h">
+      <Filter>Game\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="GameOver.h">
+      <Filter>Game\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="GameMain.h">
+      <Filter>Game\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="GameLogo.h">
+      <Filter>Game\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="GameClear.h">
+      <Filter>Game\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="GameBase.h">
+      <Filter>Game\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="GameTitle.h">
+      <Filter>Game\Scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -76,24 +79,6 @@
       <Filter>Common</Filter>
     </ClCompile>
     <ClCompile Include="ObjectBase.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
-    <ClCompile Include="GameTitle.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
-    <ClCompile Include="GamePlay.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
-    <ClCompile Include="GameOver.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
-    <ClCompile Include="GameLogo.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
-    <ClCompile Include="GameMain.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
-    <ClCompile Include="GameClear.cpp">
       <Filter>Game</Filter>
     </ClCompile>
     <ClCompile Include="Clock.cpp">
@@ -117,6 +102,24 @@
       <Filter>Game</Filter>
     </ClCompile>
     <ClCompile Include="ADX2Le.cpp" />
+    <ClCompile Include="GamePlay.cpp">
+      <Filter>Game\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="GameOver.cpp">
+      <Filter>Game\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="GameMain.cpp">
+      <Filter>Game\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="GameLogo.cpp">
+      <Filter>Game\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="GameClear.cpp">
+      <Filter>Game\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="GameTitle.cpp">
+      <Filter>Game\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

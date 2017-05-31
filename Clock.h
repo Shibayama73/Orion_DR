@@ -66,13 +66,8 @@ private:
 	//	回転
 	float m_rotLongPos;		//長針回転
 	float m_rotShortPos;	//短針回転
-	//	座標角度
-//	float m_LTPos;		//長針座標角度
-//	float m_STPos;		//短針座標角度
 
 	//デバック用
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_time_tex;	//通常時テクスチャ
-
-
 
 };
