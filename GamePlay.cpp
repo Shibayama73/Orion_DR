@@ -226,7 +226,7 @@ int GamePlay::UpdateGame()
 			}
 
 			//’·j‚Æ’Zj‚ÌŠÔ‚ÌŠp‚ª60“xˆÈ‰º‚Ìê‡‚Ì‚İ”»’è
-			if (under_angle > 0 && under_angle < 60)
+			if (under_angle > 0 && under_angle < 10)
 			{
 				//¬‚³‚¢•û‚Ìj‚ÌŠp“x‚æ‚è‚àŒ‡•Ğ‚ÌŠp“x‚ª‘å‚«‚¢A‚©‚Â‘å‚«‚¢j‚ÌŠp“x‚æ‚è‚àŒ‡•Ğ‚ÌŠp“x‚ª¬‚³‚¢ê‡
 				if ((small_angle < m_fragment[i]->Angle(m_clock->getOrigin())) && (big_angle > m_fragment[i]->Angle(m_clock->getOrigin())))
