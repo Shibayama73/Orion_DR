@@ -48,7 +48,7 @@ GamePlay::GamePlay()
 	//時刻加算用変数の初期化
 	m_time_flag = 0;
 
-	////	描画読み込み============================================================================
+	//	描画読み込み============================================================================
 	m_deviceResources = Game::m_deviceResources.get();
 	m_spriteBatch = Game::m_spriteBatch.get();
 
@@ -74,7 +74,7 @@ GamePlay::GamePlay()
 	m_screenPos.x = m_deviceResources->GetOutputSize().right / 2.0f;
 	m_screenPos.y = m_deviceResources->GetOutputSize().bottom / 2.0f;
 
-	////==========================================================================================
+	//==========================================================================================
 
 	//	サウンドファイルの読み込み
 	ADX2Le::Initialize("Resouces/Music/OrionMusic.acf");
