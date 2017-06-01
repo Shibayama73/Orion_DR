@@ -27,10 +27,10 @@ Gauge::Gauge()
 	m_gradation = 0;
 	m_spdX = 0.0f;
 	m_spdY = 0.0f;
-	m_grpX = 115.0f;
-	m_grpY = 571.0f;
-	m_grpW = -115.0f;	//115
-	m_grpH = -50.0f;	//571
+	m_grpX = 115.0f;	//115
+	m_grpY = 550.0f;	//571
+	m_grpW = -115.0f;
+	m_grpH = -5.0f;		//1ŒÂ‚É‚Â‚«1ƒQ[ƒW•ª(’²®•K{)
 	m_posX = 0.0f;
 	m_posY = 0.0f;
 
@@ -104,11 +104,11 @@ void Gauge::Render()
 	m_spriteBatch->Draw(m_hourglassTex.Get(), m_screenPos, nullptr, Colors::White, 0.0f, m_origin);
 	//	ƒQ[ƒWF
 	RECT rect;
-	//if (m_gradation)
+	if (m_gradation)
 	{
 	//	m_gradation = (m_gradation % 14) * m_grpW;
 		//rect = { (LONG)m_grpX, (LONG)m_grpY, (LONG)(m_grpX + m_grpW), (LONG)(m_grpY + m_grpH) };
-		rect = { (LONG)m_grpX, (LONG)m_grpY, (LONG)(m_grpX + m_grpW), (LONG)(m_grpY + m_grpH) };
+		rect = { (LONG)m_grpX, (LONG)m_grpY, (LONG)(m_grpX + m_grpW), (LONG)(m_grpY + (m_grpH * m_gradation)) };
 		//	ƒQ[ƒWF‚Ì•`‰æ
 		m_spriteBatch->Draw(m_colorTex.Get(), m_gradationPos, &rect, Colors::White, 0.0f, m_gradationOrigin);
 
