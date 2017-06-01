@@ -279,7 +279,7 @@ void Clock::clockwise()
 	//	’·j‚ªˆêŽüˆÈ“à‚Ì‚Æ‚«
 	if (m_rotLongPos <= 6.3f) {
 		//	‰ñ“]‚³‚¹‚é
-		m_rotLongPos += 0.01f;
+		m_rotLongPos += 0.05f;
 	}
 	else {
 		m_rotLongPos = 0.0f;
@@ -288,7 +288,7 @@ void Clock::clockwise()
 	//	’Zj‚ªˆêŽüˆÈ“à‚Ì‚Æ‚«
 	if (m_rotShortPos <= 6.3f) {
 		//	‰ñ“]‚³‚¹‚é
-		m_rotShortPos += 0.003f;
+		m_rotShortPos += 0.01f;
 	}
 	else {
 		m_rotShortPos = 0.0f;

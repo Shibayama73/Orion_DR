@@ -340,7 +340,7 @@ void Player::Update()
 	}
 
 	//カウントが１２０フレーム超えたら、状態をノーマルに戻す
-	if (m_player_revival > 120)
+	if (m_player_revival > 180)
 	{
 		m_state = NORMAL;
 		m_player_revival = 0;
@@ -434,7 +434,7 @@ void Player::WireShot()
 		//ワイヤーが作られてなかったら
 		if (m_wire[i] == nullptr)
 		{
-			m_wire[i] = new Wire();
+			m_wire[i] = new Wire(m_posX);
 			m_wire_posX[i] = m_posX;
 			break;
 		}

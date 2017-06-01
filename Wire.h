@@ -15,7 +15,7 @@
 class Wire : public ObjectBase
 {
 public:
-	Wire();
+	Wire(float posX);
 	~Wire();
 
 	void Update(float pos_x);

@@ -139,7 +139,7 @@ int GamePlay::UpdateGame()
 		}
 		m_time_flag++;
 
-		if (m_time_flag > 3)
+		if (m_time_flag > 1)
 		{
 			m_time_flag = 0;
 		}

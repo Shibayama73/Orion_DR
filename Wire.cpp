@@ -27,10 +27,11 @@ using Microsoft::WRL::ComPtr;
 //∞*func：コンストラクタ
 //∞*arg：なし
 //∞------------------------------------------------------------------∞
-Wire::Wire()
+Wire::Wire(float posX)
 {
 
 	m_state = true;		//表示状態
+	m_posX = posX;
 	m_posY = 650;
 
 	m_grpH = 64.0f;
@@ -84,7 +85,7 @@ void Wire::Update(float pos_x)
 	{
 		m_posX = pos_x;
 		//m_posY -=3;
-		m_posY -= 10;
+		m_posY -= 15;
 
 	}
 	if (m_state && m_posY < 0)

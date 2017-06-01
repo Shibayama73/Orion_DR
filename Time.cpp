@@ -111,7 +111,7 @@ void Time::Render()
 	m_spriteBatch->End();
 
 	//現在の時間表示
-	DrawNum(100, 90, m_current_time - 1);
+	DrawNum(100, 90, m_current_time);
 
 	//残りの時間表示
 	DrawNum(100, 210, m_remnant_time);
@@ -141,7 +141,7 @@ bool Time::RemnantTime()
 	if (m_remnant_time != 0)
 	{
 		//制限時間-今の時間を残りの時間にする
-		m_remnant_time = TIME_MAX - (m_current_time-1);
+		m_remnant_time = TIME_MAX - (m_current_time);
 		if (m_remnant_time > TIME_MAX)
 		{
 			m_remnant_time = TIME_MAX;
