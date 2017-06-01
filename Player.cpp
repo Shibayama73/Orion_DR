@@ -216,13 +216,25 @@ void Player::run(DirectX::SimpleMath::Vector2 needle, DirectX::SimpleMath::Vecto
 	if (g_keyTracker->pressed.Left)
 	{
 		m_vec = LEFT;
-		m_spdX -= 3;
+		m_spdX = -3;
 	}
 	if (g_keyTracker->pressed.Right)
 	{
 		m_vec = RIGHT;
-		m_spdX += 3;
+		m_spdX = 3;
 	}
+	//キーを放したらspdをもとに戻す
+	if (g_keyTracker->released.Left)
+	{
+		m_spdX = 0.0f;
+	}
+	if (g_keyTracker->released.Right)
+	{
+		m_spdX = 0.0f;
+	}
+
+
+
 
 	//左の壁の判定
 	if (m_posX - (GRP_WIDTH / 2) < 180)
@@ -297,11 +309,6 @@ void Player::run(DirectX::SimpleMath::Vector2 needle, DirectX::SimpleMath::Vecto
 		//}
 	//}
 
-	//キーを放したらspdをもとに戻す
-	if (g_keyTracker->released.Left || g_keyTracker->released.Right)
-	{
-		m_spdX = 0.0f;
-	}
 
 }
 
@@ -314,6 +321,20 @@ void Player::run(DirectX::SimpleMath::Vector2 needle, DirectX::SimpleMath::Vecto
 
 void Player::Update()
 {
+	//もしダメージ状態なら
+	if (m_state == DAMAGE)
+	{
+		m_spdX = 0;
+		m_player_revival++;
+	}
+
+	//カウントが１２０フレーム超えたら、状態をノーマルに戻す
+	if (m_player_revival > 180)
+	{
+		m_state = NORMAL;
+		m_player_revival = 0;
+	}
+
 	m_posX += m_spdX;
 	m_posY += m_spdY;
 
@@ -332,19 +353,6 @@ void Player::Update()
 		}
 	}
 
-
-	//もしダメージ状態なら
-	if (m_state == DAMAGE)
-	{
-		m_player_revival++;
-	}
-
-	//カウントが１２０フレーム超えたら、状態をノーマルに戻す
-	if (m_player_revival > 180)
-	{
-		m_state = NORMAL;
-		m_player_revival = 0;
-	}
 
 }
 
