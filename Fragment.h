@@ -39,7 +39,7 @@ public:
 	void AttackTip();		//j‚Æ“–‚½‚Á‚½Û‚Éj‚Æ“¯‚¶•ûŒü‚É“®‚­ˆ—
 
 
-public:
+private:
 	DX::DeviceResources* m_deviceResources;
 	DirectX::SpriteBatch* m_spriteBatch;
 	DirectX::SimpleMath::Vector2 m_origin;

@@ -1,13 +1,13 @@
 //∞----------------------------------------------------∞
-//∞*ファイル名：Fragment.cpp							∞
-//∞*内容　　　：欠片クラス								∞
+//∞*ファイル名：Screw.cpp								∞
+//∞*内容　　　：ネジクラス								∞
 //∞*制作者　　：Ayaka Yamanaka							∞
-//∞*制作日時　：2017.05.22 							∞
+//∞*制作日時　：2017.06.01								∞
 //∞----------------------------------------------------∞
 
 
 #include "pch.h"
-#include "Fragment.h"
+#include "Screw.h"
 
 #include "GameMain.h"
 #include <d3d11.h>
@@ -26,11 +26,13 @@ using namespace DirectX;
 using namespace DirectX::SimpleMath;
 using Microsoft::WRL::ComPtr;
 
+
 //∞------------------------------------------------------------------∞
 //∞*func：コンストラクタ
 //∞*arg：なし
 //∞------------------------------------------------------------------∞
-Fragment::Fragment()
+
+Screw::Screw()
 {
 	m_posX = rand() % 470 + 200;
 	m_posY = (rand() % -1000) - 1010;
@@ -41,49 +43,39 @@ Fragment::Fragment()
 
 
 
-	m_state = FRAGMENT_NORMAL;
+	m_state = SCREW_NORMAL;
 
 	//描画用
 	m_deviceResources = Game::m_deviceResources.get();
 	m_spriteBatch = Game::m_spriteBatch.get();
 
 	//通常時画像
-	ComPtr<ID3D11Resource> fragment_resource;
+	ComPtr<ID3D11Resource> screw_resource;
 	DX::ThrowIfFailed(
-		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/star.png",
-			fragment_resource.GetAddressOf(),
-			m_fragment_tex.ReleaseAndGetAddressOf()));
-	//キャッチ後画像
-	ComPtr<ID3D11Resource> fragment_catch_resource;
-	DX::ThrowIfFailed(
-		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/star_catch.png",
-			fragment_catch_resource.GetAddressOf(),
-			m_fragment_catch_tex.ReleaseAndGetAddressOf()));
-
+		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/bolt.png",
+			screw_resource.GetAddressOf(),
+			m_screw_tex.ReleaseAndGetAddressOf()));
 
 	//	リソースから背景のテクスチャと判断
-	ComPtr<ID3D11Texture2D> fragment;
-	DX::ThrowIfFailed(fragment_resource.As(&fragment));
-	DX::ThrowIfFailed(fragment_catch_resource.As(&fragment));
+	ComPtr<ID3D11Texture2D> screw;
+	DX::ThrowIfFailed(screw_resource.As(&screw));
 
 	//	テクスチャ情報
-	CD3D11_TEXTURE2D_DESC fragmentDesc;
-	fragment->GetDesc(&fragmentDesc);
+	CD3D11_TEXTURE2D_DESC screwDesc;
+	screw->GetDesc(&screwDesc);
 
 	//	テクスチャ原点を画像の中心にする
-	m_origin.x = float(fragmentDesc.Width / 2.0f);
-	m_origin.y = float(fragmentDesc.Height / 2.0f);
-
+	m_origin.x = float(screwDesc.Width / 2.0f);
+	m_origin.y = float(screwDesc.Height / 2.0f);
 
 }
-
 
 //∞------------------------------------------------------------------∞
 //∞*func：デストラクタ
 //∞*arg：なし
 //∞*return：なし
 //∞------------------------------------------------------------------∞
-Fragment::~Fragment()
+Screw::~Screw()
 {
 }
 
@@ -92,17 +84,11 @@ Fragment::~Fragment()
 //∞*arg：なし
 //∞*return：なし
 //∞------------------------------------------------------------------∞
-void Fragment::Update(DirectX::SimpleMath::Vector2 origin)
+void Screw::Update()
 {
-	m_spdY += 0.01;
+	m_spdY += 0.02;
 	m_posY += m_spdY;
 	m_posX += m_spdX;
-
-	if (m_state == FRAGMENT_CATCH)
-	{
-		m_spdX = 0;
-		m_spdY = 0;
-	}
 
 
 	//場外に出ているかの判定
@@ -114,23 +100,14 @@ void Fragment::Update(DirectX::SimpleMath::Vector2 origin)
 //∞*arg：なし
 //∞*return：なし
 //∞------------------------------------------------------------------∞
-void Fragment::Render()
+void Screw::Render()
 {
 	//描画
 	CommonStates m_states(m_deviceResources->GetD3DDevice());
 	m_spriteBatch->Begin(SpriteSortMode_Deferred, m_states.NonPremultiplied());	//NonPremultipliedで不透明の設定
 
-	switch (m_state)
-	{
-	case FRAGMENT_NORMAL:
-		m_spriteBatch->Draw(m_fragment_tex.Get(), Vector2(m_posX, m_posY), nullptr, Colors::White, 0.f, m_origin);
-		break;
+	m_spriteBatch->Draw(m_screw_tex.Get(), Vector2(m_posX, m_posY), nullptr, Colors::White, 0.f, m_origin);
 
-	case FRAGMENT_CATCH:
-		m_spriteBatch->Draw(m_fragment_catch_tex.Get(), Vector2(m_posX, m_posY), nullptr, Colors::White, 0.f, m_origin);
-		break;
-	}
-	
 
 	m_spriteBatch->End();
 
@@ -141,23 +118,13 @@ void Fragment::Render()
 //∞*arg：なし
 //∞*return：true（ある）、false（ない）
 //∞------------------------------------------------------------------∞
-void Fragment::Outdoor()
+void Screw::Outdoor()
 {
 	if (m_posY + m_grpH > 700)
 	{
-		m_state = FRAGMENT_LOSS;
+		m_state = SCREW_LOSS;
 	}
 
-}
-
-//∞------------------------------------------------------------------∞
-//∞*func：表示情報の取得関数（m_state）
-//∞*arg：なし
-//∞*return：m_state
-//∞------------------------------------------------------------------∞
-int Fragment::State()
-{
-	return m_state;
 }
 
 //∞------------------------------------------------------------------∞
@@ -166,7 +133,7 @@ int Fragment::State()
 //∞*return：true（当たっている）、false（当たっていない）
 //∞------------------------------------------------------------------∞
 //反射判定
-bool Fragment::Collision(ObjectBase* A)
+bool Screw::Collision(ObjectBase* A)
 {
 	float x1 = m_posX + m_grpW / 2;
 	float y1 = m_posY + m_grpH / 2;
@@ -178,50 +145,18 @@ bool Fragment::Collision(ObjectBase* A)
 	//円のあたり判定
 	if ((x1 - x2)*(x1 - x2) + (y1 - y2)*(y1 - y2) <= (r1 + r2)*(r1 + r2))
 	{
-		//欠片が通常状態なら当たっている
-		if (m_state == FRAGMENT_NORMAL)
-		{
-			m_state = FRAGMENT_CATCH;
-			return true;
-		}
+		m_state = SCREW_LOSS;
+		return true;
 	}
 	return false;
 }
 
 //∞------------------------------------------------------------------∞
-//∞*func：欠片の角度を求める
-//∞*arg：針の原点座標
-//∞*return：なし
-//∞*heed：欠片が当たっていたら常に取得（針との当たり判定に使用）
-//∞------------------------------------------------------------------∞
-float Fragment::Angle(Vector2 tip_origin)
-{
-	float angle;
-	angle = atan2f((m_posY - tip_origin.y) , (m_posX - tip_origin.x));
-	angle /= 3.1415926535;
-	angle *= 180;
-	angle += 360;
-
-	angle = (int)angle % 360;
-
-	//if (angle > 180)
-	//{
-	//	angle-
-	//}
-
- 	return angle;
-}
-
-//∞------------------------------------------------------------------∞
-//∞*func：針と当たったら、欠片を消す巻子
+//∞*func：状態を取得する
 //∞*arg：なし
-//∞*return：なし
-//∞*heed：
+//∞*return：m_state
 //∞------------------------------------------------------------------∞
-void Fragment::AttackTip()
+int Screw::State()
 {
-	m_state = FRAGMENT_LOSS;
+	return m_state;
 }
-
-
-

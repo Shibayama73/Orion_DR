@@ -70,6 +70,9 @@
     <ClInclude Include="GameTitle.h">
       <Filter>Game\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="Screw.h">
+      <Filter>Game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -119,6 +122,9 @@
     </ClCompile>
     <ClCompile Include="GameTitle.cpp">
       <Filter>Game\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Screw.cpp">
+      <Filter>Game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

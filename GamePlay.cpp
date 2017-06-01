@@ -42,6 +42,9 @@ GamePlay::GamePlay()
 		m_fragment[i] = new Fragment();
 	}
 
+	//ネジの生成
+	m_screw = new Screw();
+
 	//	ゲージの生成
 	m_gauge = new Gauge();
 
@@ -99,6 +102,9 @@ GamePlay::~GamePlay()
 		delete m_fragment[i];
 	}
 
+	//ネジの破棄
+	delete m_screw;
+
 	//	ゲージの破棄
 	delete m_gauge;
 
@@ -141,19 +147,25 @@ int GamePlay::UpdateGame()
 	}
 
 	//m_player->Needle(m_clock->getLongTipPos(), m_clock->getLongTipOrigin());
-	//	プレイヤーの移動処理
-	m_player->run(m_clock->getLongTipPos(), m_clock->getOrigin());
+
+	//プレイヤーの状態が普通の時
+	if (m_player->State() == NORMAL)
+	{
+		//	プレイヤーの移動処理
+		m_player->run(m_clock->getLongTipPos(), m_clock->getOrigin());
+		//スペースキーでワイヤー
+		if (g_keyTracker->pressed.Space)
+		{
+			m_player->WireShot();
+			//	効果音
+			ADX2Le::Play(CRI_CUESHEET_0_THROW);
+		}
+	}
+
+
 
 	//	プレイヤーの更新
 	m_player->Update();
-
-	//スペースキーでワイヤー
-	if (g_keyTracker->pressed.Space)
-	{
-		m_player->WireShot();
-		//	効果音
-		ADX2Le::Play(CRI_CUESHEET_0_THROW);
-	}
 
 
 	//プレイヤーの所持しているワイヤーの保管
@@ -162,6 +174,22 @@ int GamePlay::UpdateGame()
 		m_player_wire[i] = m_player->GetWire(i);
 	}
 
+	//ネジの更新
+	m_screw->Update();
+
+	//ネジが失われていたら
+	if (m_screw->State() == SCREW_LOSS)
+	{
+		//破棄して新たに生成する
+		delete m_screw;
+		m_screw = new Screw();
+	}
+
+	//ネジとプレイヤーの当たり判定
+	if (m_screw->Collision(m_player))
+	{
+		m_player->Damage();
+	}
 	//欠片の更新
 	for (int i = 0; i < FRAGMENT_MAX; i++)
 	{
@@ -265,6 +293,8 @@ int GamePlay::UpdateGame()
 			delete m_fragment[i];
 			m_fragment[i] = new Fragment();
 		}
+
+
 	}
 
 	//ワイヤーと欠片の当たり判定（ワイヤーの処理のみで、欠片の処理は関数内で）
@@ -325,6 +355,9 @@ void GamePlay::RenderGame()
 
 	//時間の描画
 	m_time->Render();
+
+	//ネジの描画
+	m_screw->Render();
 
 
 }
