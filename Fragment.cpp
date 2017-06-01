@@ -100,19 +100,8 @@ void Fragment::Update(DirectX::SimpleMath::Vector2 origin)
 
 	if (m_state == FRAGMENT_CATCH)
 	{
-	//	if (origin.y > m_posY)
-	//	{
-	//		m_spdY = 0.1f;
-	//	}
-	//	else if (origin.y < m_posY)
-	//	{
-	//		m_spdY = -0.1f;
-	//	}
-	//	else
-	//	{
-			m_spdX = 0;
-			m_spdY = 0;
-	//	}
+		m_spdX = 0;
+		m_spdY = 0;
 	}
 
 

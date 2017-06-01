@@ -52,6 +52,8 @@ Player::Player()
 	m_animetion = UP;
 	time_cnt = 0;
 	//m_wire = new Wire();
+
+	m_state = NORMAL;
 	for (int i = 0; i < WIRE_NUM; i++)
 	{
 		m_wire[i] = nullptr;
@@ -72,6 +74,14 @@ Player::Player()
 		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/orion_L_1.png",
 			normal_resource.GetAddressOf(),
 			m_orion_normal_left_tex.ReleaseAndGetAddressOf()));
+	DX::ThrowIfFailed(
+		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/orion_damage.png",
+			normal_resource.GetAddressOf(),
+			m_orion_damage_tex.ReleaseAndGetAddressOf()));
+	DX::ThrowIfFailed(
+		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/orion_damage_L.png",
+			normal_resource.GetAddressOf(),
+			m_orion_damage_left_tex.ReleaseAndGetAddressOf()));
 
 
 	//	リソースから背景のテクスチャと判断
@@ -85,6 +95,8 @@ Player::Player()
 	//	テクスチャ原点を画像の中心にする
 	m_origin.x = float(orionDesc.Width / 2.0f);
 	m_origin.y = float(orionDesc.Height / 2.0f);
+
+	m_player_revival = 0;
 
 
 }
@@ -114,7 +126,7 @@ Player::~Player()
 void Player::Needle(DirectX::SimpleMath::Vector2 needle, DirectX::SimpleMath::Vector2 tip_origin)
 {
 	//変化の割合aの計算（needle.y-origin.y)/(needle.x-origin.x)
-	a = (needle.y - tip_origin.y) / (needle.x -tip_origin.x);
+	a = (needle.y - tip_origin.y) / (needle.x - tip_origin.x);
 	//bの計算（origin.y=(a*origin.x)+b）
 	b = ((a * tip_origin.x) - tip_origin.y) * (-1);
 }
@@ -156,7 +168,7 @@ bool Player::Existence(DirectX::SimpleMath::Vector2 needle, DirectX::SimpleMath:
 	else
 	{
 		//プレイヤーの座標と、針の座標の当たり判定
-		if ((m_posY + m_grpH) > (a * m_posX + b)) 
+		if ((m_posY + m_grpH) > (a * m_posX + b))
 		{
 			//プレイヤーの位置が、針の長さより小さいならtrue
 			if (sqrtf((m_posX + m_posY)) < needle_length)
@@ -166,7 +178,7 @@ bool Player::Existence(DirectX::SimpleMath::Vector2 needle, DirectX::SimpleMath:
 			//プレイヤーの位置が、針の長さより大きい（針から落ちている）ならfalse
 			return false;
 		}
-	
+
 	}
 	return false;
 }
@@ -213,15 +225,15 @@ void Player::run(DirectX::SimpleMath::Vector2 needle, DirectX::SimpleMath::Vecto
 	}
 
 	//左の壁の判定
-	if (m_posX - (GRP_WIDTH / 2)< 180)
+	if (m_posX - (GRP_WIDTH / 2) < 180)
 	{
 		m_posX = 180 + (GRP_WIDTH / 2);
 		m_spdX = 0;
 	}
 	//右の壁の判定
-	if (m_posX + (GRP_WIDTH / 2)> 750)
+	if (m_posX + (GRP_WIDTH / 2) > 750)
 	{
-		m_posX = 750-(GRP_WIDTH / 2);
+		m_posX = 750 - (GRP_WIDTH / 2);
 		m_spdX = 0;
 	}
 
@@ -290,9 +302,24 @@ void Player::run(DirectX::SimpleMath::Vector2 needle, DirectX::SimpleMath::Vecto
 	{
 		m_spdX = 0.0f;
 	}
+
+}
+
+//∞------------------------------------------------------------------∞
+//∞*func：更新関数
+//∞*arg：なし
+//∞*return：なし
+//∞*heed：なし
+//∞------------------------------------------------------------------∞
+
+void Player::Update()
+{
+	m_posX += m_spdX;
+	m_posY += m_spdY;
+
+	//ワイヤーの更新
 	for (int i = 0; i < WIRE_NUM; i++)
 	{
-
 		if (m_wire[i] != nullptr)
 		{
 			m_wire[i]->Update(m_wire_posX[i]);
@@ -304,8 +331,22 @@ void Player::run(DirectX::SimpleMath::Vector2 needle, DirectX::SimpleMath::Vecto
 			}
 		}
 	}
-}
 
+
+	//もしダメージ状態なら
+	if (m_state == DAMAGE)
+	{
+		m_player_revival++;
+	}
+
+	//カウントが１２０フレーム超えたら、状態をノーマルに戻す
+	if (m_player_revival > 120)
+	{
+		m_state = NORMAL;
+		m_player_revival = 0;
+	}
+
+}
 
 //∞------------------------------------------------------------------∞
 //∞*func：描画関数
@@ -319,18 +360,38 @@ void Player::Render()
 	CommonStates m_states(m_deviceResources->GetD3DDevice());
 	m_spriteBatch->Begin(SpriteSortMode_Deferred, m_states.NonPremultiplied());	//NonPremultipliedで不透明の設定
 
-	switch (m_vec)
+	if (m_state == NORMAL)
 	{
-	case LEFT:
-	//ノーマル（左向き）時
-		m_spriteBatch->Draw(m_orion_normal_left_tex.Get(), Vector2(m_posX, m_posY), nullptr, Colors::White, 0.f, m_origin);
+		switch (m_vec)
+		{
+		case LEFT:
+			//ノーマル（左向き）時
+			m_spriteBatch->Draw(m_orion_normal_left_tex.Get(), Vector2(m_posX, m_posY), nullptr, Colors::White, 0.f, m_origin);
 
-		break;
-	case RIGHT:
-	//ノーマル（右向き）時
-		m_spriteBatch->Draw(m_orion_normal_tex.Get(), Vector2(m_posX, m_posY), nullptr, Colors::White, 0.f, m_origin);
-		break;
-		
+			break;
+		case RIGHT:
+			//ノーマル（右向き）時
+			m_spriteBatch->Draw(m_orion_normal_tex.Get(), Vector2(m_posX, m_posY), nullptr, Colors::White, 0.f, m_origin);
+			break;
+
+		}
+	}
+	//ダメージを食らっているとき
+	else if (m_state == DAMAGE)
+	{
+		switch (m_vec)
+		{
+		case LEFT:
+			//ノーマル（左向き）時
+			m_spriteBatch->Draw(m_orion_damage_left_tex.Get(), Vector2(m_posX, m_posY), nullptr, Colors::White, 0.f, m_origin);
+
+			break;
+		case RIGHT:
+			//ノーマル（右向き）時
+			m_spriteBatch->Draw(m_orion_damage_tex.Get(), Vector2(m_posX, m_posY), nullptr, Colors::White, 0.f, m_origin);
+			break;
+
+		}
 	}
 	m_spriteBatch->End();
 
@@ -390,6 +451,26 @@ void Player::WireShot()
 void Player::Elimination(int i)
 {
 	m_wire[i]->Elimination();
+}
+
+//∞------------------------------------------------------------------∞
+//∞*func：ダメージ状態にする
+//∞*arg：なし
+//∞*return：なし
+//∞------------------------------------------------------------------∞
+void Player::Damage()
+{
+	m_state = DAMAGE;
+}
+
+//∞------------------------------------------------------------------∞
+//∞*func：状態を取得する
+//∞*arg：なし
+//∞*return：m_state
+//∞------------------------------------------------------------------∞
+int Player::State()
+{
+	return m_state;
 }
 
 

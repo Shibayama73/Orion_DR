@@ -23,6 +23,7 @@ enum STATE
 {
 	NORMAL,		//通常
 	DIE,		//死亡
+	DAMAGE,		//ダメージ
 };
 
 enum VEC
@@ -58,6 +59,8 @@ public:
 	//*走る関数
 	void run(DirectX::SimpleMath::Vector2 needle, DirectX::SimpleMath::Vector2 tip_origin);
 
+	//*更新関数
+	void Update();
 	//*Render関数
 	void Render();
 
@@ -69,6 +72,12 @@ public:
 
 	//*ワイヤーを消滅させる関数
 	void Elimination(int i);
+
+	//*プレイヤーの状態をダメージ状態にする
+	void Damage();
+
+
+	int State();		//状態の取得
 
 
 private:
@@ -89,7 +98,9 @@ private:
 
 	Wire* m_wire[WIRE_NUM];			//ワイヤー
 
-	float m_wire_posX[WIRE_NUM];
+	float m_wire_posX[WIRE_NUM];		//ワイヤーの位置を取得
+
+	int m_player_revival;				//スタン状態からの回復に使用する変数
 
 
 
@@ -100,6 +111,9 @@ private:
 
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_orion_normal_tex;	//通常時テクスチャ
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_orion_normal_left_tex;	//通常時左向きテクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_orion_damage_tex;	//ダメージ時テクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_orion_damage_left_tex;	//ダメージ時テクスチャ
+
 
 };
 

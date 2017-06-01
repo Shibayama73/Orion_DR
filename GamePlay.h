@@ -54,5 +54,4 @@ private:
 	Screw* m_screw;		//ƒlƒW
 
 	int m_time_flag;		//‰ÁZ—p•Ï”
-
 };

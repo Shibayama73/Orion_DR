@@ -147,19 +147,25 @@ int GamePlay::UpdateGame()
 	}
 
 	//m_player->Needle(m_clock->getLongTipPos(), m_clock->getLongTipOrigin());
-	//	プレイヤーの移動処理
-	m_player->run(m_clock->getLongTipPos(), m_clock->getOrigin());
+
+	//プレイヤーの状態が普通の時
+	if (m_player->State() == NORMAL)
+	{
+		//	プレイヤーの移動処理
+		m_player->run(m_clock->getLongTipPos(), m_clock->getOrigin());
+		//スペースキーでワイヤー
+		if (g_keyTracker->pressed.Space)
+		{
+			m_player->WireShot();
+			//	効果音
+			ADX2Le::Play(CRI_CUESHEET_0_THROW);
+		}
+	}
+
+
 
 	//	プレイヤーの更新
 	m_player->Update();
-
-	//スペースキーでワイヤー
-	if (g_keyTracker->pressed.Space)
-	{
-		m_player->WireShot();
-		//	効果音
-		ADX2Le::Play(CRI_CUESHEET_0_THROW);
-	}
 
 
 	//プレイヤーの所持しているワイヤーの保管
@@ -179,7 +185,11 @@ int GamePlay::UpdateGame()
 		m_screw = new Screw();
 	}
 
-
+	//ネジとプレイヤーの当たり判定
+	if (m_screw->Collision(m_player))
+	{
+		m_player->Damage();
+	}
 	//欠片の更新
 	for (int i = 0; i < FRAGMENT_MAX; i++)
 	{
