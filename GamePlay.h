@@ -18,6 +18,8 @@
 #include "Fragment.h"
 #include "Gauge.h"
 #include "Time.h"
+#include "Screw.h"
+
 #include "ADX2Le.h"
 
 const int FRAGMENT_MAX = 20;
@@ -49,6 +51,7 @@ private:
 	Fragment* m_fragment[FRAGMENT_MAX];	//欠片
 	Gauge* m_gauge;		//ゲージ
 	Time* m_time;			//時間
+	Screw* m_screw;		//ネジ
 
 	int m_time_flag;		//時刻加算用変数
 

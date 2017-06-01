@@ -175,6 +175,7 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Resouces\Music\CueSheet_0.h" />
+    <ClInclude Include="Screw.h" />
     <ClInclude Include="StepTimer.h" />
     <ClInclude Include="Time.h" />
     <ClInclude Include="Wire.h" />
@@ -203,6 +204,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Screw.cpp" />
     <ClCompile Include="Time.cpp" />
     <ClCompile Include="Wire.cpp" />
   </ItemGroup>
