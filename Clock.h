@@ -1,7 +1,8 @@
 //**********************************//
 //*	名　前：Clock.h
 //*	内　容：時計クラス
-//*	日　付：2017.5.2
+//*	日　付：2017.05.02
+//* 更新日：2017.06.02
 //*	制作者：N.Shibayama
 //**********************************//
 
@@ -22,9 +23,8 @@ protected:
 public:
 	Clock();
 	~Clock();
-	void Update();									//更新
-	void Render();									//描画
-
+	void Update();										//更新
+	void Render();										//描画
 	bool getHand();										//針の状態取得
 	DirectX::SimpleMath::Vector2 getOrigin();			//長針の原点座標取得
 	DirectX::SimpleMath::Vector2 getLongTipPos();		//針の先端座標取得
@@ -42,7 +42,6 @@ public:
 	//欠片との当たり判定用関数
 	float LongAngle();		//長針と原点の間の角
 	float ShortAngle();		//短針と原点の間の角
-
 
 private:
 	DX::DeviceResources* m_deviceResources;

@@ -1,8 +1,9 @@
 //***********************************//
-//*	GameMain.h
-//*	シーン管理
-//*	2017.4.27
-//*	N.Shibayama & Ayaka.Y
+//*	名　前：GameMain.h
+//*	内　容：シーン管理
+//*	日　付：2017.04.27
+//* 更新日：2017.06.02
+//*	制作者：N.Shibayama & Ayaka.Y
 //***********************************//
 
 #pragma once
@@ -21,7 +22,6 @@ enum Scene
 	CLEAR,
 	OVER
 };
-
 
 class GameMain
 {
