@@ -24,7 +24,9 @@ using Microsoft::WRL::ComPtr;
 
 GameLogo::GameLogo()
 {
+	//	初期化
 	m_TimeCnt = 0;
+	m_fadeCount = 0.0f;
 
 	//	描画読み込み============================================================================
 	m_deviceResources = Game::m_deviceResources.get();
@@ -35,6 +37,12 @@ GameLogo::GameLogo()
 		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/logo.png",
 			resource.GetAddressOf(),
 			m_texture.ReleaseAndGetAddressOf()));
+
+	ComPtr<ID3D11Resource> blackResource;
+	DX::ThrowIfFailed(
+		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/black_background.png",
+			blackResource.GetAddressOf(),
+			m_bkackTexture.ReleaseAndGetAddressOf()));
 
 	//	リソースから背景のテクスチャと判断
 	ComPtr<ID3D11Texture2D> clock;
@@ -67,7 +75,19 @@ int GameLogo::UpdateGame()
 	m_NextScene = LOGO;
 	m_scene = LOGO;
 
-	if (m_TimeCnt > 120)
+	//	フェードイン
+	if (m_TimeCnt <= 60)
+	{
+		m_fadeCount += 0.02f;
+	}
+	//	フェードアウト
+	else if (m_TimeCnt > 120 && m_TimeCnt <= 180)
+	{
+		m_fadeCount -= 0.02f;
+	}
+
+	//	３秒経ったらタイトルシーンに移動
+	if (m_TimeCnt > 180)
 	{
 		m_NextScene = TITLE;
 	}
@@ -77,10 +97,13 @@ int GameLogo::UpdateGame()
 
 void GameLogo::RenderGame()
 {
+
 	//	スプライトの描画========================================================================
 	CommonStates m_states(m_deviceResources->GetD3DDevice());
 	m_spriteBatch->Begin(SpriteSortMode_Deferred, m_states.NonPremultiplied());	//NonPremultipliedで不透明の設定
-	m_spriteBatch->Draw(m_texture.Get(), m_screenPos, nullptr, Colors::White, 0.f, m_origin);
+	//m_spriteBatch->Draw(m_texture.Get(), m_screenPos, nullptr, Colors::White, 0.f, m_origin);
+	m_spriteBatch->Draw(m_bkackTexture.Get(), m_screenPos, nullptr, Colors::White, 0.f, m_origin);
+	m_spriteBatch->Draw(m_texture.Get(), m_screenPos, nullptr, Vector4( m_fadeCount,m_fadeCount,m_fadeCount,m_fadeCount), 0.f, m_origin);
 
 	m_spriteBatch->End();
 	//==========================================================================================
