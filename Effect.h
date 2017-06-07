@@ -13,32 +13,41 @@
 #include "DeviceResources.h"
 
 
-	enum
-	{
-		EFFECT_OFF,
-		EFFECT_ON,
-		EFFECT_LOSS,
-	};
+enum
+{
+	EFFECT_OFF,
+	EFFECT_ON,
+	EFFECT_LOSS,
+};
+
 class Effect : public ObjectBase
 {
 public:
+	//*コンストラクタ
 	Effect();
+	//*デストラクタ
 	~Effect();
+	//*更新関数
 	void Update();
+	//*描画関数
 	void Render();
+	//*stateをONにする
 	void ChengeState(float posX, float posY);
+	//*stateをLossにする
 	void EffectLoss();
+	//*stateを取得する
 	int State();
 
 private:
-	//描画
+	//*描画用
 	DX::DeviceResources* m_deviceResources;
 	DirectX::SpriteBatch* m_spriteBatch;
 	DirectX::SimpleMath::Vector2 m_origin;
 
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_effect_tex;	//エフェクト用テクスチャ
 
-	int cnt;
+	//*エフェクト用カウント
+	int m_cnt;
 
 };
 

@@ -145,7 +145,7 @@ bool Screw::Collision(ObjectBase* A)
 	//円のあたり判定
 	if ((x1 - x2)*(x1 - x2) + (y1 - y2)*(y1 - y2) <= (r1 + r2)*(r1 + r2))
 	{
-		m_state = SCREW_LOSS;
+
 		return true;
 	}
 	return false;
@@ -159,4 +159,15 @@ bool Screw::Collision(ObjectBase* A)
 int Screw::State()
 {
 	return m_state;
+}
+
+//∞------------------------------------------------------------------∞
+//∞*func：プレイヤーと当たったら、ネジを消す関数
+//∞*arg：なし
+//∞*return：なし
+//∞*heed：
+//∞------------------------------------------------------------------∞
+void Screw::AttackTip()
+{
+	m_state = SCREW_LOSS;
 }

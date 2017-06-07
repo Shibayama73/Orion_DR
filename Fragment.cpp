@@ -91,12 +91,14 @@ Fragment::~Fragment()
 //∞*arg：なし
 //∞*return：なし
 //∞------------------------------------------------------------------∞
-void Fragment::Update(DirectX::SimpleMath::Vector2 origin)
+void Fragment::Update()
 {
+	//*下に落とす
 	m_spdY += 0.01;
 	m_posY += m_spdY;
 	m_posX += m_spdX;
 
+	//*ワイヤで挟まれたら、止まる
 	if (m_state == FRAGMENT_CATCH)
 	{
 		m_spdX = 0;
@@ -136,12 +138,13 @@ void Fragment::Render()
 }
 
 //∞------------------------------------------------------------------∞
-//∞*func：画面内に欠片があるかどうか
+//∞*func：画面内に欠片があるか判定し、stateを管理する
 //∞*arg：なし
-//∞*return：true（ある）、false（ない）
+//∞*return：なし
 //∞------------------------------------------------------------------∞
 void Fragment::Outdoor()
 {
+	//画面内に欠片がなかったら、stateをLossにする
 	if (m_posY + m_grpH > 700)
 	{
 		m_state = FRAGMENT_LOSS;
@@ -191,7 +194,7 @@ bool Fragment::Collision(ObjectBase* A)
 //∞------------------------------------------------------------------∞
 //∞*func：欠片の角度を求める
 //∞*arg：針の原点座標
-//∞*return：なし
+//∞*return：欠片の角度
 //∞*heed：欠片が当たっていたら常に取得（針との当たり判定に使用）
 //∞------------------------------------------------------------------∞
 float Fragment::Angle(Vector2 tip_origin)

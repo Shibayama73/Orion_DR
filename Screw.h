@@ -34,6 +34,8 @@ public:
 
 	int State();		//ó‘Ô‚ÌŠm”F
 
+	void AttackTip();
+
 public:
 	DX::DeviceResources* m_deviceResources;
 	DirectX::SpriteBatch* m_spriteBatch;

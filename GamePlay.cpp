@@ -157,7 +157,7 @@ int GamePlay::UpdateGame()
 	if (m_player->State() == NORMAL)
 	{
 		//	プレイヤーの移動処理
-		m_player->run(m_clock->getLongTipPos(), m_clock->getOrigin());
+		m_player->run();
 		//スペースキーでワイヤー
 		if (g_keyTracker->pressed.Space)
 		{
@@ -193,12 +193,15 @@ int GamePlay::UpdateGame()
 	//ネジとプレイヤーの当たり判定
 	if (m_screw->Collision(m_player))
 	{
+		//ネジを消失させる
+		m_screw->AttackTip();
+		//プレイヤーをスタン状態にする
 		m_player->Damage();
 	}
-	//欠片の更新
+	//欠片、エフェクトの更新
 	for (int i = 0; i < FRAGMENT_MAX; i++)
 	{
-		m_fragment[i]->Update(m_clock->getOrigin());
+		m_fragment[i]->Update();
 		m_effect[i]->Update();
 
 		//	欠片が掴まれた状態のとき
@@ -315,9 +318,10 @@ int GamePlay::UpdateGame()
 
 	}
 
-	//ワイヤーと欠片の当たり判定（ワイヤーの処理のみで、欠片の処理は関数内で）
+	//ワイヤーの当たり判定（ワイヤーの処理のみで、欠片の処理は関数内で）
 	for (int i = 0; i < WIRE_NUM; i++)
 	{
+		//欠片
 		for (int j = 0; j < FRAGMENT_MAX; j++)
 		{
 			//ワイヤーと欠片、それぞれ存在しているか確認
@@ -334,6 +338,16 @@ int GamePlay::UpdateGame()
 				}
 			}
 
+		}
+		//ネジ
+		if (m_player_wire[i] != nullptr && m_screw != nullptr)
+		{
+			//ワイヤーと当たったら
+			if (m_screw->Collision(m_player_wire[i]))
+			{
+				//ワイヤーを消滅させる（ネジはそのまま落下）
+				m_player->Elimination(i);
+			}
 		}
 	}
 
