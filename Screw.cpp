@@ -38,8 +38,8 @@ Screw::Screw()
 	m_posY = (rand() % -1000) - 1010;
 	m_spdX = 0.0f;
 	m_spdY = 0.0f;
-	m_grpW = 32;
-	m_grpH = 32;
+	m_grpW = 64;
+	m_grpH = 64;
 
 
 

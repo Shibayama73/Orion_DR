@@ -39,9 +39,8 @@ Fragment::Fragment()
 	m_grpW = 32;
 	m_grpH = 32;
 
-
-
 	m_state = FRAGMENT_NORMAL;
+	m_effect_state = false;
 
 	//描画用
 	m_deviceResources = Game::m_deviceResources.get();
@@ -129,9 +128,9 @@ void Fragment::Render()
 	case FRAGMENT_CATCH:
 		m_spriteBatch->Draw(m_fragment_catch_tex.Get(), Vector2(m_posX, m_posY), nullptr, Colors::White, 0.f, m_origin);
 		break;
+
 	}
 	
-
 	m_spriteBatch->End();
 
 }
@@ -182,6 +181,7 @@ bool Fragment::Collision(ObjectBase* A)
 		if (m_state == FRAGMENT_NORMAL)
 		{
 			m_state = FRAGMENT_CATCH;
+
 			return true;
 		}
 	}
@@ -213,7 +213,7 @@ float Fragment::Angle(Vector2 tip_origin)
 }
 
 //∞------------------------------------------------------------------∞
-//∞*func：針と当たったら、欠片を消す巻子
+//∞*func：針と当たったら、欠片を消す関数
 //∞*arg：なし
 //∞*return：なし
 //∞*heed：
@@ -222,6 +222,8 @@ void Fragment::AttackTip()
 {
 	m_state = FRAGMENT_LOSS;
 }
+
+
 
 
 

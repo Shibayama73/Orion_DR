@@ -73,6 +73,9 @@
     <ClInclude Include="Screw.h">
       <Filter>Game</Filter>
     </ClInclude>
+    <ClInclude Include="Effect.h">
+      <Filter>Game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -124,6 +127,9 @@
       <Filter>Game\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Screw.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Effect.cpp">
       <Filter>Game</Filter>
     </ClCompile>
   </ItemGroup>

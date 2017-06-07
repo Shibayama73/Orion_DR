@@ -41,7 +41,10 @@ GamePlay::GamePlay()
 	for (int i = 0; i < FRAGMENT_MAX; i++)
 	{
 		m_fragment[i] = new Fragment();
+		m_effect[i] = new Effect(m_fragment[i]->GetPosX(),m_fragment[i]->GetPosY());
 	}
+
+	m_effect_time = 0;
 
 	//ネジの生成
 	m_screw = new Screw();
@@ -101,6 +104,7 @@ GamePlay::~GamePlay()
 	for (int i = 0; i < FRAGMENT_MAX; i++)
 	{
 		delete m_fragment[i];
+		delete m_effect[i];
 	}
 
 	//ネジの破棄
@@ -262,6 +266,8 @@ int GamePlay::UpdateGame()
 				{
 					//	欠片が消失する
 					m_fragment[i]->AttackTip();
+					//エフェクト表示
+					m_effect[i]->ChengeState();
 					//	効果音
 					ADX2Le::Play(CRI_CUESHEET_0_VANISH);
 					//	ゲージがカウントされる
@@ -277,6 +283,8 @@ int GamePlay::UpdateGame()
 				{
 					//	欠片が消失する
 					m_fragment[i]->AttackTip();
+					//エフェクト表示
+					m_effect[i]->ChengeState();
 					//	効果音
 					ADX2Le::Play(CRI_CUESHEET_0_VANISH);
 					//	ゲージがカウントされる
@@ -290,9 +298,22 @@ int GamePlay::UpdateGame()
 		//欠片が失われていたら
 		if (m_fragment[i]->State() == FRAGMENT_LOSS)
 		{
+			m_effect_time++;
+			if (m_effect_time < 5)
+			{
+				m_effect[i]->Render();
+			}
+			else
+			{
+				m_effect_time = 0;
+
 			//破棄して新たに生成する
 			delete m_fragment[i];
+			delete m_effect[i];
 			m_fragment[i] = new Fragment();
+			m_effect[i] = new Effect(m_fragment[i]->GetPosX(), m_fragment[i]->GetPosY());
+
+			}
 		}
 
 
@@ -346,6 +367,7 @@ void GamePlay::RenderGame()
 	for (int i = 0; i < FRAGMENT_MAX; i++)
 	{
 		m_fragment[i]->Render();
+		m_effect[i]->Render();
 	}
 
 	//プレイヤーの描画
