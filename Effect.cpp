@@ -1,13 +1,12 @@
 //∞----------------------------------------------------∞
-//∞*ファイル名：Screw.cpp								∞
-//∞*内容　　　：ネジクラス								∞
+//∞*ファイル名：Effect.cpp								∞
+//∞*内容　　　：エフェクトクラス						∞
 //∞*制作者　　：Ayaka Yamanaka							∞
-//∞*制作日時　：2017.06.01								∞
+//∞*制作日時　：2017.06.05								∞
 //∞----------------------------------------------------∞
 
-
 #include "pch.h"
-#include "Screw.h"
+#include "Effect.h"
 
 #include "GameMain.h"
 #include <d3d11.h>
@@ -31,143 +30,124 @@ using Microsoft::WRL::ComPtr;
 //∞*func：コンストラクタ
 //∞*arg：なし
 //∞------------------------------------------------------------------∞
-
-Screw::Screw()
+Effect::Effect()
 {
-	m_posX = rand() % 470 + 200;
-	m_posY = (rand() % -1000) - 1010;
-	m_spdX = 0.0f;
-	m_spdY = 0.0f;
-	m_grpW = 64;
-	m_grpH = 64;
-
-
-
-	m_state = SCREW_NORMAL;
+	m_state = EFFECT_OFF;
 
 	//描画用
 	m_deviceResources = Game::m_deviceResources.get();
 	m_spriteBatch = Game::m_spriteBatch.get();
 
-	//通常時画像
-	ComPtr<ID3D11Resource> screw_resource;
+	//エフェクト用画像
+	ComPtr<ID3D11Resource> effect_resource;
 	DX::ThrowIfFailed(
-		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/bolt.png",
-			screw_resource.GetAddressOf(),
-			m_screw_tex.ReleaseAndGetAddressOf()));
+		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/kirakira.png",
+			effect_resource.GetAddressOf(),
+			m_effect_tex.ReleaseAndGetAddressOf()));
+
 
 	//	リソースから背景のテクスチャと判断
-	ComPtr<ID3D11Texture2D> screw;
-	DX::ThrowIfFailed(screw_resource.As(&screw));
+	ComPtr<ID3D11Texture2D> effect;
+	DX::ThrowIfFailed(effect_resource.As(&effect));
 
 	//	テクスチャ情報
-	CD3D11_TEXTURE2D_DESC screwDesc;
-	screw->GetDesc(&screwDesc);
+	CD3D11_TEXTURE2D_DESC effectDesc;
+	effect->GetDesc(&effectDesc);
 
 	//	テクスチャ原点を画像の中心にする
-	m_origin.x = float(screwDesc.Width / 2.0f);
-	m_origin.y = float(screwDesc.Height / 2.0f);
+	m_origin.x = float(effectDesc.Width / 2.0f);
+	m_origin.y = float(effectDesc.Height / 2.0f);
 
+	m_cnt = 0;
 }
+
 
 //∞------------------------------------------------------------------∞
 //∞*func：デストラクタ
 //∞*arg：なし
 //∞*return：なし
 //∞------------------------------------------------------------------∞
-Screw::~Screw()
+
+Effect::~Effect()
 {
 }
 
 //∞------------------------------------------------------------------∞
-//∞*func：更新処理
+//∞*func：更新関数
 //∞*arg：なし
 //∞*return：なし
+//∞*heed：なし
 //∞------------------------------------------------------------------∞
-void Screw::Update()
+
+void Effect::Update()
 {
-	m_spdY += 0.02;
-	m_posY += m_spdY;
-	m_posX += m_spdX;
-
-
-	//場外に出ているかの判定
-	Outdoor();
+	//エフェクトがONの時
+	if (m_state == EFFECT_ON)
+	{
+		m_cnt++;
+		//60フレーム経ったら消失
+		if (m_cnt > 60)
+		{
+			EffectLoss();
+		}
+	}
 }
 
+
 //∞------------------------------------------------------------------∞
-//∞*func：描画処理
+//∞*func：描画関数
 //∞*arg：なし
 //∞*return：なし
+//∞*heed：なし
 //∞------------------------------------------------------------------∞
-void Screw::Render()
+
+void Effect::Render()
 {
 	//描画
 	CommonStates m_states(m_deviceResources->GetD3DDevice());
 	m_spriteBatch->Begin(SpriteSortMode_Deferred, m_states.NonPremultiplied());	//NonPremultipliedで不透明の設定
 
-	m_spriteBatch->Draw(m_screw_tex.Get(), Vector2(m_posX, m_posY), nullptr, Colors::White, 0.f, m_origin);
-
-
+	if (m_state == EFFECT_ON)
+	{
+   		m_spriteBatch->Draw(m_effect_tex.Get(), Vector2(m_posX, m_posY), nullptr, Colors::White, 0.f, m_origin);
+		m_spriteBatch->Draw(m_effect_tex.Get(), Vector2(m_posX, m_posY), nullptr, Colors::White, 0.f, m_origin);
+	}
 	m_spriteBatch->End();
 
 }
 
 //∞------------------------------------------------------------------∞
-//∞*func：画面内に欠片があるかどうか
+//∞*func：エフェクトのstateをonにする関数
+//∞*arg：欠片の位置(float posX,float posY)
+//∞*return：なし
+//∞------------------------------------------------------------------∞
+
+void Effect::ChengeState(float posX, float posY)
+{
+	m_posX = posX;
+	m_posY = posY;
+
+	m_state = EFFECT_ON;
+}
+
+//∞------------------------------------------------------------------∞
+//∞*func：エフェクトのstateをlossにする関数
 //∞*arg：なし
-//∞*return：true（ある）、false（ない）
+//∞*return：なし
 //∞------------------------------------------------------------------∞
-void Screw::Outdoor()
+void Effect::EffectLoss()
 {
-	if (m_posY + m_grpH > 700)
-	{
-		m_state = SCREW_LOSS;
-	}
-
+	m_state = EFFECT_LOSS;
 }
 
 //∞------------------------------------------------------------------∞
-//∞*func：当たり判定
-//∞*arg：比較するオブジェクト
-//∞*return：true（当たっている）、false（当たっていない）
-//∞------------------------------------------------------------------∞
-//反射判定
-bool Screw::Collision(ObjectBase* A)
-{
-	float x1 = m_posX + m_grpW / 2;
-	float y1 = m_posY + m_grpH / 2;
-	float x2 = A->GetPosX() + A->GetGrpW() / 2;
-	float y2 = A->GetPosY() + A->GetGrpH() / 2;
-	float r1 = m_grpW / 2;
-	float r2 = A->GetGrpW() / 2;
-
-	//円のあたり判定
-	if ((x1 - x2)*(x1 - x2) + (y1 - y2)*(y1 - y2) <= (r1 + r2)*(r1 + r2))
-	{
-
-		return true;
-	}
-	return false;
-}
-
-//∞------------------------------------------------------------------∞
-//∞*func：状態を取得する
+//∞*func：エフェクトのstateを取得する関数
 //∞*arg：なし
 //∞*return：m_state
 //∞------------------------------------------------------------------∞
-int Screw::State()
+int Effect::State()
 {
 	return m_state;
 }
 
-//∞------------------------------------------------------------------∞
-//∞*func：プレイヤーと当たったら、ネジを消す関数
-//∞*arg：なし
-//∞*return：なし
-//∞*heed：
-//∞------------------------------------------------------------------∞
-void Screw::AttackTip()
-{
-	m_state = SCREW_LOSS;
-}
+

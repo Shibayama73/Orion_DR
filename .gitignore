@@ -244,3 +244,5 @@ ModelManifest.xml
 # converted resouces
 Debug/
 Release/
+
+/data.txt

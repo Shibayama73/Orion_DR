@@ -41,7 +41,10 @@ GamePlay::GamePlay()
 	for (int i = 0; i < FRAGMENT_MAX; i++)
 	{
 		m_fragment[i] = new Fragment();
+		m_effect[i] = new Effect();
 	}
+
+	m_effect_time = 0;
 
 	//ネジの生成
 	m_screw = new Screw();
@@ -101,6 +104,7 @@ GamePlay::~GamePlay()
 	for (int i = 0; i < FRAGMENT_MAX; i++)
 	{
 		delete m_fragment[i];
+		delete m_effect[i];
 	}
 
 	//ネジの破棄
@@ -153,7 +157,7 @@ int GamePlay::UpdateGame()
 	if (m_player->State() == NORMAL)
 	{
 		//	プレイヤーの移動処理
-		m_player->run(m_clock->getLongTipPos(), m_clock->getOrigin());
+		m_player->run();
 		//スペースキーでワイヤー
 		if (g_keyTracker->pressed.Space)
 		{
@@ -189,12 +193,16 @@ int GamePlay::UpdateGame()
 	//ネジとプレイヤーの当たり判定
 	if (m_screw->Collision(m_player))
 	{
+		//ネジを消失させる
+		m_screw->AttackTip();
+		//プレイヤーをスタン状態にする
 		m_player->Damage();
 	}
-	//欠片の更新
+	//欠片、エフェクトの更新
 	for (int i = 0; i < FRAGMENT_MAX; i++)
 	{
-		m_fragment[i]->Update(m_clock->getOrigin());
+		m_fragment[i]->Update();
+		m_effect[i]->Update();
 
 		//	欠片が掴まれた状態のとき
 		if (m_fragment[i]->State() == FRAGMENT_CATCH)
@@ -262,6 +270,8 @@ int GamePlay::UpdateGame()
 				{
 					//	欠片が消失する
 					m_fragment[i]->AttackTip();
+					//エフェクト表示
+					m_effect[i]->ChengeState(m_fragment[i]->GetPosX(), m_fragment[i]->GetPosY());
 					//	効果音
 					ADX2Le::Play(CRI_CUESHEET_0_VANISH);
 					//	ゲージがカウントされる
@@ -277,6 +287,8 @@ int GamePlay::UpdateGame()
 				{
 					//	欠片が消失する
 					m_fragment[i]->AttackTip();
+					//エフェクト表示
+					m_effect[i]->ChengeState(m_fragment[i]->GetPosX(),m_fragment[i]->GetPosY());
 					//	効果音
 					ADX2Le::Play(CRI_CUESHEET_0_VANISH);
 					//	ゲージがカウントされる
@@ -295,12 +307,21 @@ int GamePlay::UpdateGame()
 			m_fragment[i] = new Fragment();
 		}
 
+		//エフェクトが失われていたら
+		if (m_effect[i]->State() == EFFECT_LOSS)
+		{
+			//破棄して新たに生成
+			delete m_effect[i];
+			m_effect[i] = new Effect();
+		}
+
 
 	}
 
-	//ワイヤーと欠片の当たり判定（ワイヤーの処理のみで、欠片の処理は関数内で）
+	//ワイヤーの当たり判定（ワイヤーの処理のみで、欠片の処理は関数内で）
 	for (int i = 0; i < WIRE_NUM; i++)
 	{
+		//欠片
 		for (int j = 0; j < FRAGMENT_MAX; j++)
 		{
 			//ワイヤーと欠片、それぞれ存在しているか確認
@@ -317,6 +338,16 @@ int GamePlay::UpdateGame()
 				}
 			}
 
+		}
+		//ネジ
+		if (m_player_wire[i] != nullptr && m_screw != nullptr)
+		{
+			//ワイヤーと当たったら
+			if (m_screw->Collision(m_player_wire[i]))
+			{
+				//ワイヤーを消滅させる（ネジはそのまま落下）
+				m_player->Elimination(i);
+			}
 		}
 	}
 
@@ -346,6 +377,8 @@ void GamePlay::RenderGame()
 	for (int i = 0; i < FRAGMENT_MAX; i++)
 	{
 		m_fragment[i]->Render();
+		m_effect[i]->Render();
+		
 	}
 
 	//プレイヤーの描画

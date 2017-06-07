@@ -20,6 +20,7 @@
 #include "Gauge.h"
 #include "Time.h"
 #include "Screw.h"
+#include "Effect.h"
 
 #include "ADX2Le.h"
 
@@ -50,9 +51,11 @@ private:
 	Player* m_player;	//プレイヤー
 	Wire* m_player_wire[WIRE_NUM];		//ワイヤー（プレイヤーの所持しているワイヤーを一時的に保管する）
 	Fragment* m_fragment[FRAGMENT_MAX];	//欠片
+	Effect* m_effect[FRAGMENT_MAX];
 	Gauge* m_gauge;		//ゲージ
 	Time* m_time;			//時間
 	Screw* m_screw;		//ネジ
 
 	int m_time_flag;		//時刻加算用変数
+	int m_effect_time;
 };

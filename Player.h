@@ -47,17 +47,8 @@ public:
 	Player();
 	~Player();
 
-	//*jî•ñ‚ğæ“¾‚·‚éŠÖ”
-	void Needle(DirectX::SimpleMath::Vector2 needle, DirectX::SimpleMath::Vector2 tip_origin);
-
-	//*¡æ‚Á‚Ä‚¢‚éj‚Ì’·‚³‚ğæ“¾‚·‚éŠÖ”
-	bool Length(bool length);
-
-	//*j‚Ì—L–³‚ğæ“¾‚·‚éŠÖ”
-	bool Existence(DirectX::SimpleMath::Vector2 needle, DirectX::SimpleMath::Vector2 tip_origin);
-
 	//*‘–‚éŠÖ”
-	void run(DirectX::SimpleMath::Vector2 needle, DirectX::SimpleMath::Vector2 tip_origin);
+	void run();
 
 	//*XVŠÖ”
 	void Update();

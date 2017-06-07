@@ -39,9 +39,8 @@ Fragment::Fragment()
 	m_grpW = 32;
 	m_grpH = 32;
 
-
-
 	m_state = FRAGMENT_NORMAL;
+	m_effect_state = false;
 
 	//描画用
 	m_deviceResources = Game::m_deviceResources.get();
@@ -92,12 +91,14 @@ Fragment::~Fragment()
 //∞*arg：なし
 //∞*return：なし
 //∞------------------------------------------------------------------∞
-void Fragment::Update(DirectX::SimpleMath::Vector2 origin)
+void Fragment::Update()
 {
+	//*下に落とす
 	m_spdY += 0.01;
 	m_posY += m_spdY;
 	m_posX += m_spdX;
 
+	//*ワイヤで挟まれたら、止まる
 	if (m_state == FRAGMENT_CATCH)
 	{
 		m_spdX = 0;
@@ -129,20 +130,21 @@ void Fragment::Render()
 	case FRAGMENT_CATCH:
 		m_spriteBatch->Draw(m_fragment_catch_tex.Get(), Vector2(m_posX, m_posY), nullptr, Colors::White, 0.f, m_origin);
 		break;
+
 	}
 	
-
 	m_spriteBatch->End();
 
 }
 
 //∞------------------------------------------------------------------∞
-//∞*func：画面内に欠片があるかどうか
+//∞*func：画面内に欠片があるか判定し、stateを管理する
 //∞*arg：なし
-//∞*return：true（ある）、false（ない）
+//∞*return：なし
 //∞------------------------------------------------------------------∞
 void Fragment::Outdoor()
 {
+	//画面内に欠片がなかったら、stateをLossにする
 	if (m_posY + m_grpH > 700)
 	{
 		m_state = FRAGMENT_LOSS;
@@ -182,6 +184,7 @@ bool Fragment::Collision(ObjectBase* A)
 		if (m_state == FRAGMENT_NORMAL)
 		{
 			m_state = FRAGMENT_CATCH;
+
 			return true;
 		}
 	}
@@ -191,7 +194,7 @@ bool Fragment::Collision(ObjectBase* A)
 //∞------------------------------------------------------------------∞
 //∞*func：欠片の角度を求める
 //∞*arg：針の原点座標
-//∞*return：なし
+//∞*return：欠片の角度
 //∞*heed：欠片が当たっていたら常に取得（針との当たり判定に使用）
 //∞------------------------------------------------------------------∞
 float Fragment::Angle(Vector2 tip_origin)
@@ -213,7 +216,7 @@ float Fragment::Angle(Vector2 tip_origin)
 }
 
 //∞------------------------------------------------------------------∞
-//∞*func：針と当たったら、欠片を消す巻子
+//∞*func：針と当たったら、欠片を消す関数
 //∞*arg：なし
 //∞*return：なし
 //∞*heed：
@@ -222,6 +225,8 @@ void Fragment::AttackTip()
 {
 	m_state = FRAGMENT_LOSS;
 }
+
+
 
 
 
