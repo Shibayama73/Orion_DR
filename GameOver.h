@@ -28,6 +28,12 @@ public:
 	//ファイル読み書き
 	int FileIO(int io, int *score);
 
+	//	ランキングデータファイル読み書き
+	int RankingDataFileIO(int io);
+
+	//	データを順番に並べる
+	void SetRanking();
+
 private:
 	float m_grpX;	//画像のX座標
 	float m_grpY;	//画像のY座標
@@ -46,5 +52,8 @@ private:
 
 	DirectX::SimpleMath::Vector2 m_screenPos;
 	DirectX::SimpleMath::Vector2 m_origin;
+
+	//順位
+	int m_rank[3];
 
 };
