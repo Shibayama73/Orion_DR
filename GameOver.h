@@ -24,13 +24,10 @@ public:
 
 	//数字描画
 	void DrawNum(float x, float y, int n);
-
 	//ファイル読み書き
 	int FileIO(int io, int *score);
-
 	//	ランキングデータファイル読み書き
 	int RankingDataFileIO(int io);
-
 	//	データを順番に並べる
 	void SetRanking();
 

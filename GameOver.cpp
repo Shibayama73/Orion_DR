@@ -44,6 +44,8 @@ GameOver::GameOver()
 	//	順位ファイルの読込み
 	this->SetRanking();
 
+	this->RankingDataFileIO(1);
+
 	//	描画読み込み============================================================================
 	m_deviceResources = Game::m_deviceResources.get();
 	m_spriteBatch = Game::m_spriteBatch.get();
@@ -253,7 +255,11 @@ int GameOver::RankingDataFileIO(int io)
 	return 0;
 }
 
-//* 内容　データを降順に並べる
+//========================================//
+//内容		データを降順に並べる
+//引数		なし
+//戻り値	なし
+//========================================//
 void GameOver::SetRanking()
 {
 	//	順位ファイルの読込み
