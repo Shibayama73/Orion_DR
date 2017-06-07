@@ -222,7 +222,6 @@ int GameOver::RankingDataFileIO(int io)
 {
 	char *Filename = "rank.txt";
 	FILE *fp;
-	char s[100];
 
 	//“Ç‚İ‚Ì‚Æ‚«
 	if (io == 0)
@@ -233,7 +232,7 @@ int GameOver::RankingDataFileIO(int io)
 			return 1;
 		}
 
-		fgets(s, 100, fp);
+		//fgets(s, 100, fp);
 		//	ˆês‚¸‚Â“Ç‚İ(2s–Ú‚©‚ç)
 		for (int i = 0; i < MAX_RANK; i++) {
 			fscanf(fp, "%d", &m_rank[i]);
@@ -248,7 +247,7 @@ int GameOver::RankingDataFileIO(int io)
 			return 1;
 		}
 		for (int i = 0; i < MAX_RANK; i++) {
-			fprintf(fp, "%d", &m_rank[i]);
+			fprintf(fp, "%d\n", m_rank[i]);
 		}
 	}
 	fclose(fp);
