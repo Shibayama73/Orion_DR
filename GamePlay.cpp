@@ -41,7 +41,7 @@ GamePlay::GamePlay()
 	for (int i = 0; i < FRAGMENT_MAX; i++)
 	{
 		m_fragment[i] = new Fragment();
-		m_effect[i] = new Effect(m_fragment[i]->GetPosX(),m_fragment[i]->GetPosY());
+		m_effect[i] = new Effect();
 	}
 
 	m_effect_time = 0;
@@ -199,6 +199,7 @@ int GamePlay::UpdateGame()
 	for (int i = 0; i < FRAGMENT_MAX; i++)
 	{
 		m_fragment[i]->Update(m_clock->getOrigin());
+		m_effect[i]->Update();
 
 		//	欠片が掴まれた状態のとき
 		if (m_fragment[i]->State() == FRAGMENT_CATCH)
@@ -267,7 +268,7 @@ int GamePlay::UpdateGame()
 					//	欠片が消失する
 					m_fragment[i]->AttackTip();
 					//エフェクト表示
-					m_effect[i]->ChengeState();
+					m_effect[i]->ChengeState(m_fragment[i]->GetPosX(), m_fragment[i]->GetPosY());
 					//	効果音
 					ADX2Le::Play(CRI_CUESHEET_0_VANISH);
 					//	ゲージがカウントされる
@@ -284,7 +285,7 @@ int GamePlay::UpdateGame()
 					//	欠片が消失する
 					m_fragment[i]->AttackTip();
 					//エフェクト表示
-					m_effect[i]->ChengeState();
+					m_effect[i]->ChengeState(m_fragment[i]->GetPosX(),m_fragment[i]->GetPosY());
 					//	効果音
 					ADX2Le::Play(CRI_CUESHEET_0_VANISH);
 					//	ゲージがカウントされる
@@ -298,22 +299,17 @@ int GamePlay::UpdateGame()
 		//欠片が失われていたら
 		if (m_fragment[i]->State() == FRAGMENT_LOSS)
 		{
-			m_effect_time++;
-			if (m_effect_time < 5)
-			{
-				m_effect[i]->Render();
-			}
-			else
-			{
-				m_effect_time = 0;
-
 			//破棄して新たに生成する
 			delete m_fragment[i];
-			delete m_effect[i];
 			m_fragment[i] = new Fragment();
-			m_effect[i] = new Effect(m_fragment[i]->GetPosX(), m_fragment[i]->GetPosY());
+		}
 
-			}
+		//エフェクトが失われていたら
+		if (m_effect[i]->State() == EFFECT_LOSS)
+		{
+			//破棄して新たに生成
+			delete m_effect[i];
+			m_effect[i] = new Effect();
 		}
 
 
@@ -368,6 +364,7 @@ void GamePlay::RenderGame()
 	{
 		m_fragment[i]->Render();
 		m_effect[i]->Render();
+		
 	}
 
 	//プレイヤーの描画

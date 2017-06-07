@@ -13,15 +13,22 @@
 #include "DeviceResources.h"
 
 
+	enum
+	{
+		EFFECT_OFF,
+		EFFECT_ON,
+		EFFECT_LOSS,
+	};
 class Effect : public ObjectBase
 {
 public:
-	Effect(float posX,float posY);
+	Effect();
 	~Effect();
 	void Update();
 	void Render();
-	void ChengeState();
-	bool State();
+	void ChengeState(float posX, float posY);
+	void EffectLoss();
+	int State();
 
 private:
 	//描画
@@ -31,7 +38,7 @@ private:
 
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_effect_tex;	//エフェクト用テクスチャ
 
-	bool m_state;
+	int cnt;
 
 };
 

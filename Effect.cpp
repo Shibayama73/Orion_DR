@@ -26,12 +26,9 @@ using namespace DirectX::SimpleMath;
 using Microsoft::WRL::ComPtr;
 
 
-Effect::Effect(float posX, float posY)
+Effect::Effect()
 {
-	m_posX = posX;
-	m_posY = posY;
-
-	m_state = false;
+	m_state = EFFECT_OFF;
 
 	//描画用
 	m_deviceResources = Game::m_deviceResources.get();
@@ -40,7 +37,7 @@ Effect::Effect(float posX, float posY)
 	//エフェクト用画像
 	ComPtr<ID3D11Resource> effect_resource;
 	DX::ThrowIfFailed(
-		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/effect.png",
+		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/kirakira.png",
 			effect_resource.GetAddressOf(),
 			m_effect_tex.ReleaseAndGetAddressOf()));
 
@@ -57,6 +54,7 @@ Effect::Effect(float posX, float posY)
 	m_origin.x = float(effectDesc.Width / 2.0f);
 	m_origin.y = float(effectDesc.Height / 2.0f);
 
+	cnt = 0;
 }
 
 
@@ -66,6 +64,16 @@ Effect::~Effect()
 
 void Effect::Update()
 {
+	//エフェクトがONの時
+	if (m_state == EFFECT_ON)
+	{
+		cnt++;
+		//60フレーム経ったら消失
+		if (cnt > 60)
+		{
+			EffectLoss();
+		}
+	}
 }
 
 void Effect::Render()
@@ -74,20 +82,29 @@ void Effect::Render()
 	CommonStates m_states(m_deviceResources->GetD3DDevice());
 	m_spriteBatch->Begin(SpriteSortMode_Deferred, m_states.NonPremultiplied());	//NonPremultipliedで不透明の設定
 
-	if (m_state)
+	if (m_state == EFFECT_ON)
 	{
+   		m_spriteBatch->Draw(m_effect_tex.Get(), Vector2(m_posX, m_posY), nullptr, Colors::White, 0.f, m_origin);
 		m_spriteBatch->Draw(m_effect_tex.Get(), Vector2(m_posX, m_posY), nullptr, Colors::White, 0.f, m_origin);
 	}
 	m_spriteBatch->End();
 
 }
 
-void Effect::ChengeState()
+void Effect::ChengeState(float posX, float posY)
 {
-	m_state = true;
+	m_posX = posX;
+	m_posY = posY;
+
+	m_state = EFFECT_ON;
 }
 
-bool Effect::State()
+void Effect::EffectLoss()
+{
+	m_state = EFFECT_LOSS;
+}
+
+int Effect::State()
 {
 	return m_state;
 }
