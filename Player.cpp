@@ -75,11 +75,11 @@ Player::Player()
 			normal_resource.GetAddressOf(),
 			m_orion_normal_left_tex.ReleaseAndGetAddressOf()));
 	DX::ThrowIfFailed(
-		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/orion_damage.png",
+		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/orion_down.png",
 			normal_resource.GetAddressOf(),
 			m_orion_damage_tex.ReleaseAndGetAddressOf()));
 	DX::ThrowIfFailed(
-		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/orion_damage_L.png",
+		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/orion_down_L.png",
 			normal_resource.GetAddressOf(),
 			m_orion_damage_left_tex.ReleaseAndGetAddressOf()));
 
