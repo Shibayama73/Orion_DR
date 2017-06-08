@@ -41,7 +41,7 @@ Effect::Effect()
 	//エフェクト用画像
 	ComPtr<ID3D11Resource> effect_resource;
 	DX::ThrowIfFailed(
-		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/kirakira.png",
+		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/effect.png",
 			effect_resource.GetAddressOf(),
 			m_effect_tex.ReleaseAndGetAddressOf()));
 
