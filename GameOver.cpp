@@ -43,7 +43,9 @@ GameOver::GameOver()
 
 	//	順位ファイルの読込み
 	this->SetRanking();
+	this->ArraySort();
 
+	//	順位ファイルに書込む
 	this->RankingDataFileIO(1);
 
 	//	描画読み込み============================================================================
@@ -278,6 +280,39 @@ void GameOver::SetRanking()
 				m_rank[j] = tmp;
 			}
 		}
+	}
+
+}
+
+//========================================================//
+//内容		ファイルデータ値とスコアの値の大小を比べる
+//引数		なし
+//戻り値	なし
+//========================================================//
+void GameOver::ArraySort()
+{
+	//	格納
+	int tmp;
+	//	総数
+	int total = 4;
+
+	int data[4] = { m_rank[0],m_rank[1],m_rank[2],m_score };
+
+	//	降順にソートする
+	for (int i = 0; i < total; i++) {
+		for (int j = i + 1; j < total; j++) {
+			if (data[i] < data[j]) {
+				tmp = data[i];
+				data[i] = data[j];
+				data[j] = tmp;
+			}
+		}
+	}
+
+	//	降順のデータをランキングデータに入れる
+	for (int k = 0; k < 3; k++)
+	{
+		m_rank[k] = data[k];
 	}
 
 }

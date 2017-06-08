@@ -30,6 +30,8 @@ public:
 	int RankingDataFileIO(int io);
 	//	データを順番に並べる
 	void SetRanking();
+	//	ファイルデータ値とスコアの値の大小を比べる
+	void ArraySort();
 
 private:
 	float m_grpX;	//画像のX座標
@@ -37,7 +39,7 @@ private:
 	float m_grpW;	//画像のW座標
 	float m_grpH;	//画像のH座標
 
-	int m_score;
+	int m_score;	//スコアの値
 
 
 	DX::DeviceResources* m_deviceResources;

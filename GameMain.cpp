@@ -12,13 +12,9 @@
 
 GameMain::GameMain()
 {
-	//m_base = new GameLogo();
-
 	//	プレイシーンのみデバッグ用
 	m_base = new GamePlay();
 	
-	//m_base = new GameOver();
-
 	//プロトタイプ用、タイトルから
 	//m_base = new GameLogo();
 
