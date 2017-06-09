@@ -30,7 +30,7 @@ public:
 	int RankingDataFileIO(int io);
 	//	データを順番に並べる
 	void SetRanking();
-	//	ファイルデータ値とスコアの値の大小を比べる
+	//	ファイルデータ値とスコアの値の降順にソートする
 	void ArraySort();
 
 private:
