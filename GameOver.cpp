@@ -130,12 +130,12 @@ void GameOver::RenderGame()
 	m_spriteBatch->End();
 	//==========================================================================================
 
-	DrawNum(500, 400, m_score);
+	DrawNum(200, 400, m_score);
 	
 	//	èáà 
 	for (int i = 0; i < MAX_RANK; i++)
 	{
-		DrawNum(200, 300 + (100 * i), m_rank[i]);
+		DrawNum(700, 300 + (110 * i), m_rank[i]);
 	}
 }
 
@@ -161,7 +161,6 @@ void GameOver::DrawNum(float x, float y, int n)
 
 		m_spriteBatch->Draw(m_time_tex.Get(), Vector2(x, y), &rect, Colors::White, 0.0f, Vector2(0, 0), Vector2(1, 1));
 
-		//DrawRectGraph(x, y, 0, 48, 25, 32, g_PongImage, TRUE, FALSE);
 	}
 
 	else

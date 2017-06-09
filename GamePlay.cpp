@@ -55,6 +55,9 @@ GamePlay::GamePlay()
 	//時刻加算用変数の初期化
 	m_time_flag = 0;
 
+	gameplay = true;
+	m_TimeCnt = 0;
+
 	//	描画読み込み============================================================================
 	m_deviceResources = Game::m_deviceResources.get();
 	m_spriteBatch = Game::m_spriteBatch.get();
@@ -64,6 +67,12 @@ GamePlay::GamePlay()
 		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/background_play.jpg",
 			resource.GetAddressOf(),
 			m_texture.ReleaseAndGetAddressOf()));
+
+	DX::ThrowIfFailed(
+		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/timeup.png",
+			resource.GetAddressOf(),
+			m_texture2.ReleaseAndGetAddressOf()));
+
 
 	//	リソースから背景のテクスチャと判断
 	ComPtr<ID3D11Texture2D> backgraund;
@@ -130,230 +139,239 @@ int GamePlay::UpdateGame()
 	//	サウンドの更新
 	ADX2Le::Update();
 
-	//	時計の更新
-	m_clock->Update();
-
-	//m_time->CurrentTime();
-
-	//長針が12時のところに来たら、現在時刻を追加
-	if (m_clock->LongAngle() == 270)
+	if (gameplay)
 	{
-		if (m_time_flag == 0)
+
+		//	時計の更新
+		m_clock->Update();
+
+		//m_time->CurrentTime();
+
+		//長針が12時のところに来たら、現在時刻を追加
+		if (m_clock->LongAngle() == 270)
 		{
-			m_time->CurrentTime();
-		}
-		m_time_flag++;
-
-		if (m_time_flag > 1)
-		{
-			m_time_flag = 0;
-		}
-
-	}
-
-	//m_player->Needle(m_clock->getLongTipPos(), m_clock->getLongTipOrigin());
-
-	//プレイヤーの状態が普通の時
-	if (m_player->State() == NORMAL)
-	{
-		//	プレイヤーの移動処理
-		m_player->run();
-		//スペースキーでワイヤー
-		if (g_keyTracker->pressed.Space)
-		{
-			m_player->WireShot();
-			//	効果音
-			ADX2Le::Play(CRI_CUESHEET_0_THROW);
-		}
-	}
-
-
-
-	//	プレイヤーの更新
-	m_player->Update();
-
-
-	//プレイヤーの所持しているワイヤーの保管
-	for (int i = 0; i < WIRE_NUM; i++)
-	{
-		m_player_wire[i] = m_player->GetWire(i);
-	}
-
-	//ネジの更新
-	m_screw->Update();
-
-	//ネジが失われていたら
-	if (m_screw->State() == SCREW_LOSS)
-	{
-		//破棄して新たに生成する
-		delete m_screw;
-		m_screw = new Screw();
-	}
-
-	//ネジとプレイヤーの当たり判定
-	if (m_screw->Collision(m_player))
-	{
-		//ネジを消失させる
-		m_screw->AttackTip();
-		//プレイヤーをスタン状態にする
-		m_player->Damage();
-	}
-	//欠片、エフェクトの更新
-	for (int i = 0; i < FRAGMENT_MAX; i++)
-	{
-		m_fragment[i]->Update();
-		m_effect[i]->Update();
-
-		//	欠片が掴まれた状態のとき
-		if (m_fragment[i]->State() == FRAGMENT_CATCH)
-		{
-		//∞-------------------------------------------------------------------------------------------------------------------∞//
-		//∞針と欠片の当たり判定
-
-			float under_angle;			//*長針と短針の間の角
-			float under_angle2;			//*短針と長針の間の角
-			float long_angle;			//*長針と原点の間の角度
-			float short_angle;			//*短針と原点の間の角度
-
-			float big_angle;			//*大きさ判定用。長針と短針を比べて大きい方の角度を代入
-			float small_angle;			//*大きさ判定用。長針と短針を比べて小さい方の角度を代入
-			float null_angle;			//*入れ替え用
-
-			//長針と原点の間の角度を代入
-			long_angle = m_clock->LongAngle();
-			//短針と原点の間の角度を代入
-			short_angle = m_clock->ShortAngle();
-
-			//長針の角度-短針の角度
-			under_angle = long_angle - short_angle;
-			//短針の角度-長針の角度
-			under_angle2 = short_angle - long_angle;
-
-			//それぞれの間の角度が180度以上の場合、逆側の角度を求めて代入する
-			if (under_angle > 180)
+			if (m_time_flag == 0)
 			{
-				under_angle = (360 - long_angle) + short_angle;
+				m_time->CurrentTime();
 			}
-			if (under_angle2 > 180)
+			m_time_flag++;
+
+			if (m_time_flag > 1)
 			{
-				under_angle2 = (360 - short_angle) + long_angle;
+				m_time_flag = 0;
 			}
 
-
-			//長針の角度と短針の角度を比べて、大きい方をbig、小さい方をshortに代入
-			if (long_angle > short_angle)
-			{
-				big_angle = long_angle;
-				small_angle = short_angle;
-			}
-			else
-			{
-				big_angle = short_angle;
-				small_angle = long_angle;
-			}
-
-			//大きい方の角が301度以上で、更に小さい方の角が60度未満の場合、小さい方の角に360足して、大きい方と小さい方を入れ替える
-			//※原点との間の角が0～60の時に欠片を挟むことが出来なくなるバグ防止のため
-			if (big_angle > 301 && small_angle < 60)
-			{
-				small_angle += 360;
-				null_angle = big_angle;
-				big_angle = small_angle;
-				small_angle = big_angle;
-			}
-
-			//長針と短針の間の角が60度以下の場合のみ判定
-			if (under_angle > 0 && under_angle < 10)
-			{
-				//小さい方の針の角度よりも欠片の角度が大きい、かつ大きい針の角度よりも欠片の角度が小さい場合
-				if ((small_angle < m_fragment[i]->Angle(m_clock->getOrigin())) && (big_angle > m_fragment[i]->Angle(m_clock->getOrigin())))
-				{
-					//	欠片が消失する
-					m_fragment[i]->AttackTip();
-					//エフェクト表示
-					m_effect[i]->ChengeState(m_fragment[i]->GetPosX(), m_fragment[i]->GetPosY());
-					//	効果音
-					ADX2Le::Play(CRI_CUESHEET_0_VANISH);
-					//	ゲージがカウントされる
-					m_gauge->addGradation(m_fragment[i]->State());
-
-				}
-			}
-			//短針と長針の間の角が60度以下の場合のみ判定
-			if (under_angle2 > 0 && under_angle2 < 60)
-			{
-				//小さい方の針の角度よりも欠片の角度が大きい、かつ大きい針の角度よりも欠片の角度が小さい場合
-				if ((big_angle > m_fragment[i]->Angle(m_clock->getOrigin())) && (small_angle < m_fragment[i]->Angle(m_clock->getOrigin())))
-				{
-					//	欠片が消失する
-					m_fragment[i]->AttackTip();
-					//エフェクト表示
-					m_effect[i]->ChengeState(m_fragment[i]->GetPosX(),m_fragment[i]->GetPosY());
-					//	効果音
-					ADX2Le::Play(CRI_CUESHEET_0_VANISH);
-					//	ゲージがカウントされる
-					m_gauge->addGradation(m_fragment[i]->State());
-
-				}
-			}
-		//∞-------------------------------------------------------------------------------------------------------------------∞//
 		}
 
-		//欠片が失われていたら
-		if (m_fragment[i]->State() == FRAGMENT_LOSS)
+		//m_player->Needle(m_clock->getLongTipPos(), m_clock->getLongTipOrigin());
+
+		//プレイヤーの状態が普通の時
+		if (m_player->State() == NORMAL)
+		{
+			//	プレイヤーの移動処理
+			m_player->run();
+			//スペースキーでワイヤー
+			if (g_keyTracker->pressed.Space)
+			{
+				m_player->WireShot();
+				//	効果音
+				ADX2Le::Play(CRI_CUESHEET_0_THROW);
+			}
+		}
+
+
+
+		//	プレイヤーの更新
+		m_player->Update();
+
+
+		//プレイヤーの所持しているワイヤーの保管
+		for (int i = 0; i < WIRE_NUM; i++)
+		{
+			m_player_wire[i] = m_player->GetWire(i);
+		}
+
+		//ネジの更新
+		m_screw->Update();
+
+		//ネジが失われていたら
+		if (m_screw->State() == SCREW_LOSS)
 		{
 			//破棄して新たに生成する
-			delete m_fragment[i];
-			m_fragment[i] = new Fragment();
+			delete m_screw;
+			m_screw = new Screw();
 		}
 
-		//エフェクトが失われていたら
-		if (m_effect[i]->State() == EFFECT_LOSS)
+		//ネジとプレイヤーの当たり判定
+		if (m_screw->Collision(m_player))
 		{
-			//破棄して新たに生成
-			delete m_effect[i];
-			m_effect[i] = new Effect();
+			//ネジを消失させる
+			m_screw->AttackTip();
+			//プレイヤーをスタン状態にする
+			m_player->Damage();
 		}
-
-
-	}
-
-	//ワイヤーの当たり判定（ワイヤーの処理のみで、欠片の処理は関数内で）
-	for (int i = 0; i < WIRE_NUM; i++)
-	{
-		//欠片
-		for (int j = 0; j < FRAGMENT_MAX; j++)
+		//欠片、エフェクトの更新
+		for (int i = 0; i < FRAGMENT_MAX; i++)
 		{
-			//ワイヤーと欠片、それぞれ存在しているか確認
-			if (m_player_wire[i] != nullptr && m_fragment[j] != nullptr)
+			m_fragment[i]->Update();
+			m_effect[i]->Update();
+
+			//	欠片が掴まれた状態のとき
+			if (m_fragment[i]->State() == FRAGMENT_CATCH)
 			{
-				//ワイヤーに当たっていたら
-				if (m_fragment[j]->Collision(m_player_wire[i]))
-				{
-					//ワイヤーを消滅させる
-					m_player->Elimination(i);
+				//∞-------------------------------------------------------------------------------------------------------------------∞//
+				//∞針と欠片の当たり判定
 
-					//	効果音
-					ADX2Le::Play(CRI_CUESHEET_0_HIT);
+				float under_angle;			//*長針と短針の間の角
+				float under_angle2;			//*短針と長針の間の角
+				float long_angle;			//*長針と原点の間の角度
+				float short_angle;			//*短針と原点の間の角度
+
+				float big_angle;			//*大きさ判定用。長針と短針を比べて大きい方の角度を代入
+				float small_angle;			//*大きさ判定用。長針と短針を比べて小さい方の角度を代入
+				float null_angle;			//*入れ替え用
+
+				//長針と原点の間の角度を代入
+				long_angle = m_clock->LongAngle();
+				//短針と原点の間の角度を代入
+				short_angle = m_clock->ShortAngle();
+
+				//長針の角度-短針の角度
+				under_angle = long_angle - short_angle;
+				//短針の角度-長針の角度
+				under_angle2 = short_angle - long_angle;
+
+				//それぞれの間の角度が180度以上の場合、逆側の角度を求めて代入する
+				if (under_angle > 180)
+				{
+					under_angle = (360 - long_angle) + short_angle;
+				}
+				if (under_angle2 > 180)
+				{
+					under_angle2 = (360 - short_angle) + long_angle;
+				}
+
+
+				//長針の角度と短針の角度を比べて、大きい方をbig、小さい方をshortに代入
+				if (long_angle > short_angle)
+				{
+					big_angle = long_angle;
+					small_angle = short_angle;
+				}
+				else
+				{
+					big_angle = short_angle;
+					small_angle = long_angle;
+				}
+
+				//大きい方の角が301度以上で、更に小さい方の角が60度未満の場合、小さい方の角に360足して、大きい方と小さい方を入れ替える
+				//※原点との間の角が0～60の時に欠片を挟むことが出来なくなるバグ防止のため
+				if (big_angle > 301 && small_angle < 60)
+				{
+					small_angle += 360;
+					null_angle = big_angle;
+					big_angle = small_angle;
+					small_angle = big_angle;
+				}
+
+				//長針と短針の間の角が60度以下の場合のみ判定
+				if (under_angle > 0 && under_angle < 10)
+				{
+					//小さい方の針の角度よりも欠片の角度が大きい、かつ大きい針の角度よりも欠片の角度が小さい場合
+					if ((small_angle < m_fragment[i]->Angle(m_clock->getOrigin())) && (big_angle > m_fragment[i]->Angle(m_clock->getOrigin())))
+					{
+						//	欠片が消失する
+						m_fragment[i]->AttackTip();
+						//エフェクト表示
+						m_effect[i]->ChengeState(m_fragment[i]->GetPosX(), m_fragment[i]->GetPosY());
+						//	効果音
+						ADX2Le::Play(CRI_CUESHEET_0_VANISH);
+						//	ゲージがカウントされる
+						m_gauge->addGradation(m_fragment[i]->State());
+
+					}
+				}
+				//短針と長針の間の角が60度以下の場合のみ判定
+				if (under_angle2 > 0 && under_angle2 < 60)
+				{
+					//小さい方の針の角度よりも欠片の角度が大きい、かつ大きい針の角度よりも欠片の角度が小さい場合
+					if ((big_angle > m_fragment[i]->Angle(m_clock->getOrigin())) && (small_angle < m_fragment[i]->Angle(m_clock->getOrigin())))
+					{
+						//	欠片が消失する
+						m_fragment[i]->AttackTip();
+						//エフェクト表示
+						m_effect[i]->ChengeState(m_fragment[i]->GetPosX(), m_fragment[i]->GetPosY());
+						//	効果音
+						ADX2Le::Play(CRI_CUESHEET_0_VANISH);
+						//	ゲージがカウントされる
+						m_gauge->addGradation(m_fragment[i]->State());
+
+					}
+				}
+				//∞-------------------------------------------------------------------------------------------------------------------∞//
+			}
+
+			//欠片が失われていたら
+			if (m_fragment[i]->State() == FRAGMENT_LOSS)
+			{
+				//破棄して新たに生成する
+				delete m_fragment[i];
+				m_fragment[i] = new Fragment();
+			}
+
+			//エフェクトが失われていたら
+			if (m_effect[i]->State() == EFFECT_LOSS)
+			{
+				//破棄して新たに生成
+				delete m_effect[i];
+				m_effect[i] = new Effect();
+			}
+
+
+		}
+
+		//ワイヤーの当たり判定（ワイヤーの処理のみで、欠片の処理は関数内で）
+		for (int i = 0; i < WIRE_NUM; i++)
+		{
+			//欠片
+			for (int j = 0; j < FRAGMENT_MAX; j++)
+			{
+				//ワイヤーと欠片、それぞれ存在しているか確認
+				if (m_player_wire[i] != nullptr && m_fragment[j] != nullptr)
+				{
+					//ワイヤーに当たっていたら
+					if (m_fragment[j]->Collision(m_player_wire[i]))
+					{
+						//ワイヤーを消滅させる
+						m_player->Elimination(i);
+
+						//	効果音
+						ADX2Le::Play(CRI_CUESHEET_0_HIT);
+					}
+				}
+
+			}
+			//ネジ
+			if (m_player_wire[i] != nullptr && m_screw != nullptr)
+			{
+				//ワイヤーと当たったら
+				if (m_screw->Collision(m_player_wire[i]))
+				{
+					//ワイヤーを消滅させる（ネジはそのまま落下）
+					m_player->Elimination(i);
 				}
 			}
-
-		}
-		//ネジ
-		if (m_player_wire[i] != nullptr && m_screw != nullptr)
-		{
-			//ワイヤーと当たったら
-			if (m_screw->Collision(m_player_wire[i]))
-			{
-				//ワイヤーを消滅させる（ネジはそのまま落下）
-				m_player->Elimination(i);
-			}
 		}
 	}
 
-
 	//残り時間が０になったら
-	if (!(m_time->RemnantTime()))
+	if (m_time->RemnantTime() <= 0)
+	{
+		gameplay = false;
+		m_TimeCnt++;
+	}
+
+	if (m_TimeCnt > 60)
 	{
 		FileIO(1, m_gauge->getGradation());
 		m_NextScene = OVER;
@@ -367,9 +385,8 @@ void GamePlay::RenderGame()
 	CommonStates m_states(m_deviceResources->GetD3DDevice());
 	m_spriteBatch->Begin(SpriteSortMode_Deferred, m_states.NonPremultiplied());	//NonPremultipliedで不透明の設定
 	m_spriteBatch->Draw(m_texture.Get(), m_screenPos, nullptr, Colors::White, 0.f, m_origin);
-
 	m_spriteBatch->End();
-	//==========================================================================================
+
 	//	時計描画
 	m_clock->Render();
 
@@ -393,6 +410,15 @@ void GamePlay::RenderGame()
 	//ネジの描画
 	m_screw->Render();
 
+	m_spriteBatch->Begin(SpriteSortMode_Deferred, m_states.NonPremultiplied());	//NonPremultipliedで不透明の設定
+
+	if (!gameplay)
+	{
+		m_spriteBatch->Draw(m_texture2.Get(), m_screenPos, nullptr, Colors::White, 0.f, m_origin);
+	}
+
+	m_spriteBatch->End();
+	//==========================================================================================
 
 }
 
