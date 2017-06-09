@@ -136,7 +136,7 @@ void Time::CurrentTime()
 //∞*return：残り時間がある(true)か、ないか(false)
 //∞*heed：falseを返したら、容赦なくゲームオーバ
 //∞------------------------------------------------------------------∞
-bool Time::RemnantTime()
+int Time::RemnantTime()
 {
 	if (m_remnant_time != 0)
 	{
@@ -146,12 +146,10 @@ bool Time::RemnantTime()
 		{
 			m_remnant_time = TIME_MAX;
 		}
-		return true;
 	}
-	else
-	{
-		return false;
-	}
+
+	return m_remnant_time;
+
 }
 
 //∞------------------------------------------------------------------∞

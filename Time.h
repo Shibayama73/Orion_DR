@@ -19,7 +19,7 @@ public:
 	//*今の時間をカウントする(-1した値が正値）
 	void CurrentTime();
 	//残りの時間の計算、falseになったらゲームオーバー
-	bool RemnantTime();
+	int RemnantTime();
 
 	void DrawNum(float x, float y, int n);			//*数字の描画関数
 

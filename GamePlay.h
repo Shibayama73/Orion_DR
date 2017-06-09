@@ -43,6 +43,7 @@ private:
 	DirectX::SpriteBatch* m_spriteBatch;
 
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;	//テクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture2;	//テクスチャ
 
 	DirectX::SimpleMath::Vector2 m_screenPos;
 	DirectX::SimpleMath::Vector2 m_origin;
@@ -58,4 +59,6 @@ private:
 
 	int m_time_flag;		//時刻加算用変数
 	int m_effect_time;
+
+	bool gameplay;
 };

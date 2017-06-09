@@ -32,7 +32,7 @@ Wire::Wire(float posX)
 
 	m_state = true;		//ï\é¶èÛë‘
 	m_posX = posX;
-	m_posY = 650;
+	m_posY = 600;
 
 	m_grpH = 64.0f;
 	m_grpW = 64.0f;
