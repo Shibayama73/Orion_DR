@@ -40,7 +40,7 @@ GameOver::GameOver()
 	}
 
 	//	ランキングファイルの生成
-	m_rankFileIO = new RankFileIO;
+	m_rankFileIO = new RankFileIO();
 
 	//	順位ファイルの読込み
 	m_rankFileIO->SetRanking();
@@ -92,6 +92,8 @@ GameOver::GameOver()
 
 GameOver::~GameOver()
 {
+	//	順位ファイルの削除
+	delete m_rankFileIO;
 	//	サウンドライブラリの終了処理
 	ADX2Le::Finalize();
 }

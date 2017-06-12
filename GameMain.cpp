@@ -13,10 +13,10 @@
 GameMain::GameMain()
 {
 	//	プレイシーンのみデバッグ用
-	m_base = new GamePlay();
+	//m_base = new GamePlay();
 	
 	//プロトタイプ用、ロゴシーンから
-	//m_base = new GameLogo();
+	m_base = new GameLogo();
 
 }
 

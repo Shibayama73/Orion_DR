@@ -65,6 +65,8 @@ GameRanking::GameRanking()
 
 GameRanking::~GameRanking()
 {
+	//	‡ˆÊƒtƒ@ƒCƒ‹‚Ìíœ
+	delete m_rankFileIO;
 }
 
 int GameRanking::UpdateGame()
