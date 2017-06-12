@@ -25,8 +25,6 @@ using namespace DirectX;
 using namespace DirectX::SimpleMath;
 using Microsoft::WRL::ComPtr;
 
-const int MAX_RANK = 3;
-
 GameOver::GameOver()
 {
 	m_TimeCnt = 0;
@@ -41,12 +39,15 @@ GameOver::GameOver()
 		m_score = 0;
 	}
 
+	//	ランキングファイルの生成
+	m_rankFileIO = new RankFileIO;
+
 	//	順位ファイルの読込み
-	this->SetRanking();
-	this->ArraySort();
+	m_rankFileIO->SetRanking();
+	m_rankFileIO->ArraySort(m_score);
 
 	//	順位ファイルに書込む
-	this->RankingDataFileIO(1);
+	m_rankFileIO->RankingDataFileIO(1);
 
 	//	描画読み込み============================================================================
 	m_deviceResources = Game::m_deviceResources.get();
@@ -97,25 +98,17 @@ GameOver::~GameOver()
 
 int GameOver::UpdateGame()
 {
-	//m_TimeCnt++;
 	m_NextScene = OVER;
 	m_scene = OVER;
 
 	//	サウンドの更新
 	ADX2Le::Update();
 
-	//if (m_TimeCnt > 120)
-	//{
-	//	m_NextScene = TITLE;
-	//}
-
-
 	//エンターキーでタイトルシーン
 	if (g_keyTracker->pressed.Enter)
 	{
 		m_NextScene = TITLE;
 	}
-
 
 	return m_NextScene;
 }
@@ -126,17 +119,14 @@ void GameOver::RenderGame()
 	CommonStates m_states(m_deviceResources->GetD3DDevice());
 	m_spriteBatch->Begin(SpriteSortMode_Deferred, m_states.NonPremultiplied());	//NonPremultipliedで不透明の設定
 	m_spriteBatch->Draw(m_texture.Get(), Vector2(0,0), nullptr, Colors::White, 0.f, m_origin);
-
 	m_spriteBatch->End();
 	//==========================================================================================
 
 	DrawNum(200, 400, m_score);
 	
-	//	順位
-	for (int i = 0; i < MAX_RANK; i++)
-	{
-		DrawNum(700, 300 + (110 * i), m_rank[i]);
-	}
+	//	順位ファイルの描画
+	m_rankFileIO->Render();
+
 }
 
 //∞------------------------------------------------------------------∞
@@ -179,7 +169,6 @@ void GameOver::DrawNum(float x, float y, int n)
 	m_spriteBatch->End();
 }
 
-
 //∞------------------------------------------------------------------∞
 //∞*func：ファイル読み書き関数
 //∞*arg：読み書き指定（０：読み込み、１：書き込み）、読み書きしたい変数
@@ -212,107 +201,5 @@ int GameOver::FileIO(int io, int *score)
 	}
 	fclose(fp);
 	return 0;
-}
-
-//=====================================================//
-//内容		ランキングデータファイルの読込み・書込み
-//引数		読込み(0)、書込み(1)
-//戻り値	正常(0)、異常(1)
-//=====================================================//
-int GameOver::RankingDataFileIO(int io)
-{
-	char *Filename = "rank.txt";
-	FILE *fp;
-
-	//読込みのとき
-	if (io == 0)
-	{
-		fp = fopen(Filename, "r");
-		//	読込みが失敗したとき
-		if (fp == NULL){
-			return 1;
-		}
-
-		//fgets(s, 100, fp);
-		//	一行ずつ読込み(2行目から)
-		for (int i = 0; i < MAX_RANK; i++) {
-			fscanf(fp, "%d", &m_rank[i]);
-		}
-	}
-	//書込みのとき
-	else
-	{
-		fp = fopen(Filename, "w");
-		//	書込みが失敗したとき
-		if (fp == NULL) {
-			return 1;
-		}
-		for (int i = 0; i < MAX_RANK; i++) {
-			fprintf(fp, "%d\n", m_rank[i]);
-		}
-	}
-	fclose(fp);
-	return 0;
-}
-
-//========================================//
-//内容		データを降順に並べる
-//引数		なし
-//戻り値	なし
-//========================================//
-void GameOver::SetRanking()
-{
-	//	順位ファイルの読込み
-	this->RankingDataFileIO(0);
-
-	//	格納
-	int tmp;
-	//	総数
-	int total = 3;
-
-	//	降順にソートする
-	for (int i = 0; i < total; i++) {
-		for (int j = i + 1; j < total; j++) {
-			if (m_rank[i] < m_rank[j]) {
-				tmp = m_rank[i];
-				m_rank[i] = m_rank[j];
-				m_rank[j] = tmp;
-			}
-		}
-	}
-
-}
-
-//========================================================//
-//内容		ファイルデータ値とスコアの値の大小を比べる
-//引数		なし
-//戻り値	なし
-//========================================================//
-void GameOver::ArraySort()
-{
-	//	格納
-	int tmp;
-	//	総数
-	int total = 4;
-
-	int data[4] = { m_rank[0],m_rank[1],m_rank[2],m_score };
-
-	//	降順にソートする
-	for (int i = 0; i < total; i++) {
-		for (int j = i + 1; j < total; j++) {
-			if (data[i] < data[j]) {
-				tmp = data[i];
-				data[i] = data[j];
-				data[j] = tmp;
-			}
-		}
-	}
-
-	//	降順のデータをランキングデータに入れる
-	for (int k = 0; k < 3; k++)
-	{
-		m_rank[k] = data[k];
-	}
-
 }
 

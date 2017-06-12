@@ -76,7 +76,7 @@
     <ClInclude Include="Effect.h">
       <Filter>Game</Filter>
     </ClInclude>
-    <ClInclude Include="FileIO.h">
+    <ClInclude Include="RankFileIO.h">
       <Filter>Game</Filter>
     </ClInclude>
   </ItemGroup>
@@ -135,7 +135,7 @@
     <ClCompile Include="Effect.cpp">
       <Filter>Game</Filter>
     </ClCompile>
-    <ClCompile Include="FileIO.cpp">
+    <ClCompile Include="RankFileIO.cpp">
       <Filter>Game</Filter>
     </ClCompile>
   </ItemGroup>

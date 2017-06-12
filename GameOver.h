@@ -12,6 +12,7 @@
 #include <SimpleMath.h>
 #include <SpriteBatch.h>
 #include "DeviceResources.h"
+#include "RankFileIO.h"
 #include "ADX2Le.h"
 
 class GameOver :public GameBase
@@ -26,12 +27,6 @@ public:
 	void DrawNum(float x, float y, int n);
 	//ファイル読み書き
 	int FileIO(int io, int *score);
-	//	ランキングデータファイル読み書き
-	int RankingDataFileIO(int io);
-	//	データを順番に並べる
-	void SetRanking();
-	//	ファイルデータ値とスコアの値の降順にソートする
-	void ArraySort();
 
 private:
 	float m_grpX;	//画像のX座標
@@ -41,18 +36,16 @@ private:
 
 	int m_score;	//スコアの値
 
-
 	DX::DeviceResources* m_deviceResources;
 	DirectX::SpriteBatch* m_spriteBatch;
 
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;	//テクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;		//テクスチャ
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_time_tex;	//通常時テクスチャ
-
 
 	DirectX::SimpleMath::Vector2 m_screenPos;
 	DirectX::SimpleMath::Vector2 m_origin;
 
-	//順位
-	int m_rank[3];
+	//	順位ファイル
+	RankFileIO* m_rankFileIO;
 
 };
