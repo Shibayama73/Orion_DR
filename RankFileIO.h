@@ -18,8 +18,8 @@ public:
 	RankFileIO();
 	~RankFileIO();
 	//	描画する
-	void Render();
-	//数字描画
+	void Render(float posX, float posY);
+	//	数字描画
 	void DrawNum(float posX, float posY, int num);
 	//	ランキングデータファイル読み書き
 	int RankingDataFileIO(int io);
@@ -34,7 +34,6 @@ private:
 	float m_grpW;	//画像のW座標
 	float m_grpH;	//画像のH座標
 
-
 	DX::DeviceResources* m_deviceResources;
 	DirectX::SpriteBatch* m_spriteBatch;
 
@@ -43,7 +42,7 @@ private:
 	DirectX::SimpleMath::Vector2 m_screenPos;
 	DirectX::SimpleMath::Vector2 m_origin;
 
-	//順位
+	//	順位
 	int m_rank[3];
 
 };

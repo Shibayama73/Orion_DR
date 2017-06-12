@@ -84,18 +84,20 @@ int GameTitle::UpdateGame()
 	//	サウンドの更新
 	ADX2Le::Update();
 
-	//if (m_TimeCnt > 120)
-	//{
-	//	m_NextScene = PLAY;
-	//}
-
-	//エンターキーでプレイシーン
+	//	Enterキーが押されたとき
 	if (g_keyTracker->pressed.Enter)
 	{
 		//	効果音
 		ADX2Le::Play(CRI_CUESHEET_0_PUSH_KEY);
-
+		//	プレイシーンに移動
 		m_NextScene = PLAY;
+	}
+
+	//	Rキーが押されたとき
+	else if (g_keyTracker->pressed.R)
+	{
+		//	ランキングシーンに移動
+		m_NextScene = RANKING;
 	}
 
 	return m_NextScene;

@@ -87,12 +87,12 @@ RankFileIO::~RankFileIO()
 //引数		なし
 //戻り値	なし
 //==================================//
-void RankFileIO::Render()
+void RankFileIO::Render(float posX, float posY)
 {
 	//	順位
 	for (int i = 0; i < MAX_RANK; i++)
 	{
-		DrawNum(700, 300 + (110 * i), m_rank[i]);
+		DrawNum(posX, posY + (110 * i), m_rank[i]);
 	}
 
 }
@@ -203,7 +203,6 @@ void RankFileIO::SetRanking()
 	}
 
 }
-
 
 //========================================================//
 //内容		ファイルデータ値とスコアの値の大小を比べる

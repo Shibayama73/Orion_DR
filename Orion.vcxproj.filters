@@ -79,6 +79,9 @@
     <ClInclude Include="RankFileIO.h">
       <Filter>Game</Filter>
     </ClInclude>
+    <ClInclude Include="GameRanking.h">
+      <Filter>Game\Scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -137,6 +140,9 @@
     </ClCompile>
     <ClCompile Include="RankFileIO.cpp">
       <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="GameRanking.cpp">
+      <Filter>Game\Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

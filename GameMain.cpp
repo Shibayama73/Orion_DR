@@ -15,7 +15,7 @@ GameMain::GameMain()
 	//	プレイシーンのみデバッグ用
 	m_base = new GamePlay();
 	
-	//プロトタイプ用、タイトルから
+	//プロトタイプ用、ロゴシーンから
 	//m_base = new GameLogo();
 
 }
@@ -48,6 +48,9 @@ void GameMain::Scene()
 			break;
 		case OVER:
 			m_base = new GameOver();
+			break;
+		case RANKING:
+			m_base = new GameRanking();
 			break;
 		}
 	}

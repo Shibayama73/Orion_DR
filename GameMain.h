@@ -13,6 +13,7 @@
 #include "GamePlay.h"
 #include "GameClear.h"
 #include "GameOver.h"
+#include "GameRanking.h"
 
 enum Scene
 {
@@ -20,7 +21,8 @@ enum Scene
 	TITLE,
 	PLAY,
 	CLEAR,
-	OVER
+	OVER,
+	RANKING
 };
 
 class GameMain

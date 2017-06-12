@@ -125,7 +125,7 @@ void GameOver::RenderGame()
 	DrawNum(200, 400, m_score);
 	
 	//	‡ˆÊƒtƒ@ƒCƒ‹‚Ì•`‰æ
-	m_rankFileIO->Render();
+	m_rankFileIO->Render(700.0f, 300.0f);
 
 }
 
