@@ -31,8 +31,8 @@ GameOver::GameOver()
 
 	m_grpX = 0.0f;
 	m_grpY = 0.0f;
-	m_grpW = 60.0f;
-	m_grpH = 80.0f;
+	m_grpW = 101.0f;
+	m_grpH = 150.0f;
 
 	if (FileIO(0, &m_score))
 	{
@@ -59,7 +59,7 @@ GameOver::GameOver()
 			resource.GetAddressOf(),
 			m_texture.ReleaseAndGetAddressOf()));
 	DX::ThrowIfFailed(
-		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/result.png",
+		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/score_num.png",
 			resource.GetAddressOf(),
 			m_time_tex.ReleaseAndGetAddressOf()));
 
@@ -124,7 +124,8 @@ void GameOver::RenderGame()
 	m_spriteBatch->End();
 	//==========================================================================================
 
-	DrawNum(200, 400, m_score);
+	//	スコアの描画
+	DrawNum(230, 370, m_score);
 	
 	//	順位ファイルの描画
 	m_rankFileIO->Render(700.0f, 300.0f);
@@ -147,7 +148,7 @@ void GameOver::DrawNum(float x, float y, int n)
 
 	RECT rect;
 
-	if (w < 0)
+	if (w <= 0)
 	{
 		rect = { (LONG)m_grpX, (LONG)m_grpY,(LONG)(m_grpX + m_grpW), (LONG)(m_grpY + m_grpH) };
 

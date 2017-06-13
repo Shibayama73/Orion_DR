@@ -113,7 +113,7 @@ void RankFileIO::DrawNum(float posX, float posY, int num)
 
 	RECT rect;
 
-	if (number < 0)
+	if (number <= 0)
 	{
 		rect = { (LONG)m_grpX, (LONG)m_grpY,(LONG)(m_grpX + m_grpW), (LONG)(m_grpY + m_grpH) };
 		m_spriteBatch->Draw(m_texture.Get(), Vector2(posX, posY), &rect, Colors::White, 0.0f, Vector2(0, 0), Vector2(1, 1));
