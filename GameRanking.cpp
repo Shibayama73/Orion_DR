@@ -19,6 +19,9 @@
 #include "pch.h"
 #include <WICTextureLoader.h>
 
+//	サウンド
+#include "Resouces\Music\CueSheet_0.h"
+
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
 using Microsoft::WRL::ComPtr;
@@ -39,9 +42,9 @@ GameRanking::GameRanking()
 
 	ComPtr<ID3D11Resource> backgroundResource;
 	DX::ThrowIfFailed(
-		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/black_background.png",
+		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/background_rank.png",
 			backgroundResource.GetAddressOf(),
-			m_bkackTexture.ReleaseAndGetAddressOf()));
+			m_backTexture.ReleaseAndGetAddressOf()));
 
 	//	リソースから背景のテクスチャと判断
 	ComPtr<ID3D11Texture2D> background;
@@ -61,12 +64,18 @@ GameRanking::GameRanking()
 
 	//==========================================================================================
 
+	//	サウンドファイルの読み込み
+	ADX2Le::Initialize("Resouces/Music/OrionMusic.acf");
+	ADX2Le::LoadAcb("Resouces/Music/CueSheet_0.acb", "Resouces/Music/CueSheet_0.awb");
+
 }
 
 GameRanking::~GameRanking()
 {
 	//	順位ファイルの削除
 	delete m_rankFileIO;
+	//	サウンドライブラリの終了処理
+	ADX2Le::Finalize();
 }
 
 int GameRanking::UpdateGame()
@@ -75,9 +84,15 @@ int GameRanking::UpdateGame()
 	m_NextScene = RANKING;
 	m_scene = RANKING;
 
-	//	Enterキーが押されたらタイトルシーンに移動
+	//	サウンドの更新
+	ADX2Le::Update();
+
+	//	Enterキーが押されたら
 	if (g_keyTracker->pressed.Enter)
 	{
+		//	効果音
+		ADX2Le::Play(CRI_CUESHEET_0_PUSH_KEY);
+		//	タイトルシーンに移動
 		m_NextScene = TITLE;
 	}
 	return m_NextScene;
@@ -85,17 +100,15 @@ int GameRanking::UpdateGame()
 
 void GameRanking::RenderGame()
 {
-	//	スプライトの描画========================================================================
+	//	背景スプライトの描画====================================================================
 	CommonStates m_states(m_deviceResources->GetD3DDevice());
 	m_spriteBatch->Begin(SpriteSortMode_Deferred, m_states.NonPremultiplied());	//NonPremultipliedで不透明の設定
-	m_spriteBatch->Draw(m_bkackTexture.Get(), m_screenPos, nullptr, Colors::White, 0.0f, m_origin);
-//	m_spriteBatch->Draw(m_texture.Get(), m_screenPos, nullptr, Vector4(m_fadeCount, m_fadeCount, m_fadeCount, m_fadeCount), 0.f, m_origin);
-
+	m_spriteBatch->Draw(m_backTexture.Get(), m_screenPos, nullptr, Colors::White, 0.0f, m_origin);
 	m_spriteBatch->End();
 	//==========================================================================================
 
 	//	順位の描画
-	m_rankFileIO->Render(450.0f, 250.0f);
+	m_rankFileIO->Render(450.0f, 250.0f, 150.0f);
 
 }
 

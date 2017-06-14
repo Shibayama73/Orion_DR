@@ -18,7 +18,7 @@ public:
 	RankFileIO();
 	~RankFileIO();
 	//	描画する
-	void Render(float posX, float posY);
+	void Render(float posX, float posY, float widthY);
 	//	数字描画
 	void DrawNum(float posX, float posY, int num);
 	//	ランキングデータファイル読み書き

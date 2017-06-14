@@ -82,17 +82,17 @@ RankFileIO::~RankFileIO()
 {
 }
 
-//==================================//
+//===================================================================//
 //内容		描画
-//引数		なし
+//引数		X座標(float)、Y座標(float)、順位と順位の間の縦幅(float)
 //戻り値	なし
-//==================================//
-void RankFileIO::Render(float posX, float posY)
+//===================================================================//
+void RankFileIO::Render(float posX, float posY,float widthY)
 {
 	//	順位
 	for (int i = 0; i < MAX_RANK; i++)
 	{
-		DrawNum(posX, posY + (110 * i), m_rank[i]);
+		DrawNum(posX, posY + (widthY * i), m_rank[i]);
 	}
 
 }

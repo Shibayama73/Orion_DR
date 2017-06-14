@@ -26,8 +26,7 @@ private:
 	DX::DeviceResources* m_deviceResources;
 	DirectX::SpriteBatch* m_spriteBatch;
 
-//	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;	//テクスチャ
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_bkackTexture;	//テクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_backTexture;	//背景
 
 	DirectX::SimpleMath::Vector2 m_screenPos;
 	DirectX::SimpleMath::Vector2 m_origin;

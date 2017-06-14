@@ -96,6 +96,8 @@ int GameTitle::UpdateGame()
 	//	Rキーが押されたとき
 	else if (g_keyTracker->pressed.R)
 	{
+		//	効果音
+		ADX2Le::Play(CRI_CUESHEET_0_PUSH_KEY);
 		//	ランキングシーンに移動
 		m_NextScene = RANKING;
 	}
