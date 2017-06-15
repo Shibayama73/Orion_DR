@@ -58,6 +58,8 @@ GamePlay::GamePlay()
 	gameplay = true;
 	m_TimeCnt = 0;
 
+	m_seFlag = true;
+
 	//	•`‰æ“Ç‚Ýž‚Ý============================================================================
 	m_deviceResources = Game::m_deviceResources.get();
 	m_spriteBatch = Game::m_spriteBatch.get();
@@ -369,6 +371,11 @@ int GamePlay::UpdateGame()
 	//Žc‚èŽžŠÔ‚ª‚O‚É‚È‚Á‚½‚ç
 	if (m_time->RemnantTime() <= 0)
 	{
+		//	Œø‰Ê‰¹
+		if (m_seFlag) {
+			ADX2Le::Play(CRI_CUESHEET_0_TIME_UP);
+			m_seFlag = false;
+		}
 		gameplay = false;
 		m_TimeCnt++;
 	}
@@ -416,7 +423,6 @@ void GamePlay::RenderGame()
 
 	if (!gameplay)
 	{
-		ADX2Le::Play(CRI_CUESHEET_0_TIME_UP);
 		m_spriteBatch->Draw(m_texture2.Get(), m_screenPos, nullptr, Colors::White, 0.f, m_origin);
 	}
 
