@@ -92,6 +92,8 @@ int GameTitle::UpdateGame()
 	//	右キーが押されたとき
 	if (g_keyTracker->pressed.Right)
 	{
+		//	効果音
+		ADX2Le::Play(CRI_CUESHEET_0_CHOICE);
 		//	選択部分の移動
 		m_sceneFlag++;
 
@@ -104,6 +106,8 @@ int GameTitle::UpdateGame()
 	//	左キーが押されたとき
 	else if (g_keyTracker->pressed.Left)
 	{
+		//	効果音
+		ADX2Le::Play(CRI_CUESHEET_0_CHOICE);
 		//	選択部分の移動
 		m_sceneFlag--;
 

@@ -17,6 +17,9 @@
 #include "pch.h"
 #include <WICTextureLoader.h>
 
+//	サウンド
+#include "Resouces\Music\CueSheet_0.h"
+
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
 using Microsoft::WRL::ComPtr;
@@ -63,12 +66,22 @@ GameStory::GameStory()
 	m_screenPos.y = m_deviceResources->GetOutputSize().bottom / 2.0f;
 
 	//==========================================================================================
+	
+	//	サウンドファイルの読み込み
+	ADX2Le::Initialize("Resouces/Music/OrionMusic.acf");
+	ADX2Le::LoadAcb("Resouces/Music/CueSheet_0.acb", "Resouces/Music/CueSheet_0.awb");
+
+	//	サウンド再生
+	ADX2Le::Play(CRI_CUESHEET_0_STORY);
+	
 	m_page = 0;
 }
 
 
 GameStory::~GameStory()
 {
+	//	サウンドライブラリの終了処理
+	ADX2Le::Finalize();
 }
 
 int GameStory::UpdateGame()
@@ -76,9 +89,14 @@ int GameStory::UpdateGame()
 	m_NextScene = STORY;
 	m_scene = STORY;
 
+	//	サウンドの更新
+	ADX2Le::Update();
 
 	if (g_keyTracker->pressed.Enter)
 	{
+		//	効果音
+		ADX2Le::Play(CRI_CUESHEET_0_PAGE);
+
 		m_page++;
 		if (m_page > 3)
 		{

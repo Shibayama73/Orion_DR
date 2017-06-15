@@ -205,6 +205,8 @@ int GamePlay::UpdateGame()
 		//ネジとプレイヤーの当たり判定
 		if (m_screw->Collision(m_player))
 		{
+			//	効果音
+			ADX2Le::Play(CRI_CUESHEET_0_SCREW);
 			//ネジを消失させる
 			m_screw->AttackTip();
 			//プレイヤーをスタン状態にする
@@ -414,6 +416,7 @@ void GamePlay::RenderGame()
 
 	if (!gameplay)
 	{
+		ADX2Le::Play(CRI_CUESHEET_0_TIME_UP);
 		m_spriteBatch->Draw(m_texture2.Get(), m_screenPos, nullptr, Colors::White, 0.f, m_origin);
 	}
 

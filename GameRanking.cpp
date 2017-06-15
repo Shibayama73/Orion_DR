@@ -68,6 +68,9 @@ GameRanking::GameRanking()
 	ADX2Le::Initialize("Resouces/Music/OrionMusic.acf");
 	ADX2Le::LoadAcb("Resouces/Music/CueSheet_0.acb", "Resouces/Music/CueSheet_0.awb");
 
+	//	ÉTÉEÉìÉhçƒê∂
+	ADX2Le::Play(CRI_CUESHEET_0_RANKING);
+
 }
 
 GameRanking::~GameRanking()
