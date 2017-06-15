@@ -84,8 +84,8 @@ void Wire::Update(float pos_x)
 	if (m_state)
 	{
 		m_posX = pos_x;
-		m_posY -=3;
-		//m_posY -= 15;
+		//m_posY -=3;
+		m_posY -= 15;
 
 	}
 	if (m_state && m_posY < 0)

@@ -52,6 +52,9 @@ void GameMain::Scene()
 		case RANKING:
 			m_base = new GameRanking();
 			break;
+		case STORY:
+			m_base = new GameStory();
+			break;
 		}
 	}
 }

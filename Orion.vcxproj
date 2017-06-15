@@ -163,6 +163,7 @@
     <ClInclude Include="DirectXTK.h" />
     <ClInclude Include="Effect.h" />
     <ClInclude Include="GameRanking.h" />
+    <ClInclude Include="GameStory.h" />
     <ClInclude Include="RankFileIO.h" />
     <ClInclude Include="Fragment.h" />
     <ClInclude Include="Game.h" />
@@ -192,6 +193,7 @@
     <ClCompile Include="DirectXTK.cpp" />
     <ClCompile Include="Effect.cpp" />
     <ClCompile Include="GameRanking.cpp" />
+    <ClCompile Include="GameStory.cpp" />
     <ClCompile Include="RankFileIO.cpp" />
     <ClCompile Include="Fragment.cpp" />
     <ClCompile Include="Game.cpp" />

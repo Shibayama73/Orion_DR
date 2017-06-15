@@ -102,6 +102,15 @@ int GameTitle::UpdateGame()
 		m_NextScene = RANKING;
 	}
 
+	// Sキーが押されたとき
+	else if (g_keyTracker->pressed.S)
+	{
+		//	効果音
+		ADX2Le::Play(CRI_CUESHEET_0_PUSH_KEY);
+		//	ストーリーシーンに移動
+		m_NextScene = STORY;
+	}
+
 	return m_NextScene;
 }
 

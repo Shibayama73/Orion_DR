@@ -83,6 +83,9 @@
       <Filter>Game\Scene</Filter>
     </ClInclude>
     <ClInclude Include="resource.h" />
+    <ClInclude Include="GameStory.h">
+      <Filter>Game\Scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -143,6 +146,9 @@
       <Filter>Game</Filter>
     </ClCompile>
     <ClCompile Include="GameRanking.cpp">
+      <Filter>Game\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="GameStory.cpp">
       <Filter>Game\Scene</Filter>
     </ClCompile>
   </ItemGroup>
