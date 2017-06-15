@@ -28,6 +28,7 @@ using Microsoft::WRL::ComPtr;
 GameTitle::GameTitle()
 {
 	m_TimeCnt = 0;
+	m_sceneFlag = SCENE_FLAG::PLAY_FLAG;
 
 	//	描画読み込み============================================================================
 	m_deviceResources = Game::m_deviceResources.get();
@@ -39,16 +40,20 @@ GameTitle::GameTitle()
 			resource.GetAddressOf(),
 			m_texture.ReleaseAndGetAddressOf()));
 	DX::ThrowIfFailed(
-		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/title_font.png",
+		CreateWICTextureFromFile(m_deviceResources->GetD3DDevice(), L"Resouces/serect_title.png",
 			resource.GetAddressOf(),
-			m_texture2.ReleaseAndGetAddressOf()));
+			m_serectTexture.ReleaseAndGetAddressOf()));
 	//	リソースから背景のテクスチャと判断
 	ComPtr<ID3D11Texture2D> clock;
 	DX::ThrowIfFailed(resource.As(&clock));
+	ComPtr<ID3D11Texture2D> serect;
+	DX::ThrowIfFailed(resource.As(&serect));
 
 	//	テクスチャ情報
 	CD3D11_TEXTURE2D_DESC clockDesc;
 	clock->GetDesc(&clockDesc);
+	CD3D11_TEXTURE2D_DESC serectDesc;
+	serect->GetDesc(&serectDesc);
 
 	//	テクスチャ原点を画像の中心にする
 	m_origin.x = 0.0f;
@@ -84,31 +89,57 @@ int GameTitle::UpdateGame()
 	//	サウンドの更新
 	ADX2Le::Update();
 
+	//	右キーが押されたとき
+	if (g_keyTracker->pressed.Right)
+	{
+		//	選択部分の移動
+		m_sceneFlag++;
+
+		//	シーンフラグが無いとき
+		if (m_sceneFlag >= 4) {
+			//	プレイ選択に戻る
+			m_sceneFlag = SCENE_FLAG::PLAY_FLAG;
+		}
+	}
+	//	左キーが押されたとき
+	else if (g_keyTracker->pressed.Left)
+	{
+		//	選択部分の移動
+		m_sceneFlag--;
+
+		//	シーンフラグが無いとき
+		if (m_sceneFlag < 0) {
+			//	エンド選択に戻る
+			m_sceneFlag = SCENE_FLAG::END_FLAG;
+		}
+	}
+
 	//	Enterキーが押されたとき
-	if (g_keyTracker->pressed.Enter)
+	else if (g_keyTracker->pressed.Enter)
 	{
 		//	効果音
 		ADX2Le::Play(CRI_CUESHEET_0_PUSH_KEY);
-		//	プレイシーンに移動
-		m_NextScene = PLAY;
-	}
 
-	//	Rキーが押されたとき
-	else if (g_keyTracker->pressed.R)
-	{
-		//	効果音
-		ADX2Le::Play(CRI_CUESHEET_0_PUSH_KEY);
-		//	ランキングシーンに移動
-		m_NextScene = RANKING;
-	}
-
-	// Sキーが押されたとき
-	else if (g_keyTracker->pressed.S)
-	{
-		//	効果音
-		ADX2Le::Play(CRI_CUESHEET_0_PUSH_KEY);
-		//	ストーリーシーンに移動
-		m_NextScene = STORY;
+		//	シーンフラグ
+		switch (m_sceneFlag)
+		{
+		case SCENE_FLAG::PLAY_FLAG:
+			//	プレイシーンに移動
+			m_NextScene = PLAY;
+			break;
+		case SCENE_FLAG::STORY_FLAG:
+			//	物語シーンに移動
+			m_NextScene = STORY;
+			break;
+		case SCENE_FLAG::RANK_FLAG:
+			//	ランキングシーンに移動
+			m_NextScene = RANKING;
+			break;
+		case SCENE_FLAG::END_FLAG:
+			//	ゲームを終了する
+			PostQuitMessage(0);
+			break;
+		}
 	}
 
 	return m_NextScene;
@@ -120,7 +151,24 @@ void GameTitle::RenderGame()
 	CommonStates m_states(m_deviceResources->GetD3DDevice());
 	m_spriteBatch->Begin(SpriteSortMode_Deferred, m_states.NonPremultiplied());	//NonPremultipliedで不透明の設定
 	m_spriteBatch->Draw(m_texture.Get(), Vector2(0, 0), nullptr, Colors::White, 0.f, m_origin);
-	m_spriteBatch->Draw(m_texture2.Get(), Vector2(220,520), nullptr, Colors::White, 0.f, m_origin);
+	
+	//	選択部分
+	switch (m_sceneFlag)
+	{
+	case SCENE_FLAG::PLAY_FLAG:
+		m_spriteBatch->Draw(m_serectTexture.Get(), Vector2(45, 305), nullptr, Colors::White, 0.f, m_origin);
+		break;
+	case SCENE_FLAG::STORY_FLAG:
+		m_spriteBatch->Draw(m_serectTexture.Get(), Vector2(222, 435), nullptr, Colors::White, 0.f, m_origin);
+		break;
+	case SCENE_FLAG::RANK_FLAG:
+		m_spriteBatch->Draw(m_serectTexture.Get(), Vector2(461, 435), nullptr, Colors::White, 0.f, m_origin);
+		break;
+	case SCENE_FLAG::END_FLAG:
+		m_spriteBatch->Draw(m_serectTexture.Get(), Vector2(642, 305), nullptr, Colors::White, 0.f, m_origin);
+		break;
+	}
+
 	m_spriteBatch->End();
 	//==========================================================================================
 

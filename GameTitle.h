@@ -16,6 +16,13 @@
 
 class GameTitle :public GameBase
 {
+	enum SCENE_FLAG{
+		PLAY_FLAG,
+		STORY_FLAG,
+		RANK_FLAG,
+		END_FLAG
+	};
+
 public:
 	GameTitle();		//	コンストラクタ
 	~GameTitle();		//	デストラクタ
@@ -26,10 +33,12 @@ private:
 	DX::DeviceResources* m_deviceResources;
 	DirectX::SpriteBatch* m_spriteBatch;
 
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;	//テクスチャ
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture2;	//テクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;			//テクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_serectTexture;	//選択星テクスチャ
 
 	DirectX::SimpleMath::Vector2 m_screenPos;
 	DirectX::SimpleMath::Vector2 m_origin;
+
+	int m_sceneFlag;
 
 };
