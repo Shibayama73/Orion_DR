@@ -151,7 +151,7 @@ void Gauge::addGradation(int state)
 	if (state == FRAGMENT_LOSS)
 	{
 		//	’l‚ð‰ÁŽZ‚·‚é
-		m_gradation++;
+		m_gradation+=2;
 	}
 
 }
